@@ -22,7 +22,7 @@
     <meta name="description" content="Red team of jd inc.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="JD.Army">
-<meta property="og:url" content="http://jd.army/tags/dll-%E9%95%82%E7%A9%BA/index.html">
+<meta property="og:url" content="http://jd.army/tags/collection/index.html">
 <meta property="og:site_name" content="JD.Army">
 <meta property="og:description" content="Red team of jd inc.">
 <meta property="og:locale" content="en_US">
@@ -431,21 +431,23 @@
             
         
         <article class="index-post">
-            <a class="abstract-title" href="/2021/11/18/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC7%E6%9C%9F/">
+            <a class="abstract-title" href="/2021/11/05/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC5%E6%9C%9F/">
                 
-                <span class="abstract-title-text">蓝军推送(第7期)</span>
+                <span class="abstract-title-text">蓝军推送(第5期)</span>
             </a>
             <div class="abstract-content">
-                文章推荐:DLL Hollowing（dll 镂空）文章看点：本文区别于Phantom的dll镂空，它是基于module_overloading（模块重载）的方式来进行dll镂空。
-推送亮点：本文的方法是使用模块重载技术，使用readonly打开正常的dll文件，然后在rw区域分配内存存放payload，最后通过远程进程注入来执行payload。在整个技术实现的过程中，dll是以只读的形式打开的，能规避杀软对这块内存的查杀。
-原文链接：https://www.secforce.com/blog/dll-hollowing-a-deep-dive-into-a-stealthier-mem...
+                文章推荐:获取域管的三条不同路径文章看点：文章通过三种不同的方法在域内获取域管权限。
+推送亮点：此文章描述的场景是在已经有一台域内主机的情况下，如何获取到域管权限。针对于此总结了三种不同的方法来获取域管权限，国内目前使用更多的还是第二种方法，第一种和第三种都有学习和借鉴意义。
+原文链接：https://twitter.com/snovvcrash/status/1455564540377243653
+相关知识点链接：https://twitter.com/_nwodtuhs/status/1455576497079607300
+文章推荐:kerberos基础及相关攻防文章看点：文章讲述了...
             </div>
             <!-- read more -->
             
             <div class="abstract-post-meta">
                 <!-- date -->
                 <div class="abstract-date" title="Last updated: 2021/11/25">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/11/18</span>
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/11/05</span>
                 </div>
                 <!-- tags -->
                 
@@ -464,13 +466,15 @@
         </span>
     
     
-        <a class="post-tag" href="javascript:void(0);" data-tags="dll 镂空">dll 镂空</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="kerberos">kerberos</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags="CVE-2021-37580">CVE-2021-37580</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="AD">AD</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags="lsarelayx">lsarelayx</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="SharpUnhooker">SharpUnhooker</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags="CobaltStrikeParser">CobaltStrikeParser</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="Sherlock">Sherlock</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Collection">Collection</a>
     
 </div>
 
@@ -683,8 +687,6 @@
         
         
         
-        
-        
     
     
     
@@ -822,11 +824,6 @@
                 Scoring System
             </span>
         
-            <span class="sidebar-tag-name" data-tags="零信任实践分享">
-                <span class="iconfont-archer">&#xe606;</span>
-                零信任实践分享
-            </span>
-        
             <span class="sidebar-tag-name" data-tags="ZTNA">
                 <span class="iconfont-archer">&#xe606;</span>
                 ZTNA
@@ -857,9 +854,9 @@
                 mimikatz
             </span>
         
-            <span class="sidebar-tag-name" data-tags="远程提取凭证">
+            <span class="sidebar-tag-name" data-tags="凭证提取">
                 <span class="iconfont-archer">&#xe606;</span>
-                远程提取凭证
+                凭证提取
             </span>
         
             <span class="sidebar-tag-name" data-tags="Exchange">
@@ -875,31 +872,6 @@
             <span class="sidebar-tag-name" data-tags="NimlineWhispers">
                 <span class="iconfont-archer">&#xe606;</span>
                 NimlineWhispers
-            </span>
-        
-            <span class="sidebar-tag-name" data-tags="Bypass AMSI">
-                <span class="iconfont-archer">&#xe606;</span>
-                Bypass AMSI
-            </span>
-        
-            <span class="sidebar-tag-name" data-tags="本地提权">
-                <span class="iconfont-archer">&#xe606;</span>
-                本地提权
-            </span>
-        
-            <span class="sidebar-tag-name" data-tags="LDAPmonitor">
-                <span class="iconfont-archer">&#xe606;</span>
-                LDAPmonitor
-            </span>
-        
-            <span class="sidebar-tag-name" data-tags="Payload">
-                <span class="iconfont-archer">&#xe606;</span>
-                Payload
-            </span>
-        
-            <span class="sidebar-tag-name" data-tags="Bypass">
-                <span class="iconfont-archer">&#xe606;</span>
-                Bypass
             </span>
         
             <span class="sidebar-tag-name" data-tags="chm">
@@ -927,6 +899,31 @@
                 delete-self-poc
             </span>
         
+            <span class="sidebar-tag-name" data-tags="Bypass AMSI">
+                <span class="iconfont-archer">&#xe606;</span>
+                Bypass AMSI
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="本地提权">
+                <span class="iconfont-archer">&#xe606;</span>
+                本地提权
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="LDAPmonitor">
+                <span class="iconfont-archer">&#xe606;</span>
+                LDAPmonitor
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Payload">
+                <span class="iconfont-archer">&#xe606;</span>
+                Payload
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Bypass">
+                <span class="iconfont-archer">&#xe606;</span>
+                Bypass
+            </span>
+        
             <span class="sidebar-tag-name" data-tags="SharpUnhooker">
                 <span class="iconfont-archer">&#xe606;</span>
                 SharpUnhooker
@@ -937,24 +934,9 @@
                 Sherlock
             </span>
         
-            <span class="sidebar-tag-name" data-tags="情报收集">
+            <span class="sidebar-tag-name" data-tags="Collection">
                 <span class="iconfont-archer">&#xe606;</span>
-                情报收集
-            </span>
-        
-            <span class="sidebar-tag-name" data-tags="CVE">
-                <span class="iconfont-archer">&#xe606;</span>
-                CVE
-            </span>
-        
-            <span class="sidebar-tag-name" data-tags="Excel">
-                <span class="iconfont-archer">&#xe606;</span>
-                Excel
-            </span>
-        
-            <span class="sidebar-tag-name" data-tags="rpcfirewall">
-                <span class="iconfont-archer">&#xe606;</span>
-                rpcfirewall
+                Collection
             </span>
         
             <span class="sidebar-tag-name" data-tags="RCE">
@@ -967,6 +949,11 @@
                 DACL
             </span>
         
+            <span class="sidebar-tag-name" data-tags="CVE">
+                <span class="iconfont-archer">&#xe606;</span>
+                CVE
+            </span>
+        
             <span class="sidebar-tag-name" data-tags="CobaltStrike">
                 <span class="iconfont-archer">&#xe606;</span>
                 CobaltStrike
@@ -977,9 +964,19 @@
                 蜜罐
             </span>
         
-            <span class="sidebar-tag-name" data-tags="dll 镂空">
+            <span class="sidebar-tag-name" data-tags="Excel">
                 <span class="iconfont-archer">&#xe606;</span>
-                dll 镂空
+                Excel
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="rpcfirewall">
+                <span class="iconfont-archer">&#xe606;</span>
+                rpcfirewall
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="dll镂空">
+                <span class="iconfont-archer">&#xe606;</span>
+                dll镂空
             </span>
         
             <span class="sidebar-tag-name" data-tags="CVE-2021-37580">
@@ -990,11 +987,6 @@
             <span class="sidebar-tag-name" data-tags="lsarelayx">
                 <span class="iconfont-archer">&#xe606;</span>
                 lsarelayx
-            </span>
-        
-            <span class="sidebar-tag-name" data-tags="CobaltStrikeParser">
-                <span class="iconfont-archer">&#xe606;</span>
-                CobaltStrikeParser
             </span>
         
     </div>
