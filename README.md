@@ -4,7 +4,7 @@ https://JD.Army 网页生成器
 ## 初始化
 ```bash
 npm install hexo -g
-git clone https://github.com/JDArmy/JD.Army.git
+git clone https://github.com/JDArmy/JDArmy.github.io.git
 cd JD.Army
 npm install
 git clone https://github.com/fi3ework/hexo-theme-archer.git themes/archer --depth=1
