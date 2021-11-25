@@ -975,24 +975,28 @@
             
 
             
-    <div id="gitment-container"></div>
-    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
-    <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
-    <script>
-        var gitment = new Gitment({
-            id: '1637832982000', // 可选。默认为 location.href
-            owner: 'JDArmy',
-            repo: 'JDArmy.github.io',
-            oauth: {
-                client_id: '8b983dd2d64ab564beb1',
-                client_secret: 'b0a9f6e529c0bcdfbb7e3db67bdb834d9133d04d',
-            },
-        })
-        gitment.render('gitment-container')
-    </script>
-
 
             
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script>
+    <script>
+        let idOption = '1637832982000'
+        
+        const gitalk = new Gitalk({
+            clientID: '8b983dd2d64ab564beb1',
+            clientSecret: 'b0a9f6e529c0bcdfbb7e3db67bdb834d9133d04d',
+            repo: 'JDArmy.github.io',
+            owner: 'JDArmy',
+            admin: "Monyer",
+            id: idOption,
+            distractionFreeMode: false,
+            createIssueManually: true,
+        })
+        gitalk.render('gitalk-container')
+    </script>
+    <noscript>为正常使用 Gitalk 评论功能，您需要激活 JavaScript</noscript>
+
 
             <!-- utteranc评论 -->
 
@@ -1234,10 +1238,6 @@
         
         
         
-        
-        
-        
-        
     
     
     
@@ -1390,6 +1390,16 @@
                 lsass
             </span>
         
+            <span class="sidebar-tag-name" data-tags="Red Teaming">
+                <span class="iconfont-archer">&#xe606;</span>
+                Red Teaming
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Scoring System">
+                <span class="iconfont-archer">&#xe606;</span>
+                Scoring System
+            </span>
+        
             <span class="sidebar-tag-name" data-tags="procdump">
                 <span class="iconfont-archer">&#xe606;</span>
                 procdump
@@ -1538,16 +1548,6 @@
             <span class="sidebar-tag-name" data-tags="蜜罐">
                 <span class="iconfont-archer">&#xe606;</span>
                 蜜罐
-            </span>
-        
-            <span class="sidebar-tag-name" data-tags="Red Teaming">
-                <span class="iconfont-archer">&#xe606;</span>
-                Red Teaming
-            </span>
-        
-            <span class="sidebar-tag-name" data-tags="Scoring System">
-                <span class="iconfont-archer">&#xe606;</span>
-                Scoring System
             </span>
         
     </div>

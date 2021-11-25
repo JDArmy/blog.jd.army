@@ -53,9 +53,13 @@ profile_icons:
   search: 'fas fa-search'
 # Additional profile links
 profile_links:
-  - name: RTASS
+  - name: RTASS Project
     url: //github.com/JDArmy/RTASS
     icon: 'fas fa-balance-scale'
+  - name: RTASS Online Calculator
+    url: //jd.army/RTASS/?lang=en
+    icon: 'fas fa-balance-scale'
+  
   # - name: GALLERY
   #   url: //www.unsplash.com
   #   icon: 'fas fa-images'
@@ -123,10 +127,10 @@ comment:
   # Disqus  site: https://disqus.com/
   disqus_shortname: 
   # Gitment  site: https://github.com/imsun/gitment
-  gitment_owner: JDArmy
-  gitment_repo: JDArmy.github.io
-  gitment_client_id: 8b983dd2d64ab564beb1
-  gitment_client_secret: b0a9f6e529c0bcdfbb7e3db67bdb834d9133d04d
+  gitment_owner: 
+  gitment_repo: 
+  gitment_client_id: 
+  gitment_client_secret: 
   # Youyan  site: http://www.uyan.cc/
   youyan_uid: 
   # Valine  site: https://valine.js.org/
@@ -135,11 +139,11 @@ comment:
   valine_placeHolder: 
   # gitalk site: https://github.com/gitalk/gitalk/
   # Value 'true' is recommended for gitalk_pathname_id setting
-  gitalk_client_id: 
-  gitalk_client_secret: 
-  gitalk_admin: 
-  gitalk_owner: 
-  gitalk_repo: 
+  gitalk_client_id: 8b983dd2d64ab564beb1
+  gitalk_client_secret: b0a9f6e529c0bcdfbb7e3db67bdb834d9133d04d
+  gitalk_admin: Monyer
+  gitalk_owner: JDArmy
+  gitalk_repo: JDArmy.github.io
   gitalk_pathname_id: false
   gitalk_create_issue_manually: true
   # utteranc site: https://utteranc.es/
