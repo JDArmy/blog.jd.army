@@ -19,14 +19,15 @@ hexo s
 ## 写新文章
 > 文章名可以中文
 ```bash
+git pull
 hexo new post "article name"
-
+# 点击链接打开md文档
 # 补充tags
 tags: [AD, Exchange, RCE, DACL, CVE, CobaltStrike, 蜜罐]
 # 补充categories
 categories: 蓝军推送
 # 补充文章内容，按照一般的Markdown格式
-#注意：文章中不要用一级标题，用二级及以下标题
+#注意：文章中最好不要用一级标题，用二级及以下标题
 
 ```
 ## 网站更新
@@ -34,5 +35,5 @@ categories: 蓝军推送
 #生成网站数据到 /docs 文件夹中
 hexo g
 #提交到仓库
-git pull && git push
+git push
 ```
