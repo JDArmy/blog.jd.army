@@ -8,12 +8,12 @@ subtitle: 'Promoting Defense, Enabling Security.'
 description: 'Red team of jd inc. '
 keywords: [JD.Army]
 author: JD.Army
-language: en
-timezone: ''
+language: zh
+timezone: 'Asia/Shanghai'
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: https://jd.army/
+url: https://jd.army
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -48,7 +48,7 @@ highlight:
   enable: true
   line_number: true
   auto_detect: true
-  tab_replace: ''
+  tab_replace: '  '
   wrap: true
   hljs: true
 prismjs:
@@ -67,7 +67,7 @@ index_generator:
   order_by: -date
 
 # Category & Tag
-default_category:
+default_category: '未分类'
 category_map:
 tag_map:
 
