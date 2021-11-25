@@ -56,7 +56,7 @@ profile_links:
   - name: RTASS Project
     url: //github.com/JDArmy/RTASS
     icon: 'fas fa-balance-scale'
-  - name: RTASS Online Calculator
+  - name: RTASS Calculator
     url: //jd.army/RTASS/?lang=en
     icon: 'fas fa-balance-scale'
   
