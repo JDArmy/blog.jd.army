@@ -58,7 +58,7 @@ profile_links:
     icon: 'fas fa-balance-scale'
   - name: RTASS Calculator
     url: //jd.army/RTASS/?lang=en
-    icon: 'fas fa-balance-scale'
+    icon: 'fas fa-balance-scale-left'
   
   # - name: GALLERY
   #   url: //www.unsplash.com
