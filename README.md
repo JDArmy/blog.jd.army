@@ -1,11 +1,10 @@
 # JD.Army
-本站采用hexo网页生成器
-
+使用hexo网页生成器
 ## 初始化环境
 ```bash
-npm install hexo -g
 git clone https://github.com/JDArmy/JDArmy.github.io.git
 cd JD.Army
+npm install hexo -g
 npm install
 #安装皮肤 && 替换静态资源
 git clone https://github.com/fi3ework/hexo-theme-archer.git themes/archer --depth=1
@@ -18,16 +17,14 @@ cp -r CopyToThemes/* themes/
 hexo s
 ```
 ## 写新文章
->> 文章名可以中文
+> 文章名可以中文
 ```bash
 hexo new post "article name"
 
 # 补充tags
 tags: [AD, Exchange, RCE, DACL, CVE, CobaltStrike, 蜜罐]
-
 # 补充categories
 categories: 蓝军推送
-
 # 补充文章内容，按照一般的Markdown格式
 #注意：文章中不要用一级标题，用二级及以下标题
 
