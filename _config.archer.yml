@@ -53,9 +53,9 @@ profile_icons:
   search: 'fas fa-search'
 # Additional profile links
 profile_links:
-  # - name: GOOGLE
-  #   url: //www.google.com
-  #   icon: 'fab fa-google'
+  - name: RTASS
+    url: //github.com/JDArmy/RTASS
+    icon: 'fas fa-balance-scale'
   # - name: GALLERY
   #   url: //www.unsplash.com
   #   icon: 'fas fa-images'
