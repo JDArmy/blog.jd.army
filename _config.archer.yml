@@ -145,7 +145,7 @@ comment:
   gitalk_owner: JDArmy
   gitalk_repo: JDArmy.github.io
   gitalk_pathname_id: false
-  gitalk_create_issue_manually: true
+  gitalk_create_issue_manually: false
   # utteranc site: https://utteranc.es/
   utteranc_repo:  
   utteranc_label: 
