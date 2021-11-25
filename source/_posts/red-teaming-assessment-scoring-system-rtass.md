@@ -63,7 +63,7 @@ In the current version:
 
 Of course, the above-mentioned association may also change with the evolution of RTASS. At present, the modulus of each factor and factor is all 1, and it may also change according to the updated concept in the future.
 
-![scoring-map-en](./docs/img/scoring-map-en.jpg)
+![scoring-map-en](https://jd.army/RTASS/img/scoring-map-en.jpg)
 
 In this scoring framework, each factor has 6 scoring items from 0 to 5. In the process score and the final score: the lowest score is 0 points, the highest score is 10 points. Among them, the distribution of the corresponding grades of each score is as follows:
 
@@ -416,7 +416,7 @@ NAN
 
 ## **RTASS Online Calculator**
 
-![calculator-cn](./docs/img/calculator-en.jpg)
+![calculator-cn](https://jd.army/RTASS/img/calculator-en.jpg)
 
 - English Version：<https://jd.army/RTASS/?lang=en>
 - 中文版：<https://jd.army/RTASS/?lang=cn>
