@@ -32,7 +32,7 @@ categories: 蓝军推送
 ## 网站更新
 ```bash
 #生成网站数据到 /docs 文件夹中
-hexo clean && hexo g
+hexo g
 #提交到仓库
 git pull && git push
 ```
