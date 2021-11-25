@@ -22,7 +22,7 @@
     <meta name="description" content="Red team of jd inc.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="JD.Army">
-<meta property="og:url" content="http://jd.army/tags/lsass/index.html">
+<meta property="og:url" content="http://jd.army/page/2/index.html">
 <meta property="og:site_name" content="JD.Army">
 <meta property="og:description" content="Red team of jd inc.">
 <meta property="og:locale" content="en_US">
@@ -220,8 +220,10 @@
         }
     </script>
     
+        <body class="home-body">
+    
         <!-- header -->
-        <header class="header header-mobile">
+        <header class="header header-mobile index-header">
     <!-- top read progress line -->
     <div class="header-element">
         <div class="read-progress"></div>
@@ -252,7 +254,7 @@
 </header>
 
         <!-- fixed footer -->
-        <footer class="footer-fixed">
+        <footer class="footer-fixed index-footer-fixed">
     <!-- back to top button -->
     <div class="footer-fixed-element">
         
@@ -275,21 +277,34 @@
 
 
 
+    height:50vh;
+
 ">
     
     <!-- 主页  -->
+    
+        
+    <!-- 文章页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/index-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
+                JD.Army
+            <!-- 文章页  -->
+            
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
+            
+                
+                    Promoting Defense, Enabling Security.
+                
+            <!-- 文章页  -->
             
         </p>
         <!-- 文章页 meta -->
@@ -431,20 +446,22 @@
             
         
         <article class="index-post">
-            <a class="abstract-title" href="/2021/10/09/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC1%E6%9C%9F/">
+            <a class="abstract-title" href="/2021/07/23/processghosting-%E4%B8%80%E5%A5%97%E9%80%9A%E7%94%A8%E7%9A%84%E5%85%8D%E6%9D%80%EF%BC%8C%E8%87%AA%E5%88%A0%E9%99%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">
                 
-                <span class="abstract-title-text">蓝军推送(第1期)</span>
+                <span class="abstract-title-text">ProcessGhosting - 一套通用的免杀，自删除解决方案</span>
             </a>
             <div class="abstract-content">
-                文章推荐:零信任实践分享文章看点：本文主要是讲述google在进行生产环境零信任建设中的实践，从主要从什么是零信任？为什么要做零信任？零信任的三大要素和实际经验教训，这几个方面来讲述google的零信任建设。通过结合本文实际问题，重新定义零信任为：从要保护的数据和权限出发，对生产环境中的信任的全面削减和重塑。并从当前的云原生环境和google的处境，提出了建立零信任的必要性。后详细阐述了零信任的三要素（信任链、身份2.0、持续访问控制），通过结合google的实践经验，讲述google的部署实例和教训。
-推送亮点：此文从google的实际环境出发，将零信任落地，对企业在生产环境的零信任建...
+                声明本文来自项目https://github.com/hasherezade/process_ghosting
+参考自https://www.elastic.co/blog/process-ghosting-a-new-executable-image-tampering-attack
+前置知识一、Windows如何启动一个进程1、启动可执行文件的句柄，`hFile = CreateFile(“C:\Windows\System32\svchost.exe”)``
+2、创建一个section，将exe映射进这个section，hSection = NtCreateSection(hFil...
             </div>
             <!-- read more -->
             
             <div class="abstract-post-meta">
                 <!-- date -->
                 <div class="abstract-date" title="Last updated: 2021/11/25">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/10/09</span>
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/07/23</span>
                 </div>
                 <!-- tags -->
                 
@@ -455,23 +472,17 @@
             
         
         
-        <span class="post-category" data-categories="蓝军推送"">
+        <span class="post-category" data-categories="渗透技术"">
             <i class="fas fa-folder post-category-icon"></i>
             <span class="post-category-text">
-                蓝军推送
+                渗透技术
             </span>
         </span>
     
     
-        <a class="post-tag" href="javascript:void(0);" data-tags="零信任实践分享">零信任实践分享</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="ProcessGhosting">ProcessGhosting</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags="ZTNA">ZTNA</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="Jira">Jira</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="HandleKatz">HandleKatz</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="lsass">lsass</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="进程">进程</a>
     
 </div>
 
@@ -482,9 +493,122 @@
     
     <!-- paginator  -->
     
+        <nav class="page-nav">
+            <a class="extend prev" rel="prev" href="/">&lt; PREV</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+        </nav>
+    
 </main>
 
                 <!-- profile -->
+                
+                    <div class="profile">
+    <img class="profile-avatar" alt="avatar" src= https://avatars.githubusercontent.com/u/90537729?s=400&u=0cb77265debbab9b5c0761e88a1f3d1af331485f&v=4 />
+    <div class="profile-name">JD.Army</div>
+    
+        <div class="profile-signature">
+            Promoting Defense, Enabling Security.
+        </div>
+    
+    
+        <div class="profile-social">
+            
+    
+        
+            
+                <a href="mailto:Master@JD.Army" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/JDArmy" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+
+        </div>
+    
+    
+        <div class="friends">
+            <div>
+                
+                    <i class="fas fa-heart profile-item-icon"></i>
+                
+                FRIENDS
+            </div>
+            
+                
+                    <span>
+                        <a href="//Monyer.com" target="_black">Monyer</a>
+                    </span>
+                
+            
+        </div>
+    
+    
+        <div class="profile-link-item">
+            <a href="/about" class="about-me">
+                
+                    <i class="fas fa-id-card profile-item-icon"></i>
+                
+                ABOUT ME
+            </a>
+        </div>
+    
+    
+        
+        
+                
+        
+        <div class="profile-link-item">
+            <a target="_blank" rel="noopener" href="https://www.bing.com/search?q=site%3Ajd.army" class="search-me">
+                
+                    <i class="fas fa-search profile-item-icon"></i>
+                
+                SEARCH
+            </a>
+        </div>
+    
+    
+</div>
+
                 
             </div>
             <footer class="footer footer-unloaded">
