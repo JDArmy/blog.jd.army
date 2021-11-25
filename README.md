@@ -27,7 +27,7 @@ tags: [AD, Exchange, RCE, DACL, CVE, CobaltStrike, 蜜罐]
 # 补充categories
 categories: 蓝军推送
 # 补充文章内容，按照一般的Markdown格式
-#注意：文章中最好不要用一级标题，用二级及以下标题
+#注意：文章中不要使用一级标题，用二级及以下标题，否则会出错
 
 ```
 ## 网站更新
