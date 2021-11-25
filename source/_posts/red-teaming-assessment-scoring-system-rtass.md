@@ -4,7 +4,7 @@ tags: [Red Teaming, Scoring System]
 categories: Research
 date: 2021-11-25 17:36:22
 ---
-# **Red Teaming Assessment Scoring System - RTASS**
+## **Red Teaming Assessment Scoring System - RTASS**
 
 > RTASS Project: <https://github.com/JDArmy/RTASS>
 > RTASS online calculator tool: <https://jd.army/RTASS/?lang=en>
