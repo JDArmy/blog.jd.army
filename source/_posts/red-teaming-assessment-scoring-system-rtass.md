@@ -1,6 +1,6 @@
 ---
 title: Red Teaming Assessment Scoring System - RTASS
-tags: []
+tags: [Red Teaming, Scoring System]
 categories: Research
 date: 2021-11-25 17:36:22
 ---
