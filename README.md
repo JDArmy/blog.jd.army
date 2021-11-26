@@ -4,10 +4,9 @@
 ```bash
 git clone https://github.com/JDArmy/JDArmy.github.io.git
 cd JD.Army
-npm install hexo -g
 npm install
 #安装皮肤 && 替换静态资源
-git clone https://github.com/fi3ework/hexo-theme-archer.git themes/archer --depth=1
+git submodule add https://github.com/fi3ework/hexo-theme-archer.git themes/archer --depth=1
 rm -rf themes/archer/_config.yml
 cp -r CopyToThemes/* themes/
 ```
@@ -31,6 +30,7 @@ categories: 蓝军推送
 
 ```
 ## 网站更新
+> 注：archer模板不需要更新，更新JDArmy.github.io即可
 ```bash
 #生成网站数据到 /docs 文件夹中
 hexo g
