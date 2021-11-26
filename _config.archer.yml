@@ -59,7 +59,9 @@ profile_links:
   - name: RTASS Calculator
     url: //jd.army/RTASS/?lang=en
     icon: 'fas fa-balance-scale-left'
-  
+  - name: Route Map
+    url: //jd.army/RouteMap/
+    icon: 'fas fa-route'
   # - name: GALLERY
   #   url: //www.unsplash.com
   #   icon: 'fas fa-images'

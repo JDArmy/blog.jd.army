@@ -39,7 +39,7 @@ external_link:
   enable: true # Open external links in new tab
   field: site # Apply to the whole site
   exclude: ''
-filename_case: 1 #把文件名称转换为 (1) 小写或 (2) 大写
+filename_case: 0 #把文件名称转换为 (1) 小写或 (2) 大写
 render_drafts: false
 post_asset_folder: false
 relative_link: false
@@ -120,7 +120,7 @@ jsonContent:
     content: false
     slug: false
     updated: false
-    comments: false
+    comments: true
     link: false
     permalink: true
     excerpt: false
