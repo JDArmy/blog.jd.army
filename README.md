@@ -6,12 +6,10 @@ git clone https://github.com/JDArmy/JDArmy.github.io.git
 cd JD.Army
 npm install
 #安装皮肤 && 替换静态资源
-git submodule add https://github.com/fi3ework/hexo-theme-archer.git themes/archer --depth=1
+git submodule add https://github.com/fi3ework/hexo-theme-archer.git themes/archer --depth=1 #  提示'themes/archer' already exists in the index 时使用命令 git submodule update --init 代替
 rm -rf themes/archer/_config.yml
 cp -r CopyToThemes/* themes/
 ```
-
-
 
 ## check是否安装正确
 ```bash
