@@ -10,6 +10,9 @@ git submodule add https://github.com/fi3ework/hexo-theme-archer.git themes/arche
 rm -rf themes/archer/_config.yml
 cp -r CopyToThemes/* themes/
 ```
+
+
+
 ## check是否安装正确
 ```bash
 # 本地查看效果
