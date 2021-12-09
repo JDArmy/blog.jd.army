@@ -22,7 +22,7 @@
     <meta name="description" content="Red team of jd inc.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="JD.Army">
-<meta property="og:url" content="https://jd.army/tags/Bypass/index.html">
+<meta property="og:url" content="https://jd.army/tags/bypass/index.html">
 <meta property="og:site_name" content="JD.Army">
 <meta property="og:description" content="Red team of jd inc.">
 <meta property="og:locale">
@@ -431,20 +431,24 @@
             
         
         <article class="index-post">
-            <a class="abstract-title" href="/2021/10/20/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC3%E6%9C%9F/">
+            <a class="abstract-title" href="/2021/12/09/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC10%E6%9C%9F/">
                 
-                <span class="abstract-title-text">蓝军推送(第3期)</span>
+                <span class="abstract-title-text">蓝军推送(第10期)</span>
             </a>
             <div class="abstract-content">
-                文章推荐: Assembly.Lie – Using Transactional NTFS and API Hooking to Trick the CLR into Loading Your Code “From Disk”(使用Transactional NTFS和API HOOK来欺骗CLR从硬盘加载代码)文章看点：利用 Transactional NTFS 和 API Hook 来 Bypass AMSI 执行 .NET Assembly。
-推送亮点：本文章通过HOOK关键函数，来模拟从硬盘加载程序的行为，从而让CLR误认为代码是从硬盘上加载来绕过AMSI对CLR对内存加载程序的...
+                [文章推荐] The hidden side of Seclogon part 2 :Abusing leaked handles to dump LSASS memory(Seclogon的隐藏面的第二部分：滥用句柄泄露转储LSASS内存)文章看点：本文先介绍了转储LSASS内存的两个主要操作
+
+通过OpenProcess来获取LSASS句柄。
+通过MiniDumpWriteDump函数来dump LSASS内存。而后又介绍了目前已有的免杀转储内存的方法，分别是：
+创建LSASS的进程快照，通过进程快照来间接dump内存。
+通过复制其他进程获取的LSASS句柄来bypass av对进程...
             </div>
             <!-- read more -->
             
             <div class="abstract-post-meta">
                 <!-- date -->
-                <div class="abstract-date" title="Last updated: 2021/12/02">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/10/20</span>
+                <div class="abstract-date" title="Last updated: 2021/12/09">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/12/09</span>
                 </div>
                 <!-- tags -->
                 
@@ -463,15 +467,13 @@
         </span>
     
     
-        <a class="post-tag" href="javascript:void(0);" data-tags="Bypass AMSI">Bypass AMSI</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="tools">tools</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags="本地提权">本地提权</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="LSASS">LSASS</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags="LDAPmonitor">LDAPmonitor</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="Grafana">Grafana</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags="Payload">Payload</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="Bypass">Bypass</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="bypass">bypass</a>
     
 </div>
 
@@ -636,7 +638,20 @@
         
         
         
+        
+        
+        
+        
+        
     
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -707,7 +722,7 @@
     
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 12
+        Total : 13
         </div>
         <!-- search  -->
         
@@ -721,6 +736,12 @@
             <div class="archive-year"> 2021 </div>
             <ul class="year-list">
             
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/09</span>
+            <a class="archive-post-title" href="/2021/12/09/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC10%E6%9C%9F/">蓝军推送(第10期)</a>
+        </li>
+    
         
         <li class="archive-post-item">
             <span class="archive-post-date">12/02</span>
@@ -1029,6 +1050,21 @@
                 Windows
             </span>
         
+            <span class="sidebar-tag-name" data-tags="LSASS">
+                <span class="iconfont-archer">&#xe606;</span>
+                LSASS
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Grafana">
+                <span class="iconfont-archer">&#xe606;</span>
+                Grafana
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="bypass">
+                <span class="iconfont-archer">&#xe606;</span>
+                bypass
+            </span>
+        
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
@@ -1098,6 +1134,10 @@
         <!-- async load share.js -->
         
         <!-- mermaid -->
+        
+    </body>
+</html>
+      <!-- mermaid -->
         
     </body>
 </html>

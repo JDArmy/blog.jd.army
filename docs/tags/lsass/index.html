@@ -22,7 +22,7 @@
     <meta name="description" content="Red team of jd inc.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="JD.Army">
-<meta property="og:url" content="https://jd.army/tags/lsass/index.html">
+<meta property="og:url" content="https://jd.army/tags/LSASS/index.html">
 <meta property="og:site_name" content="JD.Army">
 <meta property="og:description" content="Red team of jd inc.">
 <meta property="og:locale">
@@ -431,20 +431,24 @@
             
         
         <article class="index-post">
-            <a class="abstract-title" href="/2021/10/09/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC1%E6%9C%9F/">
+            <a class="abstract-title" href="/2021/12/09/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC10%E6%9C%9F/">
                 
-                <span class="abstract-title-text">蓝军推送(第1期)</span>
+                <span class="abstract-title-text">蓝军推送(第10期)</span>
             </a>
             <div class="abstract-content">
-                文章推荐:零信任实践分享文章看点：本文主要是讲述google在进行生产环境零信任建设中的实践，从主要从什么是零信任？为什么要做零信任？零信任的三大要素和实际经验教训，这几个方面来讲述google的零信任建设。通过结合本文实际问题，重新定义零信任为：从要保护的数据和权限出发，对生产环境中的信任的全面削减和重塑。并从当前的云原生环境和google的处境，提出了建立零信任的必要性。后详细阐述了零信任的三要素（信任链、身份2.0、持续访问控制），通过结合google的实践经验，讲述google的部署实例和教训。
-推送亮点：此文从google的实际环境出发，将零信任落地，对企业在生产环境的零信任建...
+                [文章推荐] The hidden side of Seclogon part 2 :Abusing leaked handles to dump LSASS memory(Seclogon的隐藏面的第二部分：滥用句柄泄露转储LSASS内存)文章看点：本文先介绍了转储LSASS内存的两个主要操作
+
+通过OpenProcess来获取LSASS句柄。
+通过MiniDumpWriteDump函数来dump LSASS内存。而后又介绍了目前已有的免杀转储内存的方法，分别是：
+创建LSASS的进程快照，通过进程快照来间接dump内存。
+通过复制其他进程获取的LSASS句柄来bypass av对进程...
             </div>
             <!-- read more -->
             
             <div class="abstract-post-meta">
                 <!-- date -->
-                <div class="abstract-date" title="Last updated: 2021/12/02">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/10/09</span>
+                <div class="abstract-date" title="Last updated: 2021/12/09">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/12/09</span>
                 </div>
                 <!-- tags -->
                 
@@ -463,13 +467,13 @@
         </span>
     
     
-        <a class="post-tag" href="javascript:void(0);" data-tags="ZTNA">ZTNA</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="tools">tools</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags="Jira">Jira</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="LSASS">LSASS</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags="HandleKatz">HandleKatz</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="Grafana">Grafana</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags="lsass">lsass</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="bypass">bypass</a>
     
 </div>
 
@@ -634,7 +638,20 @@
         
         
         
+        
+        
+        
+        
+        
     
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -705,7 +722,7 @@
     
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 12
+        Total : 13
         </div>
         <!-- search  -->
         
@@ -719,6 +736,12 @@
             <div class="archive-year"> 2021 </div>
             <ul class="year-list">
             
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/09</span>
+            <a class="archive-post-title" href="/2021/12/09/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC10%E6%9C%9F/">蓝军推送(第10期)</a>
+        </li>
+    
         
         <li class="archive-post-item">
             <span class="archive-post-date">12/02</span>
@@ -1027,6 +1050,21 @@
                 Windows
             </span>
         
+            <span class="sidebar-tag-name" data-tags="LSASS">
+                <span class="iconfont-archer">&#xe606;</span>
+                LSASS
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Grafana">
+                <span class="iconfont-archer">&#xe606;</span>
+                Grafana
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="bypass">
+                <span class="iconfont-archer">&#xe606;</span>
+                bypass
+            </span>
+        
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
@@ -1088,6 +1126,18 @@
         <!-- algolia -->
         
         <!-- busuanzi -->
+        
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        
+        <!-- CNZZ -->
+        
+        <!-- async load share.js -->
+        
+        <!-- mermaid -->
+        
+    </body>
+</html>
+busuanzi -->
         
             <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
         

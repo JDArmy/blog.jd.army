@@ -22,7 +22,7 @@
     <meta name="description" content="Red team of jd inc.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="JD.Army">
-<meta property="og:url" content="https://jd.army/tags/RCE/index.html">
+<meta property="og:url" content="https://jd.army/tags/Grafana/index.html">
 <meta property="og:site_name" content="JD.Army">
 <meta property="og:description" content="Red team of jd inc.">
 <meta property="og:locale">
@@ -431,22 +431,24 @@
             
         
         <article class="index-post">
-            <a class="abstract-title" href="/2021/11/25/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC8%E6%9C%9F/">
+            <a class="abstract-title" href="/2021/12/09/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC10%E6%9C%9F/">
                 
-                <span class="abstract-title-text">蓝军推送(第8期)</span>
+                <span class="abstract-title-text">蓝军推送(第10期)</span>
             </a>
             <div class="abstract-content">
-                [文章推荐] Active Directory Sites and Subnets Enumeration（ad 站点和子网枚举）文章看点：获取域内的网站和子网，增加域内的信息收集面。
-推送亮点：通过LDAP查询来获取整个域林中的站点和子网，扩大了域内的信息收集面。渗透人员可以通过此技巧来获取更多域内信息。
-原文链接：https://podalirius.net/en/articles/active-directory-sites-and-subnets-enumeration/
-[漏洞播报] CVE-2021-42321(exchange RCE POC)漏洞概述：继proxyshel...
+                [文章推荐] The hidden side of Seclogon part 2 :Abusing leaked handles to dump LSASS memory(Seclogon的隐藏面的第二部分：滥用句柄泄露转储LSASS内存)文章看点：本文先介绍了转储LSASS内存的两个主要操作
+
+通过OpenProcess来获取LSASS句柄。
+通过MiniDumpWriteDump函数来dump LSASS内存。而后又介绍了目前已有的免杀转储内存的方法，分别是：
+创建LSASS的进程快照，通过进程快照来间接dump内存。
+通过复制其他进程获取的LSASS句柄来bypass av对进程...
             </div>
             <!-- read more -->
             
             <div class="abstract-post-meta">
                 <!-- date -->
-                <div class="abstract-date" title="Last updated: 2021/12/02">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/11/25</span>
+                <div class="abstract-date" title="Last updated: 2021/12/09">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/12/09</span>
                 </div>
                 <!-- tags -->
                 
@@ -465,19 +467,13 @@
         </span>
     
     
-        <a class="post-tag" href="javascript:void(0);" data-tags="AD">AD</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="tools">tools</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags="Exchange">Exchange</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="LSASS">LSASS</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags="CVE">CVE</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="Grafana">Grafana</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags="CobaltStrike">CobaltStrike</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="RCE">RCE</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="DACL">DACL</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="蜜罐">蜜罐</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="bypass">bypass</a>
     
 </div>
 
