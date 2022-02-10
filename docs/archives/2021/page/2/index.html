@@ -645,166 +645,6 @@
         </article>
         <div class="index-post-divider"></div>
     
-        
-        
-        
-        
-            
-        
-        <article class="index-post">
-            <a class="abstract-title" href="/2021/02/10/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC14%E6%9C%9F/">
-                
-                <span class="abstract-title-text">蓝军推送(第14期)</span>
-            </a>
-            <div class="abstract-content">
-                [文章推荐]OBJECT OVERLOADING(对象重载)文章看点：通过NtSetInformationProcess函数来修改进程运行时的DosDevices的对象目录，来改变进程运行时dll的加载目录，从而实现dll劫持。区别于传统的dll劫持技术，此方法是在程序运行后修改程序环境变量中的dll加载目录来实现的dll劫持，它无法作为权限维持使用，但是能作为一种白加黑的免杀手法使用。
-推送亮点：此文章通过理论配合实践，详细介绍了Windows的对象重载原理，并通过对象重载实现了对windows defender的dll劫持，通过此文章，读者可以自己去复现整个攻击手法。
-原文链接：ht...
-            </div>
-            <!-- read more -->
-            
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2022/02/10">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/02/10</span>
-                </div>
-                <!-- tags -->
-                
-                    <div class= abstract-tags >
-    
-        
-        
-            
-        
-        
-        <span class="post-category" data-categories="蓝军推送"">
-            <i class="fas fa-folder post-category-icon"></i>
-            <span class="post-category-text">
-                蓝军推送
-            </span>
-        </span>
-    
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="tools">tools</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="dll劫持">dll劫持</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="打印机">打印机</a>
-    
-</div>
-
-                
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
-    
-        
-        
-        
-        
-            
-        
-        <article class="index-post">
-            <a class="abstract-title" href="/2021/01/20/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC13%E6%9C%9F/">
-                
-                <span class="abstract-title-text">蓝军推送(第13期)</span>
-            </a>
-            <div class="abstract-content">
-                [文章推荐]Zooming in on Zero-click Exploits文章看点：谷歌Project Zero出品，大家快来学习。此文章介绍了Zoom视频会议软件中存在的2个漏洞,其中包括:
-一、Linux客户端和MMR服务器通信时存在缓冲区溢出。
-思路是通过分析客户端与MMR服务器之间的通信逻辑, 客户端对数据进行反序列化时, 进行了拷贝数据. 拷贝长度是从缓冲区对象中直接获取, 没有进一步对长度进行校验.这意味着,攻击者对缓冲区对象进行修改,便可以达到缓冲区溢出的目的.
-二、MMR服务器信息泄露。
-思路是通过分析服务端转发数据的过程中, 在对数据进行反序列化时, 字符串的转换没...
-            </div>
-            <!-- read more -->
-            
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2022/02/10">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/01/20</span>
-                </div>
-                <!-- tags -->
-                
-                    <div class= abstract-tags >
-    
-        
-        
-            
-        
-        
-        <span class="post-category" data-categories="蓝军推送"">
-            <i class="fas fa-folder post-category-icon"></i>
-            <span class="post-category-text">
-                蓝军推送
-            </span>
-        </span>
-    
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="tools">tools</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="exploit">exploit</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="BleedingBear">BleedingBear</a>
-    
-</div>
-
-                
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
-    
-        
-        
-        
-        
-            
-        
-        <article class="index-post">
-            <a class="abstract-title" href="/2021/01/14/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC12%E6%9C%9F/">
-                
-                <span class="abstract-title-text">蓝军推送(第12期)</span>
-            </a>
-            <div class="abstract-content">
-                [文章推荐]EDR Parallel-axis through Analysis文章看点：此文章讲述了一种类似于syscall的新的edr规避方式，整个发现思路是通过windows 10的并行dll加载方式，定位到dll加载之前所保留的未被edr hook的干净的windows api函数，并通过分析函数调用流程，找出具体的函数在内存中的地址，并在后续调用此函数过程中实现bypass EDR。
-推送亮点：此文章中讲述了整个bypass edr方法发现的思路，结合windows自身的功能来进行unhook EDR。通过此思路，读者还可以去尝试发现更多其他类似的bypass EDR的方法。并...
-            </div>
-            <!-- read more -->
-            
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2022/02/10">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/01/14</span>
-                </div>
-                <!-- tags -->
-                
-                    <div class= abstract-tags >
-    
-        
-        
-            
-        
-        
-        <span class="post-category" data-categories="蓝军推送"">
-            <i class="fas fa-folder post-category-icon"></i>
-            <span class="post-category-text">
-                蓝军推送
-            </span>
-        </span>
-    
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="kerberos">kerberos</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="tools">tools</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="bypass">bypass</a>
-    
-</div>
-
-                
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
-    
     <!-- paginator  -->
     
         <nav class="page-nav">
@@ -1093,6 +933,10 @@
         
         
         
+        
+        
+        
+        
     
     
     
@@ -1109,6 +953,33 @@
     
         
             
+            
+            <div class="archive-year"> 2022 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/10</span>
+            <a class="archive-post-title" href="/2022/02/10/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC14%E6%9C%9F/">蓝军推送(第14期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/20</span>
+            <a class="archive-post-title" href="/2022/01/20/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC13%E6%9C%9F/">蓝军推送(第13期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/14</span>
+            <a class="archive-post-title" href="/2022/01/14/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC12%E6%9C%9F/">蓝军推送(第12期)</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
             
             <div class="archive-year"> 2021 </div>
             <ul class="year-list">
@@ -1195,24 +1066,6 @@
         <li class="archive-post-item">
             <span class="archive-post-date">07/23</span>
             <a class="archive-post-title" href="/2021/07/23/processghosting-%E4%B8%80%E5%A5%97%E9%80%9A%E7%94%A8%E7%9A%84%E5%85%8D%E6%9D%80%EF%BC%8C%E8%87%AA%E5%88%A0%E9%99%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">ProcessGhosting - 一套通用的免杀，自删除解决方案</a>
-        </li>
-    
-        
-        <li class="archive-post-item">
-            <span class="archive-post-date">02/10</span>
-            <a class="archive-post-title" href="/2021/02/10/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC14%E6%9C%9F/">蓝军推送(第14期)</a>
-        </li>
-    
-        
-        <li class="archive-post-item">
-            <span class="archive-post-date">01/20</span>
-            <a class="archive-post-title" href="/2021/01/20/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC13%E6%9C%9F/">蓝军推送(第13期)</a>
-        </li>
-    
-        
-        <li class="archive-post-item">
-            <span class="archive-post-date">01/14</span>
-            <a class="archive-post-title" href="/2021/01/14/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC12%E6%9C%9F/">蓝军推送(第12期)</a>
         </li>
     
     </div>

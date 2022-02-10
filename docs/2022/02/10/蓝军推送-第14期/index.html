@@ -19,21 +19,25 @@
         <meta name="keywords" content="JD.Army">
     
     <meta name="description" content="Red team of jd inc. ">
-    <meta name="description" content="Red team of jd inc.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="JD.Army">
-<meta property="og:url" content="https://jd.army/archives/2021/02/index.html">
+    <meta name="description" content="[文章推荐]OBJECT OVERLOADING(对象重载)文章看点：通过NtSetInformationProcess函数来修改进程运行时的DosDevices的对象目录，来改变进程运行时dll的加载目录，从而实现dll劫持。区别于传统的dll劫持技术，此方法是在程序运行后修改程序环境变量中的dll加载目录来实现的dll劫持，它无法作为权限维持使用，但是能作为一种白加黑的免杀手法使用。 推送亮点">
+<meta property="og:type" content="article">
+<meta property="og:title" content="蓝军推送(第14期)">
+<meta property="og:url" content="https://jd.army/2022/02/10/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC14%E6%9C%9F/index.html">
 <meta property="og:site_name" content="JD.Army">
-<meta property="og:description" content="Red team of jd inc.">
+<meta property="og:description" content="[文章推荐]OBJECT OVERLOADING(对象重载)文章看点：通过NtSetInformationProcess函数来修改进程运行时的DosDevices的对象目录，来改变进程运行时dll的加载目录，从而实现dll劫持。区别于传统的dll劫持技术，此方法是在程序运行后修改程序环境变量中的dll加载目录来实现的dll劫持，它无法作为权限维持使用，但是能作为一种白加黑的免杀手法使用。 推送亮点">
 <meta property="og:locale">
+<meta property="article:published_time" content="2022-02-10T04:04:57.000Z">
+<meta property="article:modified_time" content="2022-02-10T04:19:41.302Z">
 <meta property="article:author" content="JD.Army">
-<meta property="article:tag" content="JD.Army">
+<meta property="article:tag" content="tools">
+<meta property="article:tag" content="dll劫持">
+<meta property="article:tag" content="打印机">
 <meta name="twitter:card" content="summary">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="icon" href="/assets/favicon.ico">
     
-    <title>JD.Army</title>
+    <title>蓝军推送(第14期) · JD.Army</title>
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
 - testing support for link[rel=preload]
@@ -220,6 +224,8 @@
         }
     </script>
     
+        <body class="post-body">
+    
         <!-- header -->
         <header class="header header-mobile">
     <!-- top read progress line -->
@@ -249,6 +255,17 @@
     </div>
     <!-- toggle banner for post layout -->
     
+        
+            <div class="banner">
+        
+            <div class="blog-title header-element">
+                <a href="/">JD.Army</a>
+            </div>
+            <div class="post-title header-element">
+                <a href="#" class="post-name">蓝军推送(第14期)</a>
+            </div>
+        </div>
+    
 </header>
 
         <!-- fixed footer -->
@@ -275,24 +292,95 @@
 
 
 
+    height:50vh;
+
 ">
     
     <!-- 主页  -->
+    
+        
+    <!-- 404页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
+            
+                蓝军推送(第14期)
+            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+                
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页 meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        
+        
+            
+        
+        
+        <span class="post-category" data-categories="蓝军推送"">
+            <i class="fas fa-folder post-category-icon"></i>
+            <span class="post-category-text">
+                蓝军推送
+            </span>
+        </span>
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="tools">tools</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="dll劫持">dll劫持</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="打印机">打印机</a>
+    
+</div>
+
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">388</span>阅读时长: <span class="post-count reading-time">1 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2022/02/10</span>
+                    <!-- busuanzi -->
+                    
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
         
     </div>
 </div>
@@ -422,62 +510,91 @@
 
             <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
             <div class="container container-unloaded">
-                <main class="main index-page">
-    
-        
-        
-        
-        
-            
-        
-        <article class="index-post">
-            <a class="abstract-title" href="/2021/02/10/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC14%E6%9C%9F/">
-                
-                <span class="abstract-title-text">蓝军推送(第14期)</span>
-            </a>
-            <div class="abstract-content">
-                [文章推荐]OBJECT OVERLOADING(对象重载)文章看点：通过NtSetInformationProcess函数来修改进程运行时的DosDevices的对象目录，来改变进程运行时dll的加载目录，从而实现dll劫持。区别于传统的dll劫持技术，此方法是在程序运行后修改程序环境变量中的dll加载目录来实现的dll劫持，它无法作为权限维持使用，但是能作为一种白加黑的免杀手法使用。
-推送亮点：此文章通过理论配合实践，详细介绍了Windows的对象重载原理，并通过对象重载实现了对windows defender的dll劫持，通过此文章，读者可以自己去复现整个攻击手法。
-原文链接：ht...
-            </div>
-            <!-- read more -->
-            
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2022/02/10">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/02/10</span>
-                </div>
-                <!-- tags -->
-                
-                    <div class= abstract-tags >
-    
-        
-        
-            
-        
-        
-        <span class="post-category" data-categories="蓝军推送"">
-            <i class="fas fa-folder post-category-icon"></i>
-            <span class="post-category-text">
-                蓝军推送
-            </span>
-        </span>
-    
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="tools">tools</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="dll劫持">dll劫持</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="打印机">打印机</a>
-    
-</div>
+                <main class="main post-page">
+    <article class="article-entry">
+        <h2 id="文章推荐-OBJECT-OVERLOADING-对象重载"><a href="#文章推荐-OBJECT-OVERLOADING-对象重载" class="headerlink" title="[文章推荐]OBJECT OVERLOADING(对象重载)"></a>[文章推荐]OBJECT OVERLOADING(对象重载)</h2><p><strong>文章看点</strong>：通过NtSetInformationProcess函数来修改进程运行时的DosDevices的对象目录，来改变进程运行时dll的加载目录，从而实现dll劫持。区别于传统的dll劫持技术，此方法是在程序运行后修改程序环境变量中的dll加载目录来实现的dll劫持，它无法作为权限维持使用，但是能作为一种白加黑的免杀手法使用。</p>
+<p><strong>推送亮点</strong>：此文章通过理论配合实践，详细介绍了Windows的对象重载原理，并通过对象重载实现了对windows defender的dll劫持，通过此文章，读者可以自己去复现整个攻击手法。</p>
+<p><strong>原文链接</strong>：<a target="_blank" rel="noopener" href="https://www.trustedsec.com/blog/object-overloading/">https://www.trustedsec.com/blog/object-overloading/</a></p>
+<h2 id="漏洞播报-CVE-2022-21999-打印机提权漏洞"><a href="#漏洞播报-CVE-2022-21999-打印机提权漏洞" class="headerlink" title="[漏洞播报] CVE-2022-21999(打印机提权漏洞)"></a>[漏洞播报] CVE-2022-21999(打印机提权漏洞)</h2><p><strong>漏洞概述</strong>：打印机本地提权漏洞，在目标主机有spoolsv.exe进程的情况下，能获取到system权限。</p>
+<p><strong>推送亮点</strong>：此漏洞是去年打印机提权漏洞Printnightmare的续集。</p>
+<p><strong>原文链接</strong>：<a target="_blank" rel="noopener" href="https://github.com/ly4k/SpoolFool">https://github.com/ly4k/SpoolFool</a></p>
+<h2 id="安全工具-dll-merger"><a href="#安全工具-dll-merger" class="headerlink" title="[安全工具] dll-merger"></a>[安全工具] dll-merger</h2><p><strong>功能描述</strong>：将dll和32位的exe文件进行合并，区别于传统的LoadLibrary方式，通过在exe的pe结构中添加.dlls和.ldr段，实现自动加载dll。</p>
+<p><strong>推送亮点</strong>：制作好一个免杀dll后，方便通过正常的exe来加载此免杀dll，大大方便了钓鱼马的制作，但是目前只支持32位的程序。</p>
+<p><strong>工具链接</strong>：<a target="_blank" rel="noopener" href="https://github.com/ytk2128/dll-merger">https://github.com/ytk2128/dll-merger</a></p>
 
-                
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
+    </article>
+    <!-- license -->
     
-    <!-- paginator  -->
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://jd.army">JD.Army</a>
+            <p>原文链接：<a href="https://jd.army/2022/02/10/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC14%E6%9C%9F/">https://jd.army/2022/02/10/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC14%E6%9C%9F/</a>
+            <p>发表日期：<a href="https://jd.army/2022/02/10/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC14%E6%9C%9F/">February 10th 2022, 12:04:57 pm</a>
+            <p>更新日期：<a href="https://jd.army/2022/02/10/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC14%E6%9C%9F/">February 10th 2022, 12:19:41 pm</a>
+            <p>版权声明：本文采用<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2022/01/20/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC13%E6%9C%9F/" title="蓝军推送(第13期)">
+                    <div class="prevTitle">蓝军推送(第13期)</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- comment -->
+    
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+
+            
+    <div id="disqus_thread"></div>
+    <script>
+        /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+        
+        var disqus_config = function () {
+        this.page.url = "https://jd.army/2022/02/10/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC14%E6%9C%9F/";  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = "蓝军推送(第14期)"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        
+        (function () { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://jdarmy.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+            
+
+            
+
+            <!-- utteranc评论 -->
+
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+
+            
+            
+
+        </div>
+    
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    
+    <!-- Mathjax -->
     
 </main>
 
@@ -561,6 +678,23 @@
 
         </div>
         <!-- toc -->
+        
+            <div class="toc-wrapper toc-wrapper-loding" style=
+
+
+
+
+
+
+
+    top:50vh;
+
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E7%AB%A0%E6%8E%A8%E8%8D%90-OBJECT-OVERLOADING-%E5%AF%B9%E8%B1%A1%E9%87%8D%E8%BD%BD"><span class="toc-number">1.</span> <span class="toc-text">[文章推荐]OBJECT OVERLOADING(对象重载)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%92%AD%E6%8A%A5-CVE-2022-21999-%E6%89%93%E5%8D%B0%E6%9C%BA%E6%8F%90%E6%9D%83%E6%BC%8F%E6%B4%9E"><span class="toc-number">2.</span> <span class="toc-text">[漏洞播报] CVE-2022-21999(打印机提权漏洞)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E5%B7%A5%E5%85%B7-dll-merger"><span class="toc-number">3.</span> <span class="toc-text">[安全工具] dll-merger</span></a></li></ol>
+            </div>
         
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">
@@ -761,6 +895,10 @@
         
         
         
+        
+        
+        
+        
     
     
     
@@ -777,6 +915,33 @@
     
         
             
+            
+            <div class="archive-year"> 2022 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/10</span>
+            <a class="archive-post-title" href="/2022/02/10/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC14%E6%9C%9F/">蓝军推送(第14期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/20</span>
+            <a class="archive-post-title" href="/2022/01/20/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC13%E6%9C%9F/">蓝军推送(第13期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/14</span>
+            <a class="archive-post-title" href="/2022/01/14/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC12%E6%9C%9F/">蓝军推送(第12期)</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
             
             <div class="archive-year"> 2021 </div>
             <ul class="year-list">
@@ -863,24 +1028,6 @@
         <li class="archive-post-item">
             <span class="archive-post-date">07/23</span>
             <a class="archive-post-title" href="/2021/07/23/processghosting-%E4%B8%80%E5%A5%97%E9%80%9A%E7%94%A8%E7%9A%84%E5%85%8D%E6%9D%80%EF%BC%8C%E8%87%AA%E5%88%A0%E9%99%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">ProcessGhosting - 一套通用的免杀，自删除解决方案</a>
-        </li>
-    
-        
-        <li class="archive-post-item">
-            <span class="archive-post-date">02/10</span>
-            <a class="archive-post-title" href="/2021/02/10/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC14%E6%9C%9F/">蓝军推送(第14期)</a>
-        </li>
-    
-        
-        <li class="archive-post-item">
-            <span class="archive-post-date">01/20</span>
-            <a class="archive-post-title" href="/2021/01/20/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC13%E6%9C%9F/">蓝军推送(第13期)</a>
-        </li>
-    
-        
-        <li class="archive-post-item">
-            <span class="archive-post-date">01/14</span>
-            <a class="archive-post-title" href="/2021/01/14/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC12%E6%9C%9F/">蓝军推送(第12期)</a>
         </li>
     
     </div>
@@ -1226,6 +1373,8 @@
         <!-- CNZZ -->
         
         <!-- async load share.js -->
+        
+            <script src="/scripts/share.js?v=20210823" async></script>
         
         <!-- mermaid -->
         
