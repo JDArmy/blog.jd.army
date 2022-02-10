@@ -595,6 +595,12 @@
             
 
         </div>
+        <script>
+            setInterval(()=>{
+                var disqus_thread = document.getElementById("disqus_thread");
+            disqus_thread.getElementsByTagName("iframe")[0].hidden = true;
+            },2000);
+        </script>
     
     <!-- timeliness note -->
     <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
