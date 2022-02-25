@@ -11,6 +11,8 @@ date: 2022-02-19 09:43:16
 
 在线评分计算机器：https://jd.army/RTASS/?lang=cn
 
+<!--more -->
+
 ## **1. 红蓝对抗演练评分系统（RTASS）的背景** 
 
 RTASS是Red Team Assessment Scoring System的首字母缩写。Red Team Assessment在国内通常有“红队评估”、“蓝军评估”、“红蓝对抗演练”、“实战攻防演习”等不同的叫法或项目交付形式。为了更多地体现攻防双方以及对抗性质，RTASS的中文我们使用“红蓝对抗演练评分系统”这个称呼。

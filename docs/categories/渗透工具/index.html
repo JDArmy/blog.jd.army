@@ -429,6 +429,7 @@
         
         
             
+            
         
         <article class="index-post">
             <a class="abstract-title" href="/2022/02/17/%E5%9F%9F%E5%86%85%E7%94%A8%E6%88%B7%E3%80%81%E7%BB%84%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B7%A5%E5%85%B7SamrSearch/">
@@ -436,9 +437,7 @@
                 <span class="abstract-title-text">域内用户、组信息收集工具SamrSearch</span>
             </a>
             <div class="abstract-content">
-                 在impacket进行域渗透中，通过MS-SAMR协议实现net user和net group的功能，能方便在渗透过程中，如果域内没有可控的windows主机，但能通过web手段获取到域内用户账号的情况下，来对用户权限、用户信息和组信息进行收集。
-InstallPython 3.5+impacket
-Usage12345678910111213141516171819202122232425262728usage: samrsearch.py [-h] [-csv] [-ts] [-debug] [-username USERNAME] [-groupname GROUPNAME] [...
+                <p> 在impacket进行域渗透中，通过MS-SAMR协议实现net user和net group的功能，能方便在渗透过程中，如果域内没有可控的windows主机，但能通过web手段获取到域内用户账号的情况下，来对用户权限、用户信息和组信息进行收集。</p>
             </div>
             <!-- read more -->
             
@@ -480,6 +479,7 @@ Usage12345678910111213141516171819202122232425262728usage: samrsearch.py [-h] [-
         
         
             
+            
         
         <article class="index-post">
             <a class="abstract-title" href="/2022/02/16/%E6%9B%B4%E5%87%86%E7%A1%AE%E3%80%81%E5%85%A8%E9%9D%A2%E7%9A%84NoPac%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F%E5%99%A8/">
@@ -487,11 +487,7 @@ Usage12345678910111213141516171819202122232425262728usage: samrsearch.py [-h] [-
                 <span class="abstract-title-text">更准确、全面的NoPac漏洞扫描器</span>
             </a>
             <div class="abstract-content">
-                NoPac域提权漏洞扫描器，相比于网上公开的扫描器，它能自动扫描更多的域控，并且能更精确的识别漏洞。
-原理为什么能查询到更多域控？
-  通过DNS查询_msdcs.aaa.com来获取域控的地址,相比LDAP或者SAMR协议查询获取到的域控地址，这种方法能查询到更多域控。（因为DNS查询能查到已经脱域但未在dns中注销的域控）漏洞原作者的查询方法是通过LDAP进行查询。
-为什么能更精确识别漏洞？
-  通过分析微软对此漏洞的主要补丁，能发现它修改的方法主要是通过在PAC认证中，增加了一个类型为0x10的结构体，在TGS获取阶段增加对0x10结构体的身份检查，来防止NoPac中的身份伪造。因...
+                <p>NoPac域提权漏洞扫描器，相比于网上公开的扫描器，它能自动扫描更多的域控，并且能更精确的识别漏洞。</p>
             </div>
             <!-- read more -->
             

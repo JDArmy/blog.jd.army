@@ -19,19 +19,19 @@
         <meta name="keywords" content="JD.Army">
     
     <meta name="description" content="Red team of jd inc. ">
-    <meta name="description" content="之前看了基于字节码的Java代码审计工具的实现，最近终于有空可以好好看一下其是如何实现的了。本文并不会从代码出发，而是试图从字节码角度分析其可行性。 JVM简介要了解字节码首先需要对JVM有所了解，Java虚拟机并不关心Java语言，它只和字节码相关联，这一方面使得Java程序可以Run AnyWhere，另一方面也为其运行其他语言提供了支持 – 只要编译成为符合字节码规范的内容，均可以在Java">
+    <meta name="description" content="之前看了基于字节码的Java代码审计工具的实现，最近终于有空可以好好看一下其是如何实现的了。本文并不会从代码出发，而是试图从字节码角度分析其可行性。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基于字节码的Java代码审计">
 <meta property="og:url" content="https://jd.army/2022/02/21/%E5%9F%BA%E4%BA%8E%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/index.html">
 <meta property="og:site_name" content="JD.Army">
-<meta property="og:description" content="之前看了基于字节码的Java代码审计工具的实现，最近终于有空可以好好看一下其是如何实现的了。本文并不会从代码出发，而是试图从字节码角度分析其可行性。 JVM简介要了解字节码首先需要对JVM有所了解，Java虚拟机并不关心Java语言，它只和字节码相关联，这一方面使得Java程序可以Run AnyWhere，另一方面也为其运行其他语言提供了支持 – 只要编译成为符合字节码规范的内容，均可以在Java">
+<meta property="og:description" content="之前看了基于字节码的Java代码审计工具的实现，最近终于有空可以好好看一下其是如何实现的了。本文并不会从代码出发，而是试图从字节码角度分析其可行性。">
 <meta property="og:locale">
 <meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/1581643921a8fe22a08be5c34de0895a.png">
 <meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20220126154212655.png">
 <meta property="og:image" content="https://wiki-1258274765.cos.ap-nanjing.myqcloud.com/wiki/imgimage-20220211004935748.png">
 <meta property="og:image" content="https://wiki-1258274765.cos.ap-nanjing.myqcloud.com/wiki/imgimage-20220211005037973.png">
 <meta property="article:published_time" content="2022-02-21T06:26:16.000Z">
-<meta property="article:modified_time" content="2022-02-25T02:45:52.819Z">
+<meta property="article:modified_time" content="2022-02-25T02:52:45.269Z">
 <meta property="article:author" content="JD.Army">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="代码审计">
@@ -515,6 +515,8 @@
                 <main class="main post-page">
     <article class="article-entry">
         <p>之前看了基于字节码的<code>Java</code>代码审计工具的实现，最近终于有空可以好好看一下其是如何实现的了。本文并不会从代码出发，而是试图从字节码角度分析其可行性。</p>
+<span id="more"></span>
+
 <h2 id="JVM简介"><a href="#JVM简介" class="headerlink" title="JVM简介"></a>JVM简介</h2><p>要了解字节码首先需要对JVM有所了解，Java虚拟机并不关心Java语言，它只和字节码相关联，这一方面使得Java程序可以<code>Run AnyWhere</code>，另一方面也为其运行其他语言提供了支持 – 只要编译成为符合字节码规范的内容，均可以在Java虚拟机中运行。</p>
 <p>与Java类似，Java虚拟机可以操纵原始类型、引用类型两种操作类型，与之对应的是原始值以及引用值。</p>
 <p>原始类型包括：</p>
@@ -599,7 +601,7 @@
             <p>原文作者：<a href="https://jd.army">JD.Army</a>
             <p>原文链接：<a href="https://jd.army/2022/02/21/%E5%9F%BA%E4%BA%8E%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">https://jd.army/2022/02/21/%E5%9F%BA%E4%BA%8E%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/</a>
             <p>发表日期：<a href="https://jd.army/2022/02/21/%E5%9F%BA%E4%BA%8E%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">February 21st 2022, 2:26:16 pm</a>
-            <p>更新日期：<a href="https://jd.army/2022/02/21/%E5%9F%BA%E4%BA%8E%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">February 25th 2022, 10:45:52 am</a>
+            <p>更新日期：<a href="https://jd.army/2022/02/21/%E5%9F%BA%E4%BA%8E%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">February 25th 2022, 10:52:45 am</a>
             <p>版权声明：本文采用<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     

@@ -429,6 +429,7 @@
         
         
             
+            
         
         <article class="index-post">
             <a class="abstract-title" href="/2022/02/16/%E6%9B%B4%E5%87%86%E7%A1%AE%E3%80%81%E5%85%A8%E9%9D%A2%E7%9A%84NoPac%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F%E5%99%A8/">
@@ -436,11 +437,7 @@
                 <span class="abstract-title-text">更准确、全面的NoPac漏洞扫描器</span>
             </a>
             <div class="abstract-content">
-                NoPac域提权漏洞扫描器，相比于网上公开的扫描器，它能自动扫描更多的域控，并且能更精确的识别漏洞。
-原理为什么能查询到更多域控？
-  通过DNS查询_msdcs.aaa.com来获取域控的地址,相比LDAP或者SAMR协议查询获取到的域控地址，这种方法能查询到更多域控。（因为DNS查询能查到已经脱域但未在dns中注销的域控）漏洞原作者的查询方法是通过LDAP进行查询。
-为什么能更精确识别漏洞？
-  通过分析微软对此漏洞的主要补丁，能发现它修改的方法主要是通过在PAC认证中，增加了一个类型为0x10的结构体，在TGS获取阶段增加对0x10结构体的身份检查，来防止NoPac中的身份伪造。因...
+                <p>NoPac域提权漏洞扫描器，相比于网上公开的扫描器，它能自动扫描更多的域控，并且能更精确的识别漏洞。</p>
             </div>
             <!-- read more -->
             

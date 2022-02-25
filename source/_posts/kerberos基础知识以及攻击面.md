@@ -4,6 +4,9 @@ tags: [kerberos, AD, 金票, 银票, kerberosting]
 categories: 渗透基础
 date: 2021-11-04 15:47:43
 ---
+
+kerberos基础知识以及攻击面
+<!-- more -->
 ## Kerberos历史
 
 kerberos是由MIT为雅典娜项目开发，整个项目目标是为了整合sso、network file systems、A unified graphical environment、naming convention service，从而达到学生和教职工能随时访问MIT的一万多台工作站。其中kerberos主要是为了解决其中的sso认证的问题

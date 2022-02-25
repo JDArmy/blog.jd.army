@@ -429,6 +429,7 @@
         
         
             
+            
         
         <article class="index-post">
             <a class="abstract-title" href="/2022/01/20/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC13%E6%9C%9F/">
@@ -436,17 +437,13 @@
                 <span class="abstract-title-text">蓝军推送(第13期)</span>
             </a>
             <div class="abstract-content">
-                [文章推荐]Zooming in on Zero-click Exploits文章看点：谷歌Project Zero出品，大家快来学习。此文章介绍了Zoom视频会议软件中存在的2个漏洞,其中包括:
-一、Linux客户端和MMR服务器通信时存在缓冲区溢出。
-思路是通过分析客户端与MMR服务器之间的通信逻辑, 客户端对数据进行反序列化时, 进行了拷贝数据. 拷贝长度是从缓冲区对象中直接获取, 没有进一步对长度进行校验.这意味着,攻击者对缓冲区对象进行修改,便可以达到缓冲区溢出的目的.
-二、MMR服务器信息泄露。
-思路是通过分析服务端转发数据的过程中, 在对数据进行反序列化时, 字符串的转换没...
+                <p>Project Zero、BleedingBear、LdapRelayScan</p>
             </div>
             <!-- read more -->
             
             <div class="abstract-post-meta">
                 <!-- date -->
-                <div class="abstract-date" title="Last updated: 2022/02/10">
+                <div class="abstract-date" title="Last updated: 2022/02/25">
                     <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2022/01/20</span>
                 </div>
                 <!-- tags -->
@@ -484,6 +481,7 @@
         
         
             
+            
         
         <article class="index-post">
             <a class="abstract-title" href="/2022/01/14/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC12%E6%9C%9F/">
@@ -491,14 +489,13 @@
                 <span class="abstract-title-text">蓝军推送(第12期)</span>
             </a>
             <div class="abstract-content">
-                [文章推荐]EDR Parallel-axis through Analysis文章看点：此文章讲述了一种类似于syscall的新的edr规避方式，整个发现思路是通过windows 10的并行dll加载方式，定位到dll加载之前所保留的未被edr hook的干净的windows api函数，并通过分析函数调用流程，找出具体的函数在内存中的地址，并在后续调用此函数过程中实现bypass EDR。
-推送亮点：此文章中讲述了整个bypass edr方法发现的思路，结合windows自身的功能来进行unhook EDR。通过此思路，读者还可以去尝试发现更多其他类似的bypass EDR的方法。并...
+                <p>bypass edr、CVE-2022-21920、ReverseRDP_RCE</p>
             </div>
             <!-- read more -->
             
             <div class="abstract-post-meta">
                 <!-- date -->
-                <div class="abstract-date" title="Last updated: 2022/02/10">
+                <div class="abstract-date" title="Last updated: 2022/02/25">
                     <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2022/01/14</span>
                 </div>
                 <!-- tags -->

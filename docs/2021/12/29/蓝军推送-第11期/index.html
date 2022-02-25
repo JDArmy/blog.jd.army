@@ -19,15 +19,15 @@
         <meta name="keywords" content="JD.Army">
     
     <meta name="description" content="Red team of jd inc. ">
-    <meta name="description" content="[文章推荐] Using Kerberos for Authentication Relay Attacks(使用kerberos进行身份验证中继攻击)文章看点：今年爆发的PetitPotam漏洞，又掀起了中继攻击的热潮，通过PetitPotam配合NTLM中继，攻击ADCS服务器，也已经成为域内比较常用的攻击手法了，但是如果域控制器开启强制kerberos身份认证，将大大减少NTLM中继的危害，">
+    <meta name="description" content="PetitPotam、Apache APISIX、GTFOBins">
 <meta property="og:type" content="article">
 <meta property="og:title" content="蓝军推送(第11期)">
 <meta property="og:url" content="https://jd.army/2021/12/29/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC11%E6%9C%9F/index.html">
 <meta property="og:site_name" content="JD.Army">
-<meta property="og:description" content="[文章推荐] Using Kerberos for Authentication Relay Attacks(使用kerberos进行身份验证中继攻击)文章看点：今年爆发的PetitPotam漏洞，又掀起了中继攻击的热潮，通过PetitPotam配合NTLM中继，攻击ADCS服务器，也已经成为域内比较常用的攻击手法了，但是如果域控制器开启强制kerberos身份认证，将大大减少NTLM中继的危害，">
+<meta property="og:description" content="PetitPotam、Apache APISIX、GTFOBins">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-12-29T03:57:57.000Z">
-<meta property="article:modified_time" content="2022-02-10T04:11:21.536Z">
+<meta property="article:modified_time" content="2022-02-25T02:58:08.295Z">
 <meta property="article:author" content="JD.Army">
 <meta property="article:tag" content="kerberos">
 <meta property="article:tag" content="tools">
@@ -351,7 +351,7 @@
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">530</span>阅读时长: <span class="post-count reading-time">1 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">534</span>阅读时长: <span class="post-count reading-time">2 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -512,7 +512,9 @@
             <div class="container container-unloaded">
                 <main class="main post-page">
     <article class="article-entry">
-        <h2 id="文章推荐-Using-Kerberos-for-Authentication-Relay-Attacks-使用kerberos进行身份验证中继攻击"><a href="#文章推荐-Using-Kerberos-for-Authentication-Relay-Attacks-使用kerberos进行身份验证中继攻击" class="headerlink" title="[文章推荐] Using Kerberos for Authentication Relay Attacks(使用kerberos进行身份验证中继攻击)"></a>[文章推荐] Using Kerberos for Authentication Relay Attacks(使用kerberos进行身份验证中继攻击)</h2><p><strong>文章看点</strong>：今年爆发的PetitPotam漏洞，又掀起了中继攻击的热潮，通过PetitPotam配合NTLM中继，攻击ADCS服务器，也已经成为域内比较常用的攻击手法了，但是如果域控制器开启强制kerberos身份认证，将大大减少NTLM中继的危害，而kerberos中继的研究，似乎成为一个不错的解决方案。本文从协议包到认证原理，非常详细的从AuthIP、MSRPC、HTTP三个主要协议讲述了kerberos中继。</p>
+        <p>PetitPotam、Apache APISIX、GTFOBins</p>
+<span id="more"></span>
+<h2 id="文章推荐-Using-Kerberos-for-Authentication-Relay-Attacks-使用kerberos进行身份验证中继攻击"><a href="#文章推荐-Using-Kerberos-for-Authentication-Relay-Attacks-使用kerberos进行身份验证中继攻击" class="headerlink" title="[文章推荐] Using Kerberos for Authentication Relay Attacks(使用kerberos进行身份验证中继攻击)"></a>[文章推荐] Using Kerberos for Authentication Relay Attacks(使用kerberos进行身份验证中继攻击)</h2><p><strong>文章看点</strong>：今年爆发的PetitPotam漏洞，又掀起了中继攻击的热潮，通过PetitPotam配合NTLM中继，攻击ADCS服务器，也已经成为域内比较常用的攻击手法了，但是如果域控制器开启强制kerberos身份认证，将大大减少NTLM中继的危害，而kerberos中继的研究，似乎成为一个不错的解决方案。本文从协议包到认证原理，非常详细的从AuthIP、MSRPC、HTTP三个主要协议讲述了kerberos中继。</p>
 <p><strong>推送亮点</strong>：相比于NTLM中继攻击，kerberos中继攻击国内外都研究相对较少，github上的krbrelayx中继攻击工具也是一种滥用无约束委派的攻击，还无法做到任意用户的中继攻击。本文是谷歌ProjectZero项目组在Kerberos中继方面的研究，分别从AuthIP、MSRPC、HTTP这几个协议来探讨了kerberos中继的可行性及方法。</p>
 <p><strong>原文链接</strong>：<a target="_blank" rel="noopener" href="https://googleprojectzero.blogspot.com/2021/10/using-kerberos-for-authentication-relay.html">https://googleprojectzero.blogspot.com/2021/10/using-kerberos-for-authentication-relay.html</a></p>
 <h2 id="漏洞播报-Apache-APISIX-Dashboard-认证绕过漏洞-CVE-2021-45232"><a href="#漏洞播报-Apache-APISIX-Dashboard-认证绕过漏洞-CVE-2021-45232" class="headerlink" title="[漏洞播报] Apache APISIX Dashboard 认证绕过漏洞(CVE-2021-45232)"></a>[漏洞播报] Apache APISIX Dashboard 认证绕过漏洞(CVE-2021-45232)</h2><p><strong>漏洞概述</strong>：Apache APISIX Dashboard旨在使用户通过前端接口操作Apache Apisix，使其尽可能简单。其在2.7-2.10 版本存在部分接口未授权访问，攻击者可以借此获取并修改某些配置信息从而导致其他安全问题。</p>
@@ -529,7 +531,7 @@
             <p>原文作者：<a href="https://jd.army">JD.Army</a>
             <p>原文链接：<a href="https://jd.army/2021/12/29/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC11%E6%9C%9F/">https://jd.army/2021/12/29/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC11%E6%9C%9F/</a>
             <p>发表日期：<a href="https://jd.army/2021/12/29/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC11%E6%9C%9F/">December 29th 2021, 11:57:57 am</a>
-            <p>更新日期：<a href="https://jd.army/2021/12/29/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC11%E6%9C%9F/">February 10th 2022, 12:11:21 pm</a>
+            <p>更新日期：<a href="https://jd.army/2021/12/29/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC11%E6%9C%9F/">February 25th 2022, 10:58:08 am</a>
             <p>版权声明：本文采用<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     

@@ -6,7 +6,7 @@ date: 2022-02-17 10:08:16
 ---
 
  在impacket进行域渗透中，通过MS-SAMR协议实现net user和net group的功能，能方便在渗透过程中，如果域内没有可控的windows主机，但能通过web手段获取到域内用户账号的情况下，来对用户权限、用户信息和组信息进行收集。
-
+<!-- more -->
 ### Install
 
 Python 3.5+impacket
