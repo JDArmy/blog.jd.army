@@ -1,0 +1,2021 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <!-- title -->
+
+
+    
+
+<!-- keywords -->
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="JD.Army">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="JD.Army">
+    
+        <meta name="keywords" content="JD.Army">
+    
+    <meta name="description" content="Red team of jd inc. ">
+    <meta name="description" content="红蓝对抗演练评分系统（RTASS）目前公布的是 preview 版，主要向大家征集建议，大家有好的意见或想法，欢迎到github去提issue或PR：https:&#x2F;&#x2F;github.com&#x2F;JDArmy&#x2F;RTASS 在线评分计算机器：https:&#x2F;&#x2F;jd.army&#x2F;RTASS&#x2F;?lang&#x3D;cn 1. 红蓝对抗演练评分系统（RTASS）的背景RTASS是Red Team Assessment Sco">
+<meta property="og:type" content="article">
+<meta property="og:title" content="“红蓝对抗演练评分系统”开源框架 (Preview)">
+<meta property="og:url" content="https://jd.army/2022/02/19/%E2%80%9C%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97%E6%BC%94%E7%BB%83%E8%AF%84%E5%88%86%E7%B3%BB%E7%BB%9F%E2%80%9D%E5%BC%80%E6%BA%90%E6%A1%86%E6%9E%B6%20(preview)/index.html">
+<meta property="og:site_name" content="JD.Army">
+<meta property="og:description" content="红蓝对抗演练评分系统（RTASS）目前公布的是 preview 版，主要向大家征集建议，大家有好的意见或想法，欢迎到github去提issue或PR：https:&#x2F;&#x2F;github.com&#x2F;JDArmy&#x2F;RTASS 在线评分计算机器：https:&#x2F;&#x2F;jd.army&#x2F;RTASS&#x2F;?lang&#x3D;cn 1. 红蓝对抗演练评分系统（RTASS）的背景RTASS是Red Team Assessment Sco">
+<meta property="og:locale">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/02/74ff4fb27cf721e62dfe5edb3fbc3f83.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/02/03b158a566e897ee4b23616bd4776996.png">
+<meta property="article:published_time" content="2022-02-19T01:43:16.000Z">
+<meta property="article:modified_time" content="2022-02-25T02:43:34.270Z">
+<meta property="article:author" content="JD.Army">
+<meta property="article:tag" content="红蓝对抗">
+<meta property="article:tag" content="RTASS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/02/74ff4fb27cf721e62dfe5edb3fbc3f83.png">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/assets/favicon.ico">
+    
+    <title>“红蓝对抗演练评分系统”开源框架 (Preview) · JD.Army</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
+
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
+
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20210823" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/dark.css?v=20210823" as="style">
+    <link rel="stylesheet" href="/css/dark.css" media="(prefers-color-scheme: dark)">
+    <link rel="stylesheet" href="/css/mobile.css?v=20210823" media="(max-width: 960px)">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js?v=20210823" as="script">
+    <link rel="preload" href="/scripts/dark.js?v=20210823" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <!-- algolia -->
+    
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+    
+        <body class="post-body">
+    
+        <!-- header -->
+        <header class="header header-mobile">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
+    </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        
+            <div class="header-sidebar-menu">
+        
+            
+                <div style="padding-left: 1px;">&#xe775;</div>
+            
+        </div>
+    </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href=/>JD.Army</a>
+        </span>
+    </div>
+    <!-- toggle banner for post layout -->
+    
+        
+            <div class="banner">
+        
+            <div class="blog-title header-element">
+                <a href="/">JD.Army</a>
+            </div>
+            <div class="post-title header-element">
+                <a href="#" class="post-name">“红蓝对抗演练评分系统”开源框架 (Preview)</a>
+            </div>
+        </div>
+    
+</header>
+
+        <!-- fixed footer -->
+        <footer class="footer-fixed">
+    <!-- back to top button -->
+    <div class="footer-fixed-element">
+        
+            <div class="back-top back-top-hidden">
+        
+        
+            <div>&#xe639;</div>
+        
+        </div>
+    </div>
+</footer>
+
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="
+
+
+
+
+
+
+
+    height:50vh;
+
+">
+    
+    <!-- 主页  -->
+    
+        
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+                “红蓝对抗演练评分系统”开源框架 (Preview)
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+                
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页 meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        
+        
+            
+        
+        
+        <span class="post-category" data-categories="红蓝对抗"">
+            <i class="fas fa-folder post-category-icon"></i>
+            <span class="post-category-text">
+                红蓝对抗
+            </span>
+        </span>
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="红蓝对抗">红蓝对抗</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="RTASS">RTASS</a>
+    
+</div>
+
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">7.2k</span>阅读时长: <span class="post-count reading-time">26 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2022/02/19</span>
+                    <!-- busuanzi -->
+                    
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+            <div class="container container-unloaded">
+                <main class="main post-page">
+    <article class="article-entry">
+        <p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/02/74ff4fb27cf721e62dfe5edb3fbc3f83.png" alt="图片"></p>
+<p>红蓝对抗演练评分系统（RTASS）目前公布的是 preview 版，主要向大家征集建议，大家有好的意见或想法，欢迎到github去提issue或PR：<a target="_blank" rel="noopener" href="https://github.com/JDArmy/RTASS">https://github.com/JDArmy/RTASS</a></p>
+<p>在线评分计算机器：<a href="https://jd.army/RTASS/?lang=cn">https://jd.army/RTASS/?lang=cn</a></p>
+<h2 id="1-红蓝对抗演练评分系统（RTASS）的背景"><a href="#1-红蓝对抗演练评分系统（RTASS）的背景" class="headerlink" title="1. 红蓝对抗演练评分系统（RTASS）的背景"></a><strong>1. 红蓝对抗演练评分系统（RTASS）的背景</strong></h2><p>RTASS是Red Team Assessment Scoring System的首字母缩写。Red Team Assessment在国内通常有“红队评估”、“蓝军评估”、“红蓝对抗演练”、“实战攻防演习”等不同的叫法或项目交付形式。为了更多地体现攻防双方以及对抗性质，RTASS的中文我们使用“红蓝对抗演练评分系统”这个称呼。</p>
+<p>红蓝对抗演练评分系统（RTASS）是一个开放式的评分框架，用来评估单次网络红蓝对抗或实战演习中的攻防双方能力投入情况，以及涉及业务及所在企业所面临的风险程度。</p>
+<p>很多年前，企业通常仅靠采用“渗透测试”挖掘单个应用系统漏洞的方式来评估自身安全。为了评估漏洞的危害性，美国国家基础设施顾问委员会（NIAC）开发了一套通用漏洞评估系统CVSS[1]，并交由事件响应和安全团队论坛（FIRST）进行托管。FIRST在前序版本基础上，又继续迭代了v2和v3版本，针对单个漏洞的危害性评估标准越来越精确和完善，也被各大安全组织和漏洞收录平台所使用。</p>
+<p>随着网络安全的发展，面临的网络威胁与日俱增，通过模拟黑客APT攻击手段与行为，对企业开展综合性安全评估的红蓝对抗实战演习方式开始被广泛采用。有些组织单位为了对攻击方之间以及防守方之间进行评估，也制定了一些评分制度。但这种评分制度只能衡量攻击方与攻击方之间，防守方与防守方之间的差异，科学性也有待商榷，也无法做攻击队与防守队间的能力对比。而在仅有一支攻击队伍和一支防守队伍的情况下，问题则更加突出：如果核心系统被突破，那么是说明攻击队伍强，还是说明防守队伍弱呢？如果核心系统没有被突破，那么是攻击队伍弱，还是防守队伍强呢？这是非常难衡量的，业内也没有一套成熟的体系来进行评价。因此，结合多年网络实战攻防演习以及红蓝对抗经验，参考CVSS[2]以及OWASP风险评级方法[3]，开发了这套针对实战演习场景下的红蓝对抗评分框架。</p>
+<p>RTASS目前采用Apache开源协议，如果只是使用，可以直接访问RTASS在线评分工具: <a href="https://jd.army/RTASS/?lang=cn%EF%BC%8C%E5%AE%83%E5%B0%86%E5%AE%9E%E6%97%B6%E4%BF%9D%E6%8C%81%E6%9B%B4%E6%96%B0%E8%87%AA%E6%9C%80%E6%96%B0%E7%9A%84%E7%89%88%E6%9C%AC%E3%80%82%E5%A6%82%E6%9E%9C%E6%98%AF%E6%83%B3%E5%8F%82%E4%B8%8E%E6%A1%86%E6%9E%B6%E6%A0%87%E5%87%86%E5%88%B6%E5%AE%9A%EF%BC%8C%E6%88%96%E6%9B%B4%E6%94%B9%E8%AF%84%E5%88%86%E5%9B%A0%E5%AD%90%E6%88%96%E7%AE%97%E6%B3%95%E5%8F%82%E6%95%B0%EF%BC%8C%E9%82%A3%E4%B9%88%E5%8F%AF%E4%BB%A5%E8%AE%BF%E9%97%AE%EF%BC%9Ahttps://github.com/JDArmy/RTASS">https://jd.army/RTASS/?lang=cn，它将实时保持更新自最新的版本。如果是想参与框架标准制定，或更改评分因子或算法参数，那么可以访问：https://github.com/JDArmy/RTASS</a> ，进行协作开发和拉取请求，或下载源码开发和维护自己的版本。</p>
+<h2 id="2-RTASS框架理念与评分方法"><a href="#2-RTASS框架理念与评分方法" class="headerlink" title="2. RTASS框架理念与评分方法"></a><strong>2. RTASS框架理念与评分方法</strong></h2><p>RTASS（Red Team Assessment Scoring System）是一套针对红蓝双方对抗式网络实战攻防演练中，攻击方、防守方、业务方以及企业风险进行评分的框架。RTASS适用于网络红蓝对抗演练、网络实战攻防演习、红队评估、蓝军评估等通过模拟黑客APT手段对企业开展实网攻击的安全评估场景。</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/02/03b158a566e897ee4b23616bd4776996.png" alt="图片"></p>
+<p>在目前最新版本v0.2.3中，RTASS通过评估因子形成6个过程分值。过程分值再通过不同组合，形成针对攻击方、防守方、业务以及企业等不同角色的四项最终分值：进攻能量、防守能量、业务风险和企业风险。</p>
+<ul>
+<li><p>进攻能量是攻击方在单次演练中做的有效输出，可代表攻防方之于本次演练的水平；</p>
+</li>
+<li><p>防守能量是防守方在单次演练中的有效输出，可代表防守方之于本次演练的水平；</p>
+</li>
+<li><p>业务风险指业务在安全上暴露的风险程度，可代表参演业务方在本次演练中的安全水平；</p>
+</li>
+<li><p>企业风险指企业在安全上暴露的风险程度，可代表企业整体上在本次演练中表现出的安全水平。</p>
+</li>
+</ul>
+<p>这四项分值均指代在单次演练中的情况，因此在不同的演练中，分值可能会有所不同。</p>
+<p>RTASS评分框架整体上由“攻防因素”与“业务（影响）因素”两大类别构成。攻防因素主要是从攻击以及防守角度上去衡量各自的强度，对渗透路径中的关键漏洞的杀伤力进行评价，最终结合业务因素形成“进攻能量”和“防守能量”分值。</p>
+<p>业务因素主要是是从可对企业造成的影响，业务安全能力水平，以及CIA信息安全三要素角度进行评价，最终结合攻防因素形成“业务风险”和“企业风险”分值。</p>
+<p>我们以攻击因素为例：</p>
+<ul>
+<li>进攻实力指攻击方在单场次红蓝对抗演练中，在<strong>关键渗透路径</strong>上使用攻击技术的<strong>最高水平</strong></li>
+<li>防守实力指防守方在单场次红蓝对抗演练中，在<strong>关键渗透路径</strong>上使用防守技术的<strong>最高水平</strong></li>
+<li>漏洞风险指在单场次红蓝对抗演练中，在演练的<strong>关键渗透路径</strong>上对<strong>最关键漏洞</strong>的风险性评价</li>
+</ul>
+<p>为什么一定是“关键路径”和“最高”、“最关键”呢？</p>
+<p>这是因为在单场次红蓝对抗当中，攻击者能够采取不同的战略形成不同的攻击路径，并在攻击路径中使用数十、上百种不同的TTPs。如果依次针对这些TTPs进行衡量，很明显是不现实的，也大幅增加了评估的工作量。</p>
+<p>安全遵循“短板原理”，同样也遵循“长板原理” —— 攻击者不需要保证每一次TTPs的投入都是最高的技术能力，只要在关键路径上有一次或几次的高水平，就有可能把企业目标拿下。所以我们以攻击者在攻击关键路径上投入的最高水平作为他们的进攻实力的表现。</p>
+<p>显然，我们也能看出：攻击者实力并不能代表攻击者在单次红蓝对抗演练中的总的有效技术投入。我们拿物理学做个比喻：一个人在一个物体上施加的最大力，并不能代表这个人在物体上做的有效功。所以，为了衡量攻击者的“功”，我们引入“进攻能量”概念，用以表示攻击者在单次红蓝对抗演习中的总有效投入，也即攻击者在本次演练中投入的技术水平。</p>
+<p>在RTASS v0.2.3中:</p>
+<ul>
+<li>“进攻能量”与“进攻实力”、“防守实力”、“企业影响”有正向关系。</li>
+<li>“防守能量”与“防守实力”有正向关系，与“漏洞风险”、“企业影响”有反向关系。</li>
+<li>“业务风险”与“技术影响”、“企业影响”有正向关系，与“业务实力”有反向关系。</li>
+<li>“企业风险”与“防守实力”有反向关系，与“漏洞风险”、“企业影响”有正向关系。</li>
+</ul>
+<p>当然，上述关联也有可能随着RTASS的进化有所改变，目前各因子、因素之间的系数均为1，后续也有可能根据更新的理念发生变化。</p>
+<p>在RTASS v0.2.3中，共有19个评分因子[4]，每个因子都有0到5共6个评分项。而过程分值和最终分值：最低分0分，最高分为10分。其中，各分值对应等级的分布如下：</p>
+<table>
+<thead>
+<tr>
+<th><strong>分值</strong></th>
+<th><strong>等级</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0.00分</td>
+<td>无</td>
+</tr>
+<tr>
+<td>0.01 - 3.99分</td>
+<td>低</td>
+</tr>
+<tr>
+<td>4.00 - 6.99分</td>
+<td>中</td>
+</tr>
+<tr>
+<td>7.00 - 8.99分</td>
+<td>高</td>
+</tr>
+<tr>
+<td>9.00 - 10.00分</td>
+<td>极</td>
+</tr>
+</tbody></table>
+<h3 id="a-进攻能量"><a href="#a-进攻能量" class="headerlink" title="a) 进攻能量"></a><strong>a) 进攻能量</strong></h3><ul>
+<li>进攻能量 = ( 进攻实力 * 系数 + 防守实力 * 系数 + 企业影响 * 系数 ) / 3</li>
+</ul>
+<p>进攻能量指代攻击方在单次演练中做的有效的“功”。如果使用了很高级的技术，费了很大力气，但是没有取得功效，那么相当于在本次演练中做了无用功，就意味着进攻能量很低。</p>
+<p>为了衡量攻击者的有效能力输出，我们将其与“进攻实力”、“防守实力”、“企业影响”绑定。进攻实力比较好理解，我们引入“防守实力”因素是为了校正“进攻实力”在能力上的有效展现。一般来讲，防守的实力越强，在达成同等目标的前提下，说明攻击的实力越强；反之，如果防守的实力越弱，那么为了达成目标，攻击通常可以有更少的投入。“企业影响”是用于衡量攻击者“做功”上的有效性。在单次演练中暴露的企业风险越多，说明攻击者的能量越强；反之，暴露的企业风险越少，说明攻击者在演练中的能量越小。</p>
+<h3 id="b-防守能量"><a href="#b-防守能量" class="headerlink" title="b) 防守能量"></a><strong>b) 防守能量</strong></h3><ul>
+<li>防守能量 = ( 防守实力 * 系数 + ( 10 - 漏洞因素 * 系数 ) + ( 10 - 企业影响 * 系数 ) ) / 3</li>
+</ul>
+<p>同进攻能量一样，防守能力指代防守方在单次演练中做的有效“功”。但不能简单认为“防守实力”就是防守的能量体现。因为即便防守的实力很强，如果在攻击关键路径上暴露了严重的漏洞风险，那么说明防守的实力并没有落在实处，应该予以减分。同样，即便实力很强，漏洞面也很小，但是依然能给企业带来重大的影响，说明防守产生的有效能量是不够的，要予以减分。</p>
+<p>所以防守能量与防守实力成正比，与漏洞风险、企业影响成反比。</p>
+<h3 id="c-业务风险"><a href="#c-业务风险" class="headerlink" title="c) 业务风险"></a><strong>c) 业务风险</strong></h3><ul>
+<li>业务风险 = ( 技术影响 * 系数 + 企业影响 * 系数 + ( 10 - 业务实力 * 系数 ) ) /3</li>
+</ul>
+<p>如果关键系统在技术影响上的问题较大，则说明在保密性、完整性和可用性这三大信息安全维度上出现了较大问题；如果是能够给企业带来较大的影响，不管是经济损失、商誉损失还是合规影响、运营影响，那么都会较大程度上影响企业的发展；而如果是因为SDL或者是DevSecOps的落实上出现了问题，那么将会在安全的推进以及风险的消除上带来较大的阻碍。</p>
+<p>也就是说，当业务系统受到威胁后，技术影响越大、企业影响越大、暴露的安全能力越差，说明业务面临更大的威胁，因此业务风险与技术影响、企业影响呈正向关系，与业务实力呈反向关系。</p>
+<h3 id="d-企业风险"><a href="#d-企业风险" class="headerlink" title="d) 企业风险"></a><strong>d) 企业风险</strong></h3><ul>
+<li>企业风险 = ( ( 10 - 防守实力 * 系数 ) + 漏洞风险 * 系数 + 企业影响 * 系数 ) / 3</li>
+</ul>
+<p>一个企业如果在安全建设上的投入不大，一般会直接作用在防护能力、检测能力和响应能力上，即防守实力上。反之，如果企业防守实力弱，那么说明企业在安全建设或者防守团队建设上面临问题，将使企业面临更多的风险；演练中，在关键的渗透路径上的关键漏洞是非常容易发现的、非常容易利用的，并且杀伤力极大的，一般其实说明防守在日常的安全运营和SDL或DevSecOps的安全流程落地上出现了比较大的问题和隐患，企业的安全性出现较大问题；而“企业影响”更是影响到企业的正常运营、营收甚至是生死存亡。</p>
+<p>因此，企业风险分值与防守实力呈反向关系，防守实力越弱，企业风险越高；与漏洞风险、企业影响呈正向关系，漏洞风险越大、企业影响越大，则企业风险越高。</p>
+<h2 id="3-RTASS过程评分与评分因子"><a href="#3-RTASS过程评分与评分因子" class="headerlink" title="3. RTASS过程评分与评分因子"></a><strong>3. RTASS过程评分与评分因子</strong></h2><p>RTASS v0.2.3共有6个过程评分：进攻实力、防守实力、漏洞因素、技术影响、企业影响、业务实力。其中进攻实力、防守实力、漏洞因素被分组到攻防因素中，技术影响、企业影响、业务实力被分组到业务因素中。分组在RTASS并不影响评分，只是起到从主观上进行分类的作用。</p>
+<h3 id="a-进攻实力"><a href="#a-进攻实力" class="headerlink" title="a) 进攻实力"></a><strong>a) 进攻实力</strong></h3><p>进攻实力由进攻水平、进攻难度、目标达成情况三个因子计算得出，计算方法为：</p>
+<ul>
+<li>进攻实力 = ( 进攻水平 * 系数 + 进攻难度 * 系数 + 目标达成 * 系数 ) / 3</li>
+</ul>
+<p><strong>进攻水平[OL]</strong></p>
+<p>主要评估本次演练，攻击者在评估路径中使用的最高技术水平？</p>
+<ul>
+<li>0 - N/A</li>
+<li>1 - 相当于入门级黑客</li>
+<li>2 - 相当于普通水平黑客或工具、脚本黑客</li>
+<li>3 - 等同精通渗透技术的黑客</li>
+<li>4 - 需要较为专业的团队配合</li>
+<li>5 - 相当于国家级APT黑客团队</li>
+</ul>
+<p><strong>进攻难度[OD]</strong></p>
+<p>主要评估本次演练，攻击者在整个评估路径中搞定难题的最高难度？</p>
+<ul>
+<li>0 - N/A</li>
+<li>1 - 几乎没有难度</li>
+<li>2 - 有点难度</li>
+<li>3 - 较大难度</li>
+<li>4 - 很难搞定</li>
+<li>5 - 几乎不能搞定</li>
+</ul>
+<p><strong>目标达成[TR]</strong></p>
+<p>主要评估本次演练，攻击者是否达成预期目标？</p>
+<ul>
+<li>0 - N/A</li>
+<li>1 - 基本没达成</li>
+<li>2 - 少量达成</li>
+<li>3 - 中量达成</li>
+<li>4 - 大量达成</li>
+<li>5 - 完全达成</li>
+</ul>
+<p>一般来说，我们要求在演练目标的制定上一定要设定企业重要的核心系统，在目标完全被拿下的情况下，可以对企业造成非常严重影响。</p>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="b-防守实力"><a href="#b-防守实力" class="headerlink" title="b) 防守实力"></a><strong>b) 防守实力</strong></h3><p>防护实力由防护水平、威胁监测水平、应急响应水平、溯源反制水平四个因子计算得出，计算方法为：</p>
+<ul>
+<li>防护实力 = ( 防护水平 * 系数 + 监测水平 * 系数 + 响应水平 * 系数 + 反制水平 * 系数 ) / 4</li>
+</ul>
+<p><strong>防护水平[PL]</strong></p>
+<p>主要评估本次演练，防守者对关键渗透路径的拦截能力？</p>
+<ul>
+<li>0 - N/A</li>
+<li>1 - 几乎没有拦截</li>
+<li>2 - 轻微的拦截</li>
+<li>3 - 较强的拦截</li>
+<li>4 - 非常强的拦截</li>
+<li>5 - 几乎难以突破</li>
+</ul>
+<p><strong>监测水平[DL]</strong></p>
+<p>主要评估本次演练，防守者对关键渗透路径的网络威胁发现能力？</p>
+<ul>
+<li>0 - N/A</li>
+<li>1 - 几乎监测不到威胁</li>
+<li>2 - 监测到周边攻击威胁</li>
+<li>3 - 监测到少量关键路径威胁</li>
+<li>4 - 监测到大量关键路径威胁</li>
+<li>5 - 几乎监测到全部威胁</li>
+</ul>
+<p><strong>响应水平[RL]</strong></p>
+<p>主要评估本次演练，防守者对沦陷系统的恢复能力、修复能力和应急响应能力？</p>
+<ul>
+<li>0 - N/A</li>
+<li>1 - 几乎难以推进（一周以上）</li>
+<li>2 - 响应较为缓慢（24小时以上）</li>
+<li>3 - 响应较为及时（24小时内）</li>
+<li>4 - 响应接近实时（2小时内）</li>
+<li>5 - 实时响应（30分钟内）</li>
+</ul>
+<p>从PDR的公式，我们知道当：</p>
+<p>Pt &gt; Dt + Rt,</p>
+<p>不等式成立时，即“防御时间 &gt; 监测时间 + 响应时间”时，证明防守者的应急响应是成功的。在对防御时间的确定上，我们根据多年实战攻防演习经验，估算了一个区间：一般来说，攻击者进行横向移动的时间在30分钟到8小时左右。因此如果响应时间比30分钟还小，那么防守者基本上可以在攻击者进一步开展横向移动时，将攻击者踢出系统。同样，如果防守者响应时间大于8小时，在对系统进行响应时，通常攻击者已经横向移动到了企业内网的其他位置。</p>
+<p>当然，这个时间还有待商榷，各框架使用者可以根据企业自身情况进行动态调整。</p>
+<p><strong>溯源水平[TL]</strong></p>
+<p>主要评估本次演练，防守者是否能够对攻击者进行有效溯源？</p>
+<ul>
+<li>0 - N/A</li>
+<li>1 - 几乎不能有效溯源</li>
+<li>2 - 可以找到攻击者使用的DNS、C2等信息</li>
+<li>3 - 可以溯源到攻击者横向移动路径</li>
+<li>4 - 可以找到攻击者的部分真实IP或虚拟身份</li>
+<li>5 - 可以对攻击者进行成功溯源反制</li>
+</ul>
+<h3 id="-1"><a href="#-1" class="headerlink" title=""></a></h3><h3 id="C-漏洞风险"><a href="#C-漏洞风险" class="headerlink" title="C) 漏洞风险"></a><strong>C) 漏洞风险</strong></h3><p>漏洞风险由漏洞的可发现性、可利用性以及杀伤力三个因子计算得出，计算方法为：</p>
+<ul>
+<li>漏洞风险 = ( 漏洞可发现性 * 系数 + 漏洞可利用性 * 系数 + 漏洞杀伤力 ) / 3</li>
+</ul>
+<p><strong>漏洞可发现性[VD]</strong></p>
+<p>主要评估本次演练，渗透路径中的关键漏洞的可发现性？</p>
+<ul>
+<li>0 - N/A</li>
+<li>1 - 几乎难以发现</li>
+<li>2 - 困难</li>
+<li>3 - 中等</li>
+<li>4 - 简单</li>
+<li>5 - 可用的自动化工具</li>
+</ul>
+<p><strong>漏洞可利用性[VE]</strong></p>
+<p>主要评估本次演练，渗透路径中的关键漏洞的可利用性？</p>
+<ul>
+<li>0 - N/A</li>
+<li>1 - 几乎难以利用</li>
+<li>2 - 困难</li>
+<li>3 - 中等</li>
+<li>4 - 简单</li>
+<li>5 - 可用的自动化工具</li>
+</ul>
+<p><strong>漏洞杀伤力[VL]</strong></p>
+<p>主要评估本次演练，渗透路径中的关键漏洞的最大杀伤力？</p>
+<ul>
+<li>0 - N/A</li>
+<li>1 - 几乎没有危害</li>
+<li>2 - 较低的杀伤力</li>
+<li>3 - 中等规模的杀伤力</li>
+<li>4 - 大范围的杀伤力</li>
+<li>5 - 极其广泛的杀伤力</li>
+</ul>
+<h3 id="d-技术影响"><a href="#d-技术影响" class="headerlink" title="d) 技术影响"></a><strong>d) 技术影响</strong></h3><p>技术影响由CIA安全三要素组成，即保密性、完整性、可用性，并成反向关系，计算方法为：</p>
+<ul>
+<li>技术影响 = ( 失去保密性 * 系数 + 失去完整性 * 系数 + 失去可用性 * 系数 ) / 3</li>
+</ul>
+<p><strong>失去保密性[LC]</strong></p>
+<p>主要评估本次演练，可以泄露多少数据以及它的敏感度如何？</p>
+<ul>
+<li>0 - N/A</li>
+<li>1 - 可泄露少量的非敏感数据</li>
+<li>2 - 可泄露少量的敏感数据</li>
+<li>3 - 可泄露中量的敏感数据</li>
+<li>4 - 可泄露大量的敏感数据</li>
+<li>5 - 可泄露全部的敏感数据</li>
+</ul>
+<p><strong>失去完整性[LI]</strong></p>
+<p>主要评估本次演练，有多少数据可能被损坏，损坏程度如何？</p>
+<ul>
+<li>0 - N/A</li>
+<li>1 - 可损坏少量非核心数据</li>
+<li>2 - 可损坏少量的核心数据</li>
+<li>3 - 可损坏大量非核心数据</li>
+<li>4 - 可损坏大量核心数据</li>
+<li>5 - 可损坏全部数据</li>
+</ul>
+<p><strong>失去可用性[LA]</strong></p>
+<p>主要评估本次演练，可能会丢失多少服务，它有多重要？</p>
+<ul>
+<li>0 - N/A</li>
+<li>1 - 可导致企业少量的非核心业务中断</li>
+<li>2 - 可导致企业少量的核心业务中断</li>
+<li>3 - 可导致企业中量的核心业务中断</li>
+<li>4 - 可导致企业大量核心业务中断</li>
+<li>5 - 可中断企业几乎所有重要业务</li>
+</ul>
+<h3 id="e-企业影响"><a href="#e-企业影响" class="headerlink" title="e) 企业影响"></a><strong>e) 企业影响</strong></h3><p>企业影响由演练成果所能造成最大危害所引起的：经济损失、商誉损失、合规影响和运营影响四个因子计算得出，计算方法为：</p>
+<ul>
+<li>企业影响 = ( 经济损失 * 系数 + 商誉损失 * 系数 + 合规影响 * 系数) / 3</li>
+</ul>
+<p><strong>经济损失[FD]</strong></p>
+<p>主要评估本次演练，可对企业经济造成的最大影响？</p>
+<ul>
+<li>0 - N/A</li>
+<li>1 - 低于修复漏洞的成本</li>
+<li>2 - 不会对企业年利润有明显影响</li>
+<li>3 - 可以影响一定的企业年利润</li>
+<li>4 - 对企业年度利润有显著影响</li>
+<li>5 - 对企业年利润影响重大</li>
+</ul>
+<p><strong>商誉损失[RD]</strong></p>
+<p>主要评估本次演练，是否会导致企业声誉受损从而损害业务？</p>
+<ul>
+<li>0 - N/A</li>
+<li>1 - 轻微的伤害</li>
+<li>2 - 大客户或大量客户流失</li>
+<li>3 - 商誉损失</li>
+<li>4 - 品牌损害</li>
+<li>5 - 品牌重大损害</li>
+</ul>
+<p><strong>合规影响[CI]</strong></p>
+<p>主要评估本次演练，出现的问题或攻击者进行恶意行动会带来多少违规风险？</p>
+<ul>
+<li><p>0 - N/A</p>
+</li>
+<li><p>1 - 几乎不违规</p>
+</li>
+<li><p>2 - 轻微违规</p>
+</li>
+<li><p>3 - 明显违规</p>
+</li>
+<li><p>4 - 高调违规</p>
+</li>
+<li><p>5 - 严重违规或违法</p>
+<h3 id="-2"><a href="#-2" class="headerlink" title=""></a></h3></li>
+</ul>
+<h3 id="f-业务实力"><a href="#f-业务实力" class="headerlink" title="f) 业务实力"></a><strong>f) 业务实力</strong></h3><p>从系统及应用风险面来看，安全会较多地体现在安全性需求设计、安全编码、安全测试、安全运维、安全防护、应急响应、安全意识、终端防护、安全架构、安全管理、现实安保、供应链安全等方面。其中安全性需求设计、安全编码、安全测试、安全架构属于开发生命周期范畴，安全运维、终端防护、安全管理都属于运维生命周期范畴。安全意识、现实安保属于员工安全意识范畴。安全防护、应急响应属于安全运营团队的PDR范畴。</p>
+<p>所以在对业务实力进行评价时，我们刨除掉安全运营团队（防守方）因素，分成安全开发生命周期、安全运维生命周期和员工安全意识三个因素。计算方法为：</p>
+<ul>
+<li>业务实力 = ( 开发生命周期 * 系数 + 运维生命周期 * 系数 + 员工安全意识 ) / 3</li>
+</ul>
+<p><strong>开发生命周期[DLC]</strong></p>
+<p>主要评估本次演练，是否发现在软件开发生命周期中存在安全问题？</p>
+<ul>
+<li>0 - N/A</li>
+<li>1 - 基本没有考虑安全问题</li>
+<li>2 - 有大量的安全流程问题</li>
+<li>3 - 有中量的安全流程问题</li>
+<li>4 - 有少量的安全流程问题</li>
+<li>5 - 几乎没有安全流程问题</li>
+</ul>
+<p><strong>运维生命周期[OLC]</strong></p>
+<p>主要评估本次演练，是否发现在运维生命周期中存在安全问题？</p>
+<ul>
+<li>0 - N/A</li>
+<li>1 - 基本没有考虑安全问题</li>
+<li>2 - 有大量的安全流程问题</li>
+<li>3 - 有中量的安全流程问题</li>
+<li>4 - 有少量的安全流程问题</li>
+<li>5 - 几乎没有安全流程问题</li>
+</ul>
+<p><strong>员工安全意识[ESA]</strong></p>
+<p>主要评估本次演练，在评估过程中大部分员工是否有安全意识问题？</p>
+<ul>
+<li>0 - N/A</li>
+<li>1 - 几乎全员没有安全意识</li>
+<li>2 - 大部分关键岗位员工安全意识较弱</li>
+<li>3 - 少部分关键岗位员工安全意识较弱</li>
+<li>5 - 大部分关键岗位员工安全意识较高</li>
+<li>6 - 全部员工都有极高的安全意识</li>
+</ul>
+<h2 id="4-RTASS向量字符串与用法"><a href="#4-RTASS向量字符串与用法" class="headerlink" title="4. RTASS向量字符串与用法"></a><strong>4. RTASS向量字符串与用法</strong></h2><p>参考CVSS评分框架，RTASS同样使用“向量字符串”来记录评分过程，以及对RTASS指标信息进行传输。RTASS向量字符串以标签“RTASS:”和当前版本的数字表示（譬如：1.0.0）开头。指标信息以一组指标的形式出现，每个指标前面都有一个正斜杠“/”，作为分隔符。每个指标都是缩写形式的指标名称、冒号及指标值构成。缩写形式在本规范的前面定义（在每个因素名称后面的括号中），并在下表中进行了总结。</p>
+<table>
+<thead>
+<tr>
+<th><strong>因素名称</strong></th>
+<th><strong>可能的值</strong></th>
+<th><strong>是否必须？</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>进攻水平[OL]</td>
+<td>0-5</td>
+<td>是</td>
+</tr>
+<tr>
+<td>进攻难度[OD]</td>
+<td>0-5</td>
+<td>是</td>
+</tr>
+<tr>
+<td>目标达成[TR]</td>
+<td>0-5</td>
+<td>是</td>
+</tr>
+<tr>
+<td>防护水平[PL]</td>
+<td>0-5</td>
+<td>是</td>
+</tr>
+<tr>
+<td>监测水平[DL]</td>
+<td>0-5</td>
+<td>是</td>
+</tr>
+<tr>
+<td>响应水平[RL]</td>
+<td>0-5</td>
+<td>是</td>
+</tr>
+<tr>
+<td>溯源水平[TL]</td>
+<td>0-5</td>
+<td>是</td>
+</tr>
+<tr>
+<td>漏洞可发现性[VD]</td>
+<td>0-5</td>
+<td>是</td>
+</tr>
+<tr>
+<td>漏洞可利用性[VE]</td>
+<td>0-5</td>
+<td>是</td>
+</tr>
+<tr>
+<td>漏洞杀伤力[VL]</td>
+<td>0-5</td>
+<td>是</td>
+</tr>
+<tr>
+<td>失去保密性[LC]</td>
+<td>0-5</td>
+<td>是</td>
+</tr>
+<tr>
+<td>失去完整性[LI]</td>
+<td>0-5</td>
+<td>是</td>
+</tr>
+<tr>
+<td>失去可用性[LA]</td>
+<td>0-5</td>
+<td>是</td>
+</tr>
+<tr>
+<td>经济损失[FD]</td>
+<td>0-5</td>
+<td>是</td>
+</tr>
+<tr>
+<td>商誉损失[RD]</td>
+<td>0-5</td>
+<td>是</td>
+</tr>
+<tr>
+<td>合规影响[CI]</td>
+<td>0-5</td>
+<td>是</td>
+</tr>
+<tr>
+<td>开发生命周期[DLC]</td>
+<td>0-5</td>
+<td>是</td>
+</tr>
+<tr>
+<td>运维生命周期[OLC]</td>
+<td>0-5</td>
+<td>是</td>
+</tr>
+<tr>
+<td>员工安全意识[ESA]</td>
+<td>0-5</td>
+<td>是</td>
+</tr>
+</tbody></table>
+<p>示例如下：</p>
+<p>RTASS:0.2.3/OL:3/OD:1/TR:2/PL:3/DL:3/RL:5/TL:1/VD:5/VE:4/VL:5/LC:3/LI:2/LA:5/FD:3/RD:4/CI:2/DLC:2/OLC:4/ESA:1</p>
+<p>向量字符串应包含上表中所示全部指标，接受任何顺序的度量。如果相关指标未指定，会当做0值处理；如果向量字符串多次包含相同度量，则以最后一次度量为准。</p>
+<p>向量字符串有助于进行评分的记录和共享，在RTASS的在线评分工具中，可以直接通过类似：<a href="https://jd.army/RTASS/?lang=cn&amp;vector=RTASS:0.2.3/OL:3/OD:1/TR:2/PL:3/DL:3/RL:5/TL:1/VD:5/VE:4/VL:5/LC:3/LI:2/LA:5/FD:3/RD:4/CI:2/DLC:2/OLC:4/ESA:1">https://jd.army/RTASS/?lang=cn&amp;vector=RTASS:0.2.3/OL:3/OD:1/TR:2/PL:3/DL:3/RL:5/TL:1/VD:5/VE:4/VL:5/LC:3/LI:2/LA:5/FD:3/RD:4/CI:2/DLC:2/OLC:4/ESA:1</a> 这样的链接形式进行评分分享。</p>
+<h2 id="5-RTASS框架贡献与现阶段局限性"><a href="#5-RTASS框架贡献与现阶段局限性" class="headerlink" title="5. RTASS框架贡献与现阶段局限性"></a><strong>5. RTASS框架贡献与现阶段局限性</strong></h2><p>RTASS框架采用JSON格式进行了系统描述，详见仓库中“/src/RTASS.json”文件，其中：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><code class="hljs json">&#123;<br><br>    <span class="hljs-attr">&quot;defaultLang&quot;</span>: <span class="hljs-string">&quot;cn&quot;</span>,<br><br>    <span class="hljs-attr">&quot;cnTitle&quot;</span>: <span class="hljs-string">&quot;红蓝对抗演练评分系统（RTASS）&quot;</span>,<br><br>    <span class="hljs-attr">&quot;enTitle&quot;</span>: <span class="hljs-string">&quot;Red Teaming Assessment Scoring System (RTASS)&quot;</span>,<br><br>    <span class="hljs-attr">&quot;version&quot;</span>: <span class="hljs-string">&quot;0.2.1&quot;</span>,<br><br>    <span class="hljs-attr">&quot;factors&quot;</span>: &#123;<br><br>        <span class="hljs-attr">&quot;OL&quot;</span>: &#123;<br><br>            <span class="hljs-attr">&quot;enName&quot;</span>: <span class="hljs-string">&quot;Offensive Level&quot;</span>,<br><br>            <span class="hljs-attr">&quot;cnName&quot;</span>: <span class="hljs-string">&quot;进攻水平&quot;</span>,<br><br>            <span class="hljs-attr">&quot;enDesc&quot;</span>: <span class="hljs-string">&quot;The highest level of technology used in the assessment path?&quot;</span>,<br><br>            <span class="hljs-attr">&quot;cnDesc&quot;</span>: <span class="hljs-string">&quot;攻击者在评估路径中使用的最高技术水平？&quot;</span>,<br><br>            <span class="hljs-attr">&quot;cnOptions&quot;</span>: [<br><br>                <span class="hljs-string">&quot;0 - N/A&quot;</span>,<br><br>                <span class="hljs-string">&quot;1 - 相当于入门级黑客&quot;</span>,<br><br>                <span class="hljs-string">&quot;2 - 相当于普通水平黑客或工具、脚本黑客&quot;</span>,<br><br>                <span class="hljs-string">&quot;3 - 等同精通渗透技术的黑客&quot;</span>,<br><br>                <span class="hljs-string">&quot;4 - 需要较为专业的团队配合&quot;</span>,<br><br>                <span class="hljs-string">&quot;5 - 相当于国家级APT黑客团队&quot;</span><br><br>            ],<br><br>            <span class="hljs-attr">&quot;enOptions&quot;</span>: [...]<br><br>        &#125;,<br><br>        ...<br><br>    &#125;,<br><br>    <span class="hljs-attr">&quot;factorCategories&quot;</span>: &#123;...&#125;,<br><br>    <span class="hljs-attr">&quot;processScores&quot;</span>: &#123;<br><br>        <span class="hljs-attr">&quot;AS&quot;</span>: &#123;<br><br>            <span class="hljs-attr">&quot;enName&quot;</span>: <span class="hljs-string">&quot;Offensive Strength&quot;</span>,<br><br>            <span class="hljs-attr">&quot;cnName&quot;</span>: <span class="hljs-string">&quot;进攻实力&quot;</span>,<br><br>            <span class="hljs-attr">&quot;vectors&quot;</span>: [<br><br>                <span class="hljs-string">&quot;OL&quot;</span>,<br><br>                <span class="hljs-string">&quot;OD&quot;</span>,<br><br>                <span class="hljs-string">&quot;TR&quot;</span><br><br>            ],<br><br>            <span class="hljs-attr">&quot;algorithm&quot;</span>: <span class="hljs-string">&quot;(OL+OD+TR)*2/3&quot;</span><br><br>        &#125;,<br><br>        ...<br><br>    &#125;,<br><br>    <span class="hljs-attr">&quot;finalScores&quot;</span>: &#123;<br><br>        <span class="hljs-attr">&quot;AE&quot;</span>: &#123;<br><br>            <span class="hljs-attr">&quot;enName&quot;</span>: <span class="hljs-string">&quot;Offensive Energy&quot;</span>,<br><br>            <span class="hljs-attr">&quot;cnName&quot;</span>: <span class="hljs-string">&quot;进攻能量分值&quot;</span>,<br><br>            <span class="hljs-attr">&quot;vectors&quot;</span>: [<br><br>                <span class="hljs-string">&quot;OS&quot;</span>,<br><br>                <span class="hljs-string">&quot;DS&quot;</span>,<br><br>                <span class="hljs-string">&quot;EI&quot;</span><br><br>            ],<br><br>            <span class="hljs-attr">&quot;algorithm&quot;</span>: <span class="hljs-string">&quot;(OS+DS+EI)/3&quot;</span><br><br>        &#125;,<br><br>        ...<br><br>    &#125;,<br><br>    <span class="hljs-attr">&quot;levels&quot;</span>: [<br><br>        &#123;<br><br>            <span class="hljs-attr">&quot;index&quot;</span>: <span class="hljs-number">0</span>,<br><br>            <span class="hljs-attr">&quot;enName&quot;</span>: <span class="hljs-string">&quot;None&quot;</span>,<br><br>            <span class="hljs-attr">&quot;cnName&quot;</span>: <span class="hljs-string">&quot;无&quot;</span>,<br><br>            <span class="hljs-attr">&quot;className&quot;</span>: <span class="hljs-string">&quot;None&quot;</span><br><br>        &#125;,<br><br>        ...<br><br>    ]<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>评分因子放于“factors”对象中，包括每个因子的0到5的中英文分值描述。</p>
+<p>过程分值通过“processScores”进行描述，其中“algorithm”为评分算法。</p>
+<p>最终得分通过“finalScores”进行描述，其中“algorithm”为评分算法。</p>
+<p>“levels”对象存储分值与极、高、中、低之前的对应关系。</p>
+<p>“factorCategories”对象存储攻防因素和业务因素两大分组。</p>
+<p>各协作者可以通过修改RTASS.json文件对各评分因子的描述以及评分权值来与我们进行该系统框架的协作开发。</p>
+<p>RTASS框架在设计上通过各基本因子计算生成过程分值，再通过过程分值生成最终分值。算法为未来的扩展预留了空间，但在现阶段数据还不太充足的情况下，因子的系数基本还是为1。</p>
+<p>CVSS在解决此问题上，采取的方式是通过CVSS特别兴趣小组(SIG)人工构建了一套真实漏洞对应严重性的查找表，再反过来调整参数。最终保证人工评估漏洞分值与CVSS框架评估分值的偏差值小于0.5.</p>
+<p>由于红蓝对抗演练与漏洞的不同，目前无法通过大量现成的样本来调整参数。但我们会不断收集新样本，通过人工评定以及参考更新的方法论，来使得RTASS的分值更加精确。这也需要阅读本规范的您的多加参与和大力支持。</p>
+<p>红蓝对抗演练评分系统（RTASS）目前公布的是 preview 版，主要向大家征集建议，大家有好的意见或想法，欢迎到github去提issue或PR：<a target="_blank" rel="noopener" href="https://github.com/JDArmy/RTASS">https://github.com/JDArmy/RTASS</a></p>
+<p>在线评分计算机器：<a href="https://jd.army/RTASS/?lang=cn">https://jd.army/RTASS/?lang=cn</a></p>
+<hr>
+<p>[1]关于CVSS的版本演变及历史参见：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Common_Vulnerability_Scoring_System">https://en.wikipedia.org/wiki/Common_Vulnerability_Scoring_System</a></p>
+<p>[2] CVSS通用漏洞评分系统，<a target="_blank" rel="noopener" href="https://www.first.org/cvss/v3.1/specification-document">https://www.first.org/cvss/v3.1/specification-document</a></p>
+<p>[3] OWASP风险评级方法：<a target="_blank" rel="noopener" href="https://owasp.org/www-community/OWASP_Risk_Rating_Methodology">https://owasp.org/www-community/OWASP_Risk_Rating_Methodology</a></p>
+<p>[4]注：本框架部分评分因子如“漏洞风险”、“企业影响”等参考借鉴了OWASP风险评级方法中相关因子。详见：<a target="_blank" rel="noopener" href="https://owasp.org/www-community/OWASP_Risk_Rating_Methodology">https://owasp.org/www-community/OWASP_Risk_Rating_Methodology</a></p>
+
+    </article>
+    <!-- license -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://jd.army">JD.Army</a>
+            <p>原文链接：<a href="https://jd.army/2022/02/19/%E2%80%9C%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97%E6%BC%94%E7%BB%83%E8%AF%84%E5%88%86%E7%B3%BB%E7%BB%9F%E2%80%9D%E5%BC%80%E6%BA%90%E6%A1%86%E6%9E%B6%20(preview)/">https://jd.army/2022/02/19/%E2%80%9C%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97%E6%BC%94%E7%BB%83%E8%AF%84%E5%88%86%E7%B3%BB%E7%BB%9F%E2%80%9D%E5%BC%80%E6%BA%90%E6%A1%86%E6%9E%B6%20(preview)/</a>
+            <p>发表日期：<a href="https://jd.army/2022/02/19/%E2%80%9C%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97%E6%BC%94%E7%BB%83%E8%AF%84%E5%88%86%E7%B3%BB%E7%BB%9F%E2%80%9D%E5%BC%80%E6%BA%90%E6%A1%86%E6%9E%B6%20(preview)/">February 19th 2022, 9:43:16 am</a>
+            <p>更新日期：<a href="https://jd.army/2022/02/19/%E2%80%9C%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97%E6%BC%94%E7%BB%83%E8%AF%84%E5%88%86%E7%B3%BB%E7%BB%9F%E2%80%9D%E5%BC%80%E6%BA%90%E6%A1%86%E6%9E%B6%20(preview)/">February 25th 2022, 10:43:34 am</a>
+            <p>版权声明：本文采用<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href="/2022/02/21/%E5%9F%BA%E4%BA%8E%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" title="基于字节码的Java代码审计">
+                    <div class="nextTitle">基于字节码的Java代码审计</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2022/02/18/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC15%E6%9C%9F/" title="蓝军推送(第15期)">
+                    <div class="prevTitle">蓝军推送(第15期)</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- comment -->
+    
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+
+            
+    <div id="disqus_thread"></div>
+    <script>
+        /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+        
+        var disqus_config = function () {
+        this.page.url = "https://jd.army/2022/02/19/%E2%80%9C%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97%E6%BC%94%E7%BB%83%E8%AF%84%E5%88%86%E7%B3%BB%E7%BB%9F%E2%80%9D%E5%BC%80%E6%BA%90%E6%A1%86%E6%9E%B6%20(preview)/";  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = "“红蓝对抗演练评分系统”开源框架 (Preview)"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        
+        (function () { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://jdarmy.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+            
+
+            
+
+            <!-- utteranc评论 -->
+
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+
+            
+            
+
+        </div>
+        <script>
+            setInterval(()=>{
+                var disqus_thread = document.getElementById("disqus_thread");
+            disqus_thread.getElementsByTagName("iframe")[0].hidden = true;
+            },2000);
+        </script>
+    
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    
+    <!-- Mathjax -->
+    
+</main>
+
+                <!-- profile -->
+                
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+        <div class="social">
+            
+    
+        
+            
+                <a href="mailto:Master@JD.Army" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/JDArmy" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+
+        </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    
+    <!-- 不蒜子  -->
+    
+        <div class="busuanzi-container">
+            
+             
+                <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+            
+        </div>
+    	
+</footer>
+
+        </div>
+        <!-- toc -->
+        
+            <div class="toc-wrapper toc-wrapper-loding" style=
+
+
+
+
+
+
+
+    top:50vh;
+
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97%E6%BC%94%E7%BB%83%E8%AF%84%E5%88%86%E7%B3%BB%E7%BB%9F%EF%BC%88RTASS%EF%BC%89%E7%9A%84%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">1. 红蓝对抗演练评分系统（RTASS）的背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-RTASS%E6%A1%86%E6%9E%B6%E7%90%86%E5%BF%B5%E4%B8%8E%E8%AF%84%E5%88%86%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">2. RTASS框架理念与评分方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#a-%E8%BF%9B%E6%94%BB%E8%83%BD%E9%87%8F"><span class="toc-number">2.1.</span> <span class="toc-text">a) 进攻能量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#b-%E9%98%B2%E5%AE%88%E8%83%BD%E9%87%8F"><span class="toc-number">2.2.</span> <span class="toc-text">b) 防守能量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c-%E4%B8%9A%E5%8A%A1%E9%A3%8E%E9%99%A9"><span class="toc-number">2.3.</span> <span class="toc-text">c) 业务风险</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#d-%E4%BC%81%E4%B8%9A%E9%A3%8E%E9%99%A9"><span class="toc-number">2.4.</span> <span class="toc-text">d) 企业风险</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-RTASS%E8%BF%87%E7%A8%8B%E8%AF%84%E5%88%86%E4%B8%8E%E8%AF%84%E5%88%86%E5%9B%A0%E5%AD%90"><span class="toc-number">3.</span> <span class="toc-text">3. RTASS过程评分与评分因子</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#a-%E8%BF%9B%E6%94%BB%E5%AE%9E%E5%8A%9B"><span class="toc-number">3.1.</span> <span class="toc-text">a) 进攻实力</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.2.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#b-%E9%98%B2%E5%AE%88%E5%AE%9E%E5%8A%9B"><span class="toc-number">3.3.</span> <span class="toc-text">b) 防守实力</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-1"><span class="toc-number">3.4.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-%E6%BC%8F%E6%B4%9E%E9%A3%8E%E9%99%A9"><span class="toc-number">3.5.</span> <span class="toc-text">C) 漏洞风险</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#d-%E6%8A%80%E6%9C%AF%E5%BD%B1%E5%93%8D"><span class="toc-number">3.6.</span> <span class="toc-text">d) 技术影响</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#e-%E4%BC%81%E4%B8%9A%E5%BD%B1%E5%93%8D"><span class="toc-number">3.7.</span> <span class="toc-text">e) 企业影响</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#-2"><span class="toc-number">3.8.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#f-%E4%B8%9A%E5%8A%A1%E5%AE%9E%E5%8A%9B"><span class="toc-number">3.9.</span> <span class="toc-text">f) 业务实力</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-RTASS%E5%90%91%E9%87%8F%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8E%E7%94%A8%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">4. RTASS向量字符串与用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-RTASS%E6%A1%86%E6%9E%B6%E8%B4%A1%E7%8C%AE%E4%B8%8E%E7%8E%B0%E9%98%B6%E6%AE%B5%E5%B1%80%E9%99%90%E6%80%A7"><span class="toc-number">5.</span> <span class="toc-text">5. RTASS框架贡献与现阶段局限性</span></a></li></ol>
+            </div>
+        
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 23
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+        
+            
+            
+            <div class="archive-year"> 2022 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/24</span>
+            <a class="archive-post-title" href="/2022/02/24/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC16%E6%9C%9F/">蓝军推送(第16期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/21</span>
+            <a class="archive-post-title" href="/2022/02/21/%E5%9F%BA%E4%BA%8E%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">基于字节码的Java代码审计</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/19</span>
+            <a class="archive-post-title" href="/2022/02/19/%E2%80%9C%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97%E6%BC%94%E7%BB%83%E8%AF%84%E5%88%86%E7%B3%BB%E7%BB%9F%E2%80%9D%E5%BC%80%E6%BA%90%E6%A1%86%E6%9E%B6%20(preview)/">“红蓝对抗演练评分系统”开源框架 (Preview)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/18</span>
+            <a class="archive-post-title" href="/2022/02/18/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC15%E6%9C%9F/">蓝军推送(第15期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/17</span>
+            <a class="archive-post-title" href="/2022/02/17/%E5%9F%9F%E5%86%85%E7%94%A8%E6%88%B7%E3%80%81%E7%BB%84%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B7%A5%E5%85%B7SamrSearch/">域内用户、组信息收集工具SamrSearch</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/16</span>
+            <a class="archive-post-title" href="/2022/02/16/%E6%9B%B4%E5%87%86%E7%A1%AE%E3%80%81%E5%85%A8%E9%9D%A2%E7%9A%84NoPac%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F%E5%99%A8/">更准确、全面的NoPac漏洞扫描器</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/10</span>
+            <a class="archive-post-title" href="/2022/02/10/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC14%E6%9C%9F/">蓝军推送(第14期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/20</span>
+            <a class="archive-post-title" href="/2022/01/20/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC13%E6%9C%9F/">蓝军推送(第13期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/14</span>
+            <a class="archive-post-title" href="/2022/01/14/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC12%E6%9C%9F/">蓝军推送(第12期)</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2021 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/29</span>
+            <a class="archive-post-title" href="/2021/12/29/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC11%E6%9C%9F/">蓝军推送(第11期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/09</span>
+            <a class="archive-post-title" href="/2021/12/09/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC10%E6%9C%9F/">蓝军推送(第10期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/02</span>
+            <a class="archive-post-title" href="/2021/12/02/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC9%E6%9C%9F/">蓝军推送(第9期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/25</span>
+            <a class="archive-post-title" href="/2021/11/25/red-teaming-assessment-scoring-system-rtass/">Red Teaming Assessment Scoring System - RTASS</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/25</span>
+            <a class="archive-post-title" href="/2021/11/25/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC8%E6%9C%9F/">蓝军推送(第8期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/18</span>
+            <a class="archive-post-title" href="/2021/11/18/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC7%E6%9C%9F/">蓝军推送(第7期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/11</span>
+            <a class="archive-post-title" href="/2021/11/11/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC6%E6%9C%9F/">蓝军推送(第6期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/05</span>
+            <a class="archive-post-title" href="/2021/11/05/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC5%E6%9C%9F/">蓝军推送(第5期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/04</span>
+            <a class="archive-post-title" href="/2021/11/04/kerberos%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%BB%A5%E5%8F%8A%E6%94%BB%E5%87%BB%E9%9D%A2/">Kerberos基础知识以及攻击面</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/28</span>
+            <a class="archive-post-title" href="/2021/10/28/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC4%E6%9C%9F/">蓝军推送(第4期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/20</span>
+            <a class="archive-post-title" href="/2021/10/20/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC3%E6%9C%9F/">蓝军推送(第3期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/13</span>
+            <a class="archive-post-title" href="/2021/10/13/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC2%E6%9C%9F/">蓝军推送(第2期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span>
+            <a class="archive-post-title" href="/2021/10/09/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC1%E6%9C%9F/">蓝军推送(第1期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/23</span>
+            <a class="archive-post-title" href="/2021/07/23/processghosting-%E4%B8%80%E5%A5%97%E9%80%9A%E7%94%A8%E7%9A%84%E5%85%8D%E6%9D%80%EF%BC%8C%E8%87%AA%E5%88%A0%E9%99%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">ProcessGhosting - 一套通用的免杀，自删除解决方案</a>
+        </li>
+    
+    </div>
+</div>
+
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+        
+            <span class="sidebar-tag-name" data-tags="kerberos">
+                <span class="iconfont-archer">&#xe606;</span>
+                kerberos
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="AD">
+                <span class="iconfont-archer">&#xe606;</span>
+                AD
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="金票">
+                <span class="iconfont-archer">&#xe606;</span>
+                金票
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="银票">
+                <span class="iconfont-archer">&#xe606;</span>
+                银票
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="kerberosting">
+                <span class="iconfont-archer">&#xe606;</span>
+                kerberosting
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="ProcessGhosting">
+                <span class="iconfont-archer">&#xe606;</span>
+                ProcessGhosting
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="进程">
+                <span class="iconfont-archer">&#xe606;</span>
+                进程
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Red Teaming">
+                <span class="iconfont-archer">&#xe606;</span>
+                Red Teaming
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Scoring System">
+                <span class="iconfont-archer">&#xe606;</span>
+                Scoring System
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="ZTNA">
+                <span class="iconfont-archer">&#xe606;</span>
+                ZTNA
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Jira">
+                <span class="iconfont-archer">&#xe606;</span>
+                Jira
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="HandleKatz">
+                <span class="iconfont-archer">&#xe606;</span>
+                HandleKatz
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="lsass">
+                <span class="iconfont-archer">&#xe606;</span>
+                lsass
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="procdump">
+                <span class="iconfont-archer">&#xe606;</span>
+                procdump
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="mimikatz">
+                <span class="iconfont-archer">&#xe606;</span>
+                mimikatz
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="凭证提取">
+                <span class="iconfont-archer">&#xe606;</span>
+                凭证提取
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Exchange">
+                <span class="iconfont-archer">&#xe606;</span>
+                Exchange
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Adobe Reader">
+                <span class="iconfont-archer">&#xe606;</span>
+                Adobe Reader
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="NimlineWhispers">
+                <span class="iconfont-archer">&#xe606;</span>
+                NimlineWhispers
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Bypass AMSI">
+                <span class="iconfont-archer">&#xe606;</span>
+                Bypass AMSI
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="本地提权">
+                <span class="iconfont-archer">&#xe606;</span>
+                本地提权
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="LDAPmonitor">
+                <span class="iconfont-archer">&#xe606;</span>
+                LDAPmonitor
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Payload">
+                <span class="iconfont-archer">&#xe606;</span>
+                Payload
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Bypass">
+                <span class="iconfont-archer">&#xe606;</span>
+                Bypass
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="chm">
+                <span class="iconfont-archer">&#xe606;</span>
+                chm
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="TeamTNT">
+                <span class="iconfont-archer">&#xe606;</span>
+                TeamTNT
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="DBIR">
+                <span class="iconfont-archer">&#xe606;</span>
+                DBIR
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="魔形女">
+                <span class="iconfont-archer">&#xe606;</span>
+                魔形女
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="delete-self-poc">
+                <span class="iconfont-archer">&#xe606;</span>
+                delete-self-poc
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="SharpUnhooker">
+                <span class="iconfont-archer">&#xe606;</span>
+                SharpUnhooker
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Sherlock">
+                <span class="iconfont-archer">&#xe606;</span>
+                Sherlock
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Collection">
+                <span class="iconfont-archer">&#xe606;</span>
+                Collection
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="CVE">
+                <span class="iconfont-archer">&#xe606;</span>
+                CVE
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Excel">
+                <span class="iconfont-archer">&#xe606;</span>
+                Excel
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="rpcfirewall">
+                <span class="iconfont-archer">&#xe606;</span>
+                rpcfirewall
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="dll镂空">
+                <span class="iconfont-archer">&#xe606;</span>
+                dll镂空
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="CVE-2021-37580">
+                <span class="iconfont-archer">&#xe606;</span>
+                CVE-2021-37580
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="lsarelayx">
+                <span class="iconfont-archer">&#xe606;</span>
+                lsarelayx
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="CobaltStrike">
+                <span class="iconfont-archer">&#xe606;</span>
+                CobaltStrike
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="RCE">
+                <span class="iconfont-archer">&#xe606;</span>
+                RCE
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="DACL">
+                <span class="iconfont-archer">&#xe606;</span>
+                DACL
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="蜜罐">
+                <span class="iconfont-archer">&#xe606;</span>
+                蜜罐
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="RE">
+                <span class="iconfont-archer">&#xe606;</span>
+                RE
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="E-office">
+                <span class="iconfont-archer">&#xe606;</span>
+                E-office
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="tools">
+                <span class="iconfont-archer">&#xe606;</span>
+                tools
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Windows">
+                <span class="iconfont-archer">&#xe606;</span>
+                Windows
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="LSASS">
+                <span class="iconfont-archer">&#xe606;</span>
+                LSASS
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Grafana">
+                <span class="iconfont-archer">&#xe606;</span>
+                Grafana
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="bypass">
+                <span class="iconfont-archer">&#xe606;</span>
+                bypass
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="APISIX">
+                <span class="iconfont-archer">&#xe606;</span>
+                APISIX
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="exploit">
+                <span class="iconfont-archer">&#xe606;</span>
+                exploit
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="BleedingBear">
+                <span class="iconfont-archer">&#xe606;</span>
+                BleedingBear
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="dll劫持">
+                <span class="iconfont-archer">&#xe606;</span>
+                dll劫持
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="打印机">
+                <span class="iconfont-archer">&#xe606;</span>
+                打印机
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="红蓝对抗">
+                <span class="iconfont-archer">&#xe606;</span>
+                红蓝对抗
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="RTASS">
+                <span class="iconfont-archer">&#xe606;</span>
+                RTASS
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="域渗透">
+                <span class="iconfont-archer">&#xe606;</span>
+                域渗透
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="工具">
+                <span class="iconfont-archer">&#xe606;</span>
+                工具
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Java">
+                <span class="iconfont-archer">&#xe606;</span>
+                Java
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="代码审计">
+                <span class="iconfont-archer">&#xe606;</span>
+                代码审计
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="NoPac">
+                <span class="iconfont-archer">&#xe606;</span>
+                NoPac
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="提权">
+                <span class="iconfont-archer">&#xe606;</span>
+                提权
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="VMware">
+                <span class="iconfont-archer">&#xe606;</span>
+                VMware
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="后门">
+                <span class="iconfont-archer">&#xe606;</span>
+                后门
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Xshell">
+                <span class="iconfont-archer">&#xe606;</span>
+                Xshell
+            </span>
+        
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="渗透基础">
+            <span class="iconfont-archer">&#xe60a;</span>
+            渗透基础
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="渗透技术">
+            <span class="iconfont-archer">&#xe60a;</span>
+            渗透技术
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Research">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Research
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="蓝军推送">
+            <span class="iconfont-archer">&#xe60a;</span>
+            蓝军推送
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="红蓝对抗">
+            <span class="iconfont-archer">&#xe60a;</span>
+            红蓝对抗
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="渗透工具">
+            <span class="iconfont-archer">&#xe60a;</span>
+            渗透工具
+        </span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMeta = {
+        url: "https://jd.army",
+        root: "/",
+        author: "JD.Army"
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+
+        <!-- main func -->
+        <script src="/scripts/main.js?v=20210823"></script>
+        <!-- dark mode -->
+        <script src="/scripts/dark.js?v=20210823"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+        <!-- algolia -->
+        
+        <!-- busuanzi -->
+        
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        
+        <!-- CNZZ -->
+        
+        <!-- async load share.js -->
+        
+            <script src="/scripts/share.js?v=20210823" async></script>
+        
+        <!-- mermaid -->
+        
+    </body>
+</html>

@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <!-- title -->
+
+
+    
+
+<!-- keywords -->
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="JD.Army">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="JD.Army">
+    
+        <meta name="keywords" content="JD.Army">
+    
+    <meta name="description" content="Red team of jd inc. ">
+    <meta name="description" content="之前看了基于字节码的Java代码审计工具的实现，最近终于有空可以好好看一下其是如何实现的了。本文并不会从代码出发，而是试图从字节码角度分析其可行性。 JVM简介要了解字节码首先需要对JVM有所了解，Java虚拟机并不关心Java语言，它只和字节码相关联，这一方面使得Java程序可以Run AnyWhere，另一方面也为其运行其他语言提供了支持 – 只要编译成为符合字节码规范的内容，均可以在Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于字节码的Java代码审计">
+<meta property="og:url" content="https://jd.army/2022/02/21/%E5%9F%BA%E4%BA%8E%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/index.html">
+<meta property="og:site_name" content="JD.Army">
+<meta property="og:description" content="之前看了基于字节码的Java代码审计工具的实现，最近终于有空可以好好看一下其是如何实现的了。本文并不会从代码出发，而是试图从字节码角度分析其可行性。 JVM简介要了解字节码首先需要对JVM有所了解，Java虚拟机并不关心Java语言，它只和字节码相关联，这一方面使得Java程序可以Run AnyWhere，另一方面也为其运行其他语言提供了支持 – 只要编译成为符合字节码规范的内容，均可以在Java">
+<meta property="og:locale">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/1581643921a8fe22a08be5c34de0895a.png">
+<meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20220126154212655.png">
+<meta property="og:image" content="https://wiki-1258274765.cos.ap-nanjing.myqcloud.com/wiki/imgimage-20220211004935748.png">
+<meta property="og:image" content="https://wiki-1258274765.cos.ap-nanjing.myqcloud.com/wiki/imgimage-20220211005037973.png">
+<meta property="article:published_time" content="2022-02-21T06:26:16.000Z">
+<meta property="article:modified_time" content="2022-02-25T02:45:52.819Z">
+<meta property="article:author" content="JD.Army">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="代码审计">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/1581643921a8fe22a08be5c34de0895a.png">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/assets/favicon.ico">
+    
+    <title>基于字节码的Java代码审计 · JD.Army</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
+
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
+
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20210823" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/dark.css?v=20210823" as="style">
+    <link rel="stylesheet" href="/css/dark.css" media="(prefers-color-scheme: dark)">
+    <link rel="stylesheet" href="/css/mobile.css?v=20210823" media="(max-width: 960px)">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js?v=20210823" as="script">
+    <link rel="preload" href="/scripts/dark.js?v=20210823" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <!-- algolia -->
+    
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+    
+        <body class="post-body">
+    
+        <!-- header -->
+        <header class="header header-mobile">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
+    </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        
+            <div class="header-sidebar-menu">
+        
+            
+                <div style="padding-left: 1px;">&#xe775;</div>
+            
+        </div>
+    </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href=/>JD.Army</a>
+        </span>
+    </div>
+    <!-- toggle banner for post layout -->
+    
+        
+            <div class="banner">
+        
+            <div class="blog-title header-element">
+                <a href="/">JD.Army</a>
+            </div>
+            <div class="post-title header-element">
+                <a href="#" class="post-name">基于字节码的Java代码审计</a>
+            </div>
+        </div>
+    
+</header>
+
+        <!-- fixed footer -->
+        <footer class="footer-fixed">
+    <!-- back to top button -->
+    <div class="footer-fixed-element">
+        
+            <div class="back-top back-top-hidden">
+        
+        
+            <div>&#xe639;</div>
+        
+        </div>
+    </div>
+</footer>
+
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="
+
+
+
+
+
+
+
+    height:50vh;
+
+">
+    
+    <!-- 主页  -->
+    
+        
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+                基于字节码的Java代码审计
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+                
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页 meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        
+        
+            
+        
+        
+        <span class="post-category" data-categories="渗透基础"">
+            <i class="fas fa-folder post-category-icon"></i>
+            <span class="post-category-text">
+                渗透基础
+            </span>
+        </span>
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Java">Java</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="代码审计">代码审计</a>
+    
+</div>
+
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">2.8k</span>阅读时长: <span class="post-count reading-time">11 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2022/02/21</span>
+                    <!-- busuanzi -->
+                    
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+            <div class="container container-unloaded">
+                <main class="main post-page">
+    <article class="article-entry">
+        <p>之前看了基于字节码的<code>Java</code>代码审计工具的实现，最近终于有空可以好好看一下其是如何实现的了。本文并不会从代码出发，而是试图从字节码角度分析其可行性。</p>
+<h2 id="JVM简介"><a href="#JVM简介" class="headerlink" title="JVM简介"></a>JVM简介</h2><p>要了解字节码首先需要对JVM有所了解，Java虚拟机并不关心Java语言，它只和字节码相关联，这一方面使得Java程序可以<code>Run AnyWhere</code>，另一方面也为其运行其他语言提供了支持 – 只要编译成为符合字节码规范的内容，均可以在Java虚拟机中运行。</p>
+<p>与Java类似，Java虚拟机可以操纵原始类型、引用类型两种操作类型，与之对应的是原始值以及引用值。</p>
+<p>原始类型包括：</p>
+<ul>
+<li>数值类型</li>
+<li>Boolean类型</li>
+<li>returnAddress类型 指向某个操作码（opcode）的指针</li>
+</ul>
+<p>数值的一些取值范围</p>
+<p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/1581643921a8fe22a08be5c34de0895a.png" alt="image-20220210142623710"></p>
+<p>在运行时会有如下运行时数据区：</p>
+<p><img src="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/image-20220126154212655.png" alt="image-20220126154212655"></p>
+<p>作用分别如下：</p>
+<h3 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h3><p>因为JVM的多线程是通过线程轮流切换实现的，在任何时候，Java虚拟机的一个内核只会处理一个线程，因此为了切换线程后可以记录当前执行位置需要把这个地址记录下来。如果执行的是Java代码，则这里记录的是字节码指令地址，如果是native方法的话则为null</p>
+<h3 id="虚拟机栈"><a href="#虚拟机栈" class="headerlink" title="虚拟机栈"></a>虚拟机栈</h3><p>每个方法被创建时，其都会创建一个栈帧，里面保存着局部变量表、操作数栈、动态链接等信息。在一个时间点上，只有当前执行方法的栈帧处于活动状态。及当前栈帧，该方法称为当前方法，方法所在类为当前类。</p>
+<p>局部变量表中存放虚拟机支持的数据类型，除去<code>long</code>,<code>double</code>占两个位置外，其余类型均占一个位置。它可以根据索引进行获取，在非static方法中，0位往往表示类本身。</p>
+<p>操作数栈中数据往往从局部变量表中获取，在进行方法调用前会进行出栈，作为被调用函数的局部变量。如果存在返回值，则返回值会入栈至调用函数的操作数栈中。</p>
+<h3 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h3><p>其作用类似虚拟机栈、只不过其作用对象为Native服务。</p>
+<h3 id="Java堆"><a href="#Java堆" class="headerlink" title="Java堆"></a>Java堆</h3><p>大部分Java对象实例以及数组在Java堆当中。</p>
+<h3 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h3><p>存储已被虚拟机加载 的类型信息、常量、静态变量、即时编译器编译后的代码缓存等数据。</p>
+<h3 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h3><p>存放编译期生成的字面量与符号引用，栈帧中存在有一个指向当前方法所在类型的运行时常量池的引用，一个方法若是想调用其他方法，或者访问成员变量时要用符号引用表示，此时会使用动态链接将符号引用转换为直接引用。</p>
+<p>我们重点关注方法执行时的情况，也就是虚拟机栈，首先创建下面的类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NewWorld</span></span>&#123;<br>  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">say</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a)</span></span>&#123;<br>    <span class="hljs-keyword">return</span> a;<br>  &#125;<br><br>  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">world</span><span class="hljs-params">()</span></span>&#123;<br>    <span class="hljs-keyword">int</span> b = say(<span class="hljs-number">1</span>);<br>    say(b);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>编译后使用<code>javap</code>查看其栈帧操作</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs bash">javap -c -verbose NewWorld<br>......<br>&#123;<br>  public NewWorld();<br>    descriptor: ()V<br>    flags: ACC_PUBLIC<br>    Code:<br>      stack=1, locals=1, args_size=1<br>         0: aload_0<br>         1: invokespecial <span class="hljs-comment">#1                  // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span><br>         4: <span class="hljs-built_in">return</span><br>      LineNumberTable:<br>        line 1: 0<br><br>  public int say(int);<br>    descriptor: (I)I<br>    flags: ACC_PUBLIC<br>    Code:<br>      stack=1, locals=2, args_size=2<br>         0: iload_1<br>         1: ireturn<br>      LineNumberTable:<br>        line 3: 0<br><br>  public void world();<br>    descriptor: ()V<br>    flags: ACC_PUBLIC<br>    Code:<br>      stack=2, locals=2, args_size=1<br>         0: aload_0<br>         1: iconst_1<br>         2: invokevirtual <span class="hljs-comment">#2                  // Method say:(I)I</span><br>         5: istore_1<br>         6: aload_0<br>         7: iload_1<br>         8: invokevirtual <span class="hljs-comment">#2                  // Method say:(I)I</span><br>        11: pop<br>        12: <span class="hljs-built_in">return</span><br>      LineNumberTable:<br>        line 7: 0<br>        line 8: 6<br>        line 9: 12<br>&#125;<br>......<br></code></pre></td></tr></table></figure>
+
+<p>先来看<code>world</code>方法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">0: aload_0<br>1: iconst_1<br></code></pre></td></tr></table></figure>
+
+<p><code>aload</code>表示从局部变量表中获取一个变量并压入操作数栈中，<code>aload_0</code>表示获取第<code>0</code>个变量，在非<code>static</code>方法中，这就意味着<code>this</code>或者说，当前类。</p>
+<p><code>iconst</code>表示压栈一个数值类型的常量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">2: invokevirtual <span class="hljs-comment">#2                  // Method say:(I)I</span><br></code></pre></td></tr></table></figure>
+
+<p><code>#2</code>表示链接到了运行时常量池中序号为2的位置，<code>javap</code>其实也有输出这部分内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">Constant pool:<br>   <span class="hljs-comment">#1 = Methodref          #4.#14         // java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span><br>   <span class="hljs-comment">#2 = Methodref          #3.#15         // NewWorld.say:(I)I</span><br>   <span class="hljs-comment">#3 = Class              #16            // NewWorld</span><br>   <span class="hljs-comment">#4 = Class              #17            // java/lang/Object</span><br></code></pre></td></tr></table></figure>
+
+<p><code>invokevirtual</code>表示调用一个虚函数，而符号引用表明这里调用的是<code>NewWorld.say</code>，虚函数是什么这里暂时不深入解释。进入<code>say</code>函数前，此时的操作数栈中有两个变量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">0: this<br>1: 1<br></code></pre></td></tr></table></figure>
+
+<p>进入<code>say</code>函数后，它的局部变量表就为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">0: this<br>1: 1<br></code></pre></td></tr></table></figure>
+
+<p>再看<code>say</code>函数的操作数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">0: iload_1<br>1: ireturn<br></code></pre></td></tr></table></figure>
+
+<p>首先将局部变量表中的第一个参数压入操作数栈，这里就是<code>1</code>，之后返回栈顶的数值至调用函数<code>world</code>中，回到<code>world</code>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">5: istore_1<br>6: aload_0<br>7: iload_1<br>8: invokevirtual <span class="hljs-comment">#2                  // Method say:(I)I</span><br>11: pop<br>12: <span class="hljs-built_in">return</span><br></code></pre></td></tr></table></figure>
+
+<p>此时栈中只有刚才的返回值<code>1</code>，将它赋值给局部变量表参数1后再次将局部变量表中前两个参数入栈并执行函数<code>say</code>，函数返回前调用<code>pop</code>清空操作栈。</p>
+<p>至此字节码执行一个函数的过程就结束了，这里就可以进入下一个问题了</p>
+<h2 id="使用字节码进行审计"><a href="#使用字节码进行审计" class="headerlink" title="使用字节码进行审计"></a>使用字节码进行审计</h2><p>首先看这一段代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RceYes</span></span>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">eval</span><span class="hljs-params">(String cmd)</span></span>&#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            Runtime.getRuntime().exec(cmd);<br>        &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>            e.printStackTrace();<br>        &#125;<br>    &#125;<br>  <br>  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">act</span><span class="hljs-params">(String str)</span></span>&#123;<br>    eval(str);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>如何判断这里存在漏洞呢？很显然，这里存在有危险函数<code>Runtime.getRuntime().exec</code>，而其参数<code>cmd</code>也是函数<code>eval</code>的入参，再往回看，发现<code>act</code>函数调用了<code>eval</code>，且为其提供的参数就是<code>act</code>的入参，只要<code>act</code>的参数可控，就可以达成<code>RCE</code>。据此我们可以简单得出一个规则：</p>
+<p><strong>可控参数可以传播到危险函数即可认为其存在漏洞</strong>。我们先来单独看下<code>eval</code>函数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">public void <span class="hljs-built_in">eval</span>(java.lang.String);<br>  descriptor: (Ljava/lang/String;)V<br>  flags: (0x0001) ACC_PUBLIC<br>  Code:<br>    stack=2, locals=3, args_size=2<br>       0: invokestatic  <span class="hljs-comment">#2                  // Method java/lang/Runtime.getRuntime:()Ljava/lang/Runtime;</span><br>       3: aload_1<br>       4: invokevirtual <span class="hljs-comment">#3                  // Method java/lang/Runtime.exec:(Ljava/lang/String;)Ljava/lang/Process;</span><br>......<br></code></pre></td></tr></table></figure>
+
+<p><code>aload_1</code>从局部变量表中获取1号位的参数，也就是传入<code>eval</code>的参数，并供给<code>exec</code>调用，在上文的分析中其实我们已经知道被调用函数的局部变量表的值来自与调用函数的操作数栈，如下是<code>act</code>函数内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash">public void act(java.lang.String);<br>  descriptor: (Ljava/lang/String;)V<br>  flags: (0x0001) ACC_PUBLIC<br>  Code:<br>    stack=2, locals=2, args_size=2<br>       0: aload_0<br>       1: aload_1<br>       2: invokevirtual <span class="hljs-comment">#6                  // Method eval:(Ljava/lang/String;)V</span><br>       5: <span class="hljs-built_in">return</span><br><br></code></pre></td></tr></table></figure>
+
+<p>在调用<code>eval</code>函数时会先把<code>this</code>跟局部变量表1号位参数入栈，至此不难看出，参数在不同函数之间的传递是有迹可循的 ，根据栈帧操作其实很容易就能判断出一个函数的参数是否会影响到函数体内的另一个函数</p>
+<p><img src="https://wiki-1258274765.cos.ap-nanjing.myqcloud.com/wiki/imgimage-20220211004935748.png" alt="image-20220211004935748"></p>
+<p><img src="https://wiki-1258274765.cos.ap-nanjing.myqcloud.com/wiki/imgimage-20220211005037973.png" alt="image-20220211005037973"></p>
+<p>这也就是说我们可以模拟参数在栈帧中传递，从而判断其是否可以到达危险函数位置，及可以通过模拟运行函数时过程进行代码审计。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>上文已经找到了字节码代码审计的关键，那接下来如何通过代码去实现呢？首先第一个问题，如何将<code>Class</code>文件解析成字节码指令的形式。这里就不得不提一下<code>ASM</code>了，作为字节码增强技术，它可以动态修改字节码或者是遍历类的结构，<code>ASM</code>此处就不进行深入展开了，我们单单看一下遍历类结构这一点，它会按照一定顺序逐语句对字节码进行解析，当解析到函数时我们就可以自定义一个局部变量表以及操作数栈来进行模拟操作，这一思路早在18年就已经被实现：<a target="_blank" rel="noopener" href="https://github.com/JackOfMostTrades/gadgetinspector">GadgetInspector</a> ，我们简单看下其这一部分的实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">visitVarInsn</span><span class="hljs-params">(<span class="hljs-keyword">int</span> opcode, <span class="hljs-keyword">int</span> <span class="hljs-keyword">var</span>)</span> </span>&#123;<br>    <span class="hljs-comment">// Extend local variable state to make sure we include the variable index</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = savedVariableState.localVars.size(); i &lt;= <span class="hljs-keyword">var</span>; i++) &#123;<br>        savedVariableState.localVars.add(<span class="hljs-keyword">new</span> HashSet&lt;T&gt;());<br>    &#125;<br><br>    Set&lt;T&gt; saved0;<br>    <span class="hljs-keyword">switch</span>(opcode) &#123;<br>        <span class="hljs-keyword">case</span> Opcodes.ILOAD:<br>        <span class="hljs-keyword">case</span> Opcodes.FLOAD:<br>            push();<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">case</span> Opcodes.LLOAD:<br>        <span class="hljs-keyword">case</span> Opcodes.DLOAD:<br>            push();<br>            push();<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">case</span> Opcodes.ALOAD:<br>            push(savedVariableState.localVars.get(<span class="hljs-keyword">var</span>));<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">case</span> Opcodes.ISTORE:<br>        <span class="hljs-keyword">case</span> Opcodes.FSTORE:<br>            pop();<br>            savedVariableState.localVars.set(<span class="hljs-keyword">var</span>, <span class="hljs-keyword">new</span> HashSet&lt;T&gt;());<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">case</span> Opcodes.DSTORE:<br>        <span class="hljs-keyword">case</span> Opcodes.LSTORE:<br>            pop();<br>            pop();<br>            savedVariableState.localVars.set(<span class="hljs-keyword">var</span>, <span class="hljs-keyword">new</span> HashSet&lt;T&gt;());<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">case</span> Opcodes.ASTORE:<br>            saved0 = pop();<br>            savedVariableState.localVars.set(<span class="hljs-keyword">var</span>, saved0);<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">case</span> Opcodes.RET:<br>            <span class="hljs-comment">// No effect on stack</span><br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">default</span>:<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalStateException(<span class="hljs-string">&quot;Unsupported opcode: &quot;</span> + opcode);<br>    &#125;<br><br>    <span class="hljs-keyword">super</span>.visitVarInsn(opcode, <span class="hljs-keyword">var</span>);<br><br>    sanityCheck();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>visitVarInsn</code>表示观察到有从局部变量表中获取或写入数据的操作码时进行的操作，<code>opcode</code>是具体操作数，<code>var</code>表示要操作第几个变量。它首先判断自定义的本地变量表大小是否不够<code>var</code>的调用，不够则进行增加，注意，这里增加的是空值，其实在<code>GadgetInspector</code>中，自定义的<code>LocalVar,stackVars</code>中并不会存真实的值。这里其实就是按照JVM规范实现了局部变量表与操作数栈间的数据流动。有了数据流动，再分析调用函数的传参时其操作数栈也能明确了。于是，第二个问题也来了，<code>ASM</code>是对单个<code>Class</code>或者<code>Method</code>进行分析的，也就是说当我们发现一个函数体中的被调函数可以被污染时，我们是无法进入被调函数进行分析的，所以我们需要提前做好一件事，找出所有方法调用，并将其逆序排列。这样子首先被分析的函数肯定是调用链的底层，当它的参数可以污染到危险函数时再判断其调用函数的参数是否可以污染它，至此完整的一条链路就浮现而出了。</p>
+<h2 id="总结与想法"><a href="#总结与想法" class="headerlink" title="总结与想法"></a>总结与想法</h2><p>总的来说先了解原理在看工具会发现容易理解了不少。除了上文提到了工具，有许多师傅依据与此发布了不少实用的工具，例如 <a target="_blank" rel="noopener" href="https://github.com/4ra1n/SpringInspector">SpringInspector</a>,<a target="_blank" rel="noopener" href="https://github.com/Er1cccc/ACAF">ACAF</a>等。其实其核心在于构建出一个”数据库“，保存着方法与方法、方法与类之间的关系，然后通过查询找到符合条件的触发点。这不禁让人想起另一款工具 – <code>CodeQL</code>，它在分析源代码时也是很实用了，那有没有一种方式可以把这两种方法联动起来呢？笔者因此诞生了一个略微有些不切实际的想法：为<code>GadgeInspector</code>实现一个<code>QL</code>解析器，使部分<code>CodeQL</code>的语句可以被解析运行，这样一方面不需要每次污点查询不同漏洞都对源码进行修改，另一方面不需要为两个工具准备不同的检测语句。想法是简单的，但是实现起来却碰到了难题：语义分析。笔者对编译原理所知了了，只能暂时放弃这个想法了~</p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/7058">https://xz.aliyun.com/t/7058</a></li>
+<li><a target="_blank" rel="noopener" href="https://4ra1n.love/post/zA8rsm1ne/#%E6%80%BB%E7%BB%93">https://4ra1n.love/post/zA8rsm1ne/#%E6%80%BB%E7%BB%93</a></li>
+<li><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/10756">https://xz.aliyun.com/t/10756</a></li>
+<li>《Java虚拟机规范》</li>
+</ul>
+
+    </article>
+    <!-- license -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://jd.army">JD.Army</a>
+            <p>原文链接：<a href="https://jd.army/2022/02/21/%E5%9F%BA%E4%BA%8E%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">https://jd.army/2022/02/21/%E5%9F%BA%E4%BA%8E%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/</a>
+            <p>发表日期：<a href="https://jd.army/2022/02/21/%E5%9F%BA%E4%BA%8E%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">February 21st 2022, 2:26:16 pm</a>
+            <p>更新日期：<a href="https://jd.army/2022/02/21/%E5%9F%BA%E4%BA%8E%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">February 25th 2022, 10:45:52 am</a>
+            <p>版权声明：本文采用<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href="/2022/02/24/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC16%E6%9C%9F/" title="蓝军推送(第16期)">
+                    <div class="nextTitle">蓝军推送(第16期)</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2022/02/19/%E2%80%9C%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97%E6%BC%94%E7%BB%83%E8%AF%84%E5%88%86%E7%B3%BB%E7%BB%9F%E2%80%9D%E5%BC%80%E6%BA%90%E6%A1%86%E6%9E%B6%20(preview)/" title="“红蓝对抗演练评分系统”开源框架 (Preview)">
+                    <div class="prevTitle">“红蓝对抗演练评分系统”开源框架 (Preview)</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- comment -->
+    
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+
+            
+    <div id="disqus_thread"></div>
+    <script>
+        /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+        
+        var disqus_config = function () {
+        this.page.url = "https://jd.army/2022/02/21/%E5%9F%BA%E4%BA%8E%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/";  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = "基于字节码的Java代码审计"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        
+        (function () { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://jdarmy.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+            
+
+            
+
+            <!-- utteranc评论 -->
+
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+
+            
+            
+
+        </div>
+        <script>
+            setInterval(()=>{
+                var disqus_thread = document.getElementById("disqus_thread");
+            disqus_thread.getElementsByTagName("iframe")[0].hidden = true;
+            },2000);
+        </script>
+    
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    
+    <!-- Mathjax -->
+    
+</main>
+
+                <!-- profile -->
+                
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+        <div class="social">
+            
+    
+        
+            
+                <a href="mailto:Master@JD.Army" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/JDArmy" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+
+        </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    
+    <!-- 不蒜子  -->
+    
+        <div class="busuanzi-container">
+            
+             
+                <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+            
+        </div>
+    	
+</footer>
+
+        </div>
+        <!-- toc -->
+        
+            <div class="toc-wrapper toc-wrapper-loding" style=
+
+
+
+
+
+
+
+    top:50vh;
+
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">JVM简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8"><span class="toc-number">1.1.</span> <span class="toc-text">程序计数器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88"><span class="toc-number">1.2.</span> <span class="toc-text">虚拟机栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88"><span class="toc-number">1.3.</span> <span class="toc-text">本地方法栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java%E5%A0%86"><span class="toc-number">1.4.</span> <span class="toc-text">Java堆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E5%8C%BA"><span class="toc-number">1.5.</span> <span class="toc-text">方法区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0"><span class="toc-number">1.6.</span> <span class="toc-text">运行时常量池</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%AD%97%E8%8A%82%E7%A0%81%E8%BF%9B%E8%A1%8C%E5%AE%A1%E8%AE%A1"><span class="toc-number">2.</span> <span class="toc-text">使用字节码进行审计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.</span> <span class="toc-text">实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%E4%B8%8E%E6%83%B3%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">总结与想法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="toc-number">5.</span> <span class="toc-text">参考文章</span></a></li></ol>
+            </div>
+        
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 23
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+        
+            
+            
+            <div class="archive-year"> 2022 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/24</span>
+            <a class="archive-post-title" href="/2022/02/24/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC16%E6%9C%9F/">蓝军推送(第16期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/21</span>
+            <a class="archive-post-title" href="/2022/02/21/%E5%9F%BA%E4%BA%8E%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">基于字节码的Java代码审计</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/19</span>
+            <a class="archive-post-title" href="/2022/02/19/%E2%80%9C%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97%E6%BC%94%E7%BB%83%E8%AF%84%E5%88%86%E7%B3%BB%E7%BB%9F%E2%80%9D%E5%BC%80%E6%BA%90%E6%A1%86%E6%9E%B6%20(preview)/">“红蓝对抗演练评分系统”开源框架 (Preview)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/18</span>
+            <a class="archive-post-title" href="/2022/02/18/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC15%E6%9C%9F/">蓝军推送(第15期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/17</span>
+            <a class="archive-post-title" href="/2022/02/17/%E5%9F%9F%E5%86%85%E7%94%A8%E6%88%B7%E3%80%81%E7%BB%84%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B7%A5%E5%85%B7SamrSearch/">域内用户、组信息收集工具SamrSearch</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/16</span>
+            <a class="archive-post-title" href="/2022/02/16/%E6%9B%B4%E5%87%86%E7%A1%AE%E3%80%81%E5%85%A8%E9%9D%A2%E7%9A%84NoPac%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F%E5%99%A8/">更准确、全面的NoPac漏洞扫描器</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/10</span>
+            <a class="archive-post-title" href="/2022/02/10/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC14%E6%9C%9F/">蓝军推送(第14期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/20</span>
+            <a class="archive-post-title" href="/2022/01/20/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC13%E6%9C%9F/">蓝军推送(第13期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/14</span>
+            <a class="archive-post-title" href="/2022/01/14/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC12%E6%9C%9F/">蓝军推送(第12期)</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2021 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/29</span>
+            <a class="archive-post-title" href="/2021/12/29/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC11%E6%9C%9F/">蓝军推送(第11期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/09</span>
+            <a class="archive-post-title" href="/2021/12/09/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC10%E6%9C%9F/">蓝军推送(第10期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/02</span>
+            <a class="archive-post-title" href="/2021/12/02/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC9%E6%9C%9F/">蓝军推送(第9期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/25</span>
+            <a class="archive-post-title" href="/2021/11/25/red-teaming-assessment-scoring-system-rtass/">Red Teaming Assessment Scoring System - RTASS</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/25</span>
+            <a class="archive-post-title" href="/2021/11/25/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC8%E6%9C%9F/">蓝军推送(第8期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/18</span>
+            <a class="archive-post-title" href="/2021/11/18/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC7%E6%9C%9F/">蓝军推送(第7期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/11</span>
+            <a class="archive-post-title" href="/2021/11/11/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC6%E6%9C%9F/">蓝军推送(第6期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/05</span>
+            <a class="archive-post-title" href="/2021/11/05/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC5%E6%9C%9F/">蓝军推送(第5期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/04</span>
+            <a class="archive-post-title" href="/2021/11/04/kerberos%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%BB%A5%E5%8F%8A%E6%94%BB%E5%87%BB%E9%9D%A2/">Kerberos基础知识以及攻击面</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/28</span>
+            <a class="archive-post-title" href="/2021/10/28/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC4%E6%9C%9F/">蓝军推送(第4期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/20</span>
+            <a class="archive-post-title" href="/2021/10/20/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC3%E6%9C%9F/">蓝军推送(第3期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/13</span>
+            <a class="archive-post-title" href="/2021/10/13/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC2%E6%9C%9F/">蓝军推送(第2期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span>
+            <a class="archive-post-title" href="/2021/10/09/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC1%E6%9C%9F/">蓝军推送(第1期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/23</span>
+            <a class="archive-post-title" href="/2021/07/23/processghosting-%E4%B8%80%E5%A5%97%E9%80%9A%E7%94%A8%E7%9A%84%E5%85%8D%E6%9D%80%EF%BC%8C%E8%87%AA%E5%88%A0%E9%99%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">ProcessGhosting - 一套通用的免杀，自删除解决方案</a>
+        </li>
+    
+    </div>
+</div>
+
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+        
+            <span class="sidebar-tag-name" data-tags="kerberos">
+                <span class="iconfont-archer">&#xe606;</span>
+                kerberos
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="AD">
+                <span class="iconfont-archer">&#xe606;</span>
+                AD
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="金票">
+                <span class="iconfont-archer">&#xe606;</span>
+                金票
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="银票">
+                <span class="iconfont-archer">&#xe606;</span>
+                银票
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="kerberosting">
+                <span class="iconfont-archer">&#xe606;</span>
+                kerberosting
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="ProcessGhosting">
+                <span class="iconfont-archer">&#xe606;</span>
+                ProcessGhosting
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="进程">
+                <span class="iconfont-archer">&#xe606;</span>
+                进程
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Red Teaming">
+                <span class="iconfont-archer">&#xe606;</span>
+                Red Teaming
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Scoring System">
+                <span class="iconfont-archer">&#xe606;</span>
+                Scoring System
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="ZTNA">
+                <span class="iconfont-archer">&#xe606;</span>
+                ZTNA
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Jira">
+                <span class="iconfont-archer">&#xe606;</span>
+                Jira
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="HandleKatz">
+                <span class="iconfont-archer">&#xe606;</span>
+                HandleKatz
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="lsass">
+                <span class="iconfont-archer">&#xe606;</span>
+                lsass
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="procdump">
+                <span class="iconfont-archer">&#xe606;</span>
+                procdump
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="mimikatz">
+                <span class="iconfont-archer">&#xe606;</span>
+                mimikatz
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="凭证提取">
+                <span class="iconfont-archer">&#xe606;</span>
+                凭证提取
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Exchange">
+                <span class="iconfont-archer">&#xe606;</span>
+                Exchange
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Adobe Reader">
+                <span class="iconfont-archer">&#xe606;</span>
+                Adobe Reader
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="NimlineWhispers">
+                <span class="iconfont-archer">&#xe606;</span>
+                NimlineWhispers
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Bypass AMSI">
+                <span class="iconfont-archer">&#xe606;</span>
+                Bypass AMSI
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="本地提权">
+                <span class="iconfont-archer">&#xe606;</span>
+                本地提权
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="LDAPmonitor">
+                <span class="iconfont-archer">&#xe606;</span>
+                LDAPmonitor
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Payload">
+                <span class="iconfont-archer">&#xe606;</span>
+                Payload
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Bypass">
+                <span class="iconfont-archer">&#xe606;</span>
+                Bypass
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="chm">
+                <span class="iconfont-archer">&#xe606;</span>
+                chm
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="TeamTNT">
+                <span class="iconfont-archer">&#xe606;</span>
+                TeamTNT
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="DBIR">
+                <span class="iconfont-archer">&#xe606;</span>
+                DBIR
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="魔形女">
+                <span class="iconfont-archer">&#xe606;</span>
+                魔形女
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="delete-self-poc">
+                <span class="iconfont-archer">&#xe606;</span>
+                delete-self-poc
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="SharpUnhooker">
+                <span class="iconfont-archer">&#xe606;</span>
+                SharpUnhooker
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Sherlock">
+                <span class="iconfont-archer">&#xe606;</span>
+                Sherlock
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Collection">
+                <span class="iconfont-archer">&#xe606;</span>
+                Collection
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="CVE">
+                <span class="iconfont-archer">&#xe606;</span>
+                CVE
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Excel">
+                <span class="iconfont-archer">&#xe606;</span>
+                Excel
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="rpcfirewall">
+                <span class="iconfont-archer">&#xe606;</span>
+                rpcfirewall
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="dll镂空">
+                <span class="iconfont-archer">&#xe606;</span>
+                dll镂空
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="CVE-2021-37580">
+                <span class="iconfont-archer">&#xe606;</span>
+                CVE-2021-37580
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="lsarelayx">
+                <span class="iconfont-archer">&#xe606;</span>
+                lsarelayx
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="CobaltStrike">
+                <span class="iconfont-archer">&#xe606;</span>
+                CobaltStrike
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="RCE">
+                <span class="iconfont-archer">&#xe606;</span>
+                RCE
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="DACL">
+                <span class="iconfont-archer">&#xe606;</span>
+                DACL
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="蜜罐">
+                <span class="iconfont-archer">&#xe606;</span>
+                蜜罐
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="RE">
+                <span class="iconfont-archer">&#xe606;</span>
+                RE
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="E-office">
+                <span class="iconfont-archer">&#xe606;</span>
+                E-office
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="tools">
+                <span class="iconfont-archer">&#xe606;</span>
+                tools
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Windows">
+                <span class="iconfont-archer">&#xe606;</span>
+                Windows
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="LSASS">
+                <span class="iconfont-archer">&#xe606;</span>
+                LSASS
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Grafana">
+                <span class="iconfont-archer">&#xe606;</span>
+                Grafana
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="bypass">
+                <span class="iconfont-archer">&#xe606;</span>
+                bypass
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="APISIX">
+                <span class="iconfont-archer">&#xe606;</span>
+                APISIX
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="exploit">
+                <span class="iconfont-archer">&#xe606;</span>
+                exploit
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="BleedingBear">
+                <span class="iconfont-archer">&#xe606;</span>
+                BleedingBear
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="dll劫持">
+                <span class="iconfont-archer">&#xe606;</span>
+                dll劫持
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="打印机">
+                <span class="iconfont-archer">&#xe606;</span>
+                打印机
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="红蓝对抗">
+                <span class="iconfont-archer">&#xe606;</span>
+                红蓝对抗
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="RTASS">
+                <span class="iconfont-archer">&#xe606;</span>
+                RTASS
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="域渗透">
+                <span class="iconfont-archer">&#xe606;</span>
+                域渗透
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="工具">
+                <span class="iconfont-archer">&#xe606;</span>
+                工具
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Java">
+                <span class="iconfont-archer">&#xe606;</span>
+                Java
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="代码审计">
+                <span class="iconfont-archer">&#xe606;</span>
+                代码审计
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="NoPac">
+                <span class="iconfont-archer">&#xe606;</span>
+                NoPac
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="提权">
+                <span class="iconfont-archer">&#xe606;</span>
+                提权
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="VMware">
+                <span class="iconfont-archer">&#xe606;</span>
+                VMware
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="后门">
+                <span class="iconfont-archer">&#xe606;</span>
+                后门
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Xshell">
+                <span class="iconfont-archer">&#xe606;</span>
+                Xshell
+            </span>
+        
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="渗透基础">
+            <span class="iconfont-archer">&#xe60a;</span>
+            渗透基础
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="渗透技术">
+            <span class="iconfont-archer">&#xe60a;</span>
+            渗透技术
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Research">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Research
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="蓝军推送">
+            <span class="iconfont-archer">&#xe60a;</span>
+            蓝军推送
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="红蓝对抗">
+            <span class="iconfont-archer">&#xe60a;</span>
+            红蓝对抗
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="渗透工具">
+            <span class="iconfont-archer">&#xe60a;</span>
+            渗透工具
+        </span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMeta = {
+        url: "https://jd.army",
+        root: "/",
+        author: "JD.Army"
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+
+        <!-- main func -->
+        <script src="/scripts/main.js?v=20210823"></script>
+        <!-- dark mode -->
+        <script src="/scripts/dark.js?v=20210823"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+        <!-- algolia -->
+        
+        <!-- busuanzi -->
+        
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        
+        <!-- CNZZ -->
+        
+        <!-- async load share.js -->
+        
+            <script src="/scripts/share.js?v=20210823" async></script>
+        
+        <!-- mermaid -->
+        
+    </body>
+</html>
