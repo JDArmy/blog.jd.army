@@ -1,0 +1,2146 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <!-- title -->
+
+
+    
+
+<!-- keywords -->
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="JD.Army">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="JD.Army">
+    
+        <meta name="keywords" content="JD.Army">
+    
+    <meta name="description" content="Red team of jd inc. ">
+    <meta name="description" content="[toc] WebServer特征本文简单介绍了Cobalt Stike 4.4版本的一些特征以及缓解措施。 证书特征以及流量特征三种方式都可以，一定要改。 12345678910111213141516171819202122https-certificate &amp;#123;        ## Option 1) Trusted and Signed Certificate    ## Use">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CobaltStrike WebServer特征分析">
+<meta property="og:url" content="https://jd.army/2022/06/01/CobaltStrike%20WebServer%E7%89%B9%E5%BE%81%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="JD.Army">
+<meta property="og:description" content="[toc] WebServer特征本文简单介绍了Cobalt Stike 4.4版本的一些特征以及缓解措施。 证书特征以及流量特征三种方式都可以，一定要改。 12345678910111213141516171819202122https-certificate &amp;#123;        ## Option 1) Trusted and Signed Certificate    ## Use">
+<meta property="og:locale">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/9725e6b1c895ec53b6efa38688a8b351.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/961c5c717bb2571e7d69a8dd5354915d.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/fcfcc669c7476c0f7f709f33dbc330fc.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/ea4501d24315fecaee493db80d3aa719.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/57a30b1c286fd0f6661c9311c7ca01b3.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/c26f1b02f46e0df71b8e2b78bfb4031b.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/569f67139e21c44fc6cb5738f7c30565.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/41b64e2d48db35c8fa1d6315d3cca5fc.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/d6b4316c2b29be019cdb41c178a26154.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/d08761189988e125a483b0241ad38b24.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/64d75e5f873232f9e7ebab5aabf59974.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/c04eb46fca32f74113804f4f3cfa15c7.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/d82b6dc35f4de10fb9c3ff9900dbbd34.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/047f0fe37839421a2911a22c39259daf.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/462be9b76dd16cc3d644c80b50bb94b6.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/ae1fd72922e080855578ca31395d2b63.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/31c421c33b8335f996341f4737396ad9.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/3beadd27511f0f51a3d45128c66b3c7c.png">
+<meta property="article:published_time" content="2022-06-01T02:08:16.000Z">
+<meta property="article:modified_time" content="2022-10-24T05:58:47.559Z">
+<meta property="article:author" content="JD.Army">
+<meta property="article:tag" content="cs">
+<meta property="article:tag" content="C2">
+<meta property="article:tag" content="流量">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/9725e6b1c895ec53b6efa38688a8b351.png">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/assets/favicon.ico">
+    
+    <title>CobaltStrike WebServer特征分析 · JD.Army</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
+
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
+
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20210823" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/dark.css?v=20210823" as="style">
+    <link rel="stylesheet" href="/css/dark.css" media="(prefers-color-scheme: dark)">
+    <link rel="stylesheet" href="/css/mobile.css?v=20210823" media="(max-width: 960px)">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js?v=20210823" as="script">
+    <link rel="preload" href="/scripts/dark.js?v=20210823" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <!-- algolia -->
+    
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+    
+        <body class="post-body">
+    
+        <!-- header -->
+        <header class="header header-mobile">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
+    </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        
+            <div class="header-sidebar-menu">
+        
+            
+                <div style="padding-left: 1px;">&#xe775;</div>
+            
+        </div>
+    </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href=/>JD.Army</a>
+        </span>
+    </div>
+    <!-- toggle banner for post layout -->
+    
+        
+            <div class="banner">
+        
+            <div class="blog-title header-element">
+                <a href="/">JD.Army</a>
+            </div>
+            <div class="post-title header-element">
+                <a href="#" class="post-name">CobaltStrike WebServer特征分析</a>
+            </div>
+        </div>
+    
+</header>
+
+        <!-- fixed footer -->
+        <footer class="footer-fixed">
+    <!-- back to top button -->
+    <div class="footer-fixed-element">
+        
+            <div class="back-top back-top-hidden">
+        
+        
+            <div>&#xe639;</div>
+        
+        </div>
+    </div>
+</footer>
+
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="
+
+
+
+
+
+
+
+    height:50vh;
+
+">
+    
+    <!-- 主页  -->
+    
+        
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+                CobaltStrike WebServer特征分析
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+                
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页 meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        
+        
+            
+        
+        
+        <span class="post-category" data-categories="渗透工具"">
+            <i class="fas fa-folder post-category-icon"></i>
+            <span class="post-category-text">
+                渗透工具
+            </span>
+        </span>
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="cs">cs</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="C2">C2</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="流量">流量</a>
+    
+</div>
+
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">1.5k</span>阅读时长: <span class="post-count reading-time">6 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2022/06/01</span>
+                    <!-- busuanzi -->
+                    
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+            <div class="container container-unloaded">
+                <main class="main post-page">
+    <article class="article-entry">
+        <p>[toc]</p>
+<h1 id="WebServer特征"><a href="#WebServer特征" class="headerlink" title="WebServer特征"></a>WebServer特征</h1><p>本文简单介绍了Cobalt Stike 4.4版本的一些特征以及缓解措施。</p>
+<h2 id="证书特征以及流量特征"><a href="#证书特征以及流量特征" class="headerlink" title="证书特征以及流量特征"></a>证书特征以及流量特征</h2><p>三种方式都可以，一定要改。</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">https-certificate &#123;<br>    <br>    ## <span class="hljs-keyword">Option</span> <span class="hljs-number">1</span>) <span class="hljs-keyword">Trusted</span> <span class="hljs-keyword">and</span> Signed Certificate<br>    ## Use keytool <span class="hljs-keyword">to</span> <span class="hljs-keyword">create</span> a Java Keystore file. <br>    ## Refer <span class="hljs-keyword">to</span> https://www.cobaltstrike.com/help-malleable-c2#validssl<br>    ## <span class="hljs-keyword">or</span> https://github.com/killswitch-GUI/CobaltStrike-ToolKit/blob/master/HTTPsC2DoneRight.sh<br>   <br>    ## <span class="hljs-keyword">Option</span> <span class="hljs-number">2</span>) <span class="hljs-keyword">Create</span> your own Self-Signed Certificate<br>    ## Use keytool <span class="hljs-keyword">to</span> <span class="hljs-keyword">import</span> your own self signed certificates<br><br>    <span class="hljs-keyword">set</span> keystore &quot;./cobaltstrike.store&quot;;<br>    <span class="hljs-keyword">set</span> <span class="hljs-keyword">password</span> &quot;112233&quot;;<br><br>    ## <span class="hljs-keyword">Option</span> <span class="hljs-number">3</span>) Cobalt Strike Self-Signed Certificate<br>    #<span class="hljs-keyword">set</span> C   &quot;CN&quot;;<br>    #<span class="hljs-keyword">set</span> CN  &quot;*.jd.com&quot;;<br>    #<span class="hljs-keyword">set</span> O   &quot;BEIJING JINGDONG SHANGKE INFORMATION TECHNOLOGY CO., LTD.&quot;;<br>    #<span class="hljs-keyword">set</span> OU  &quot;Mobile&quot;;<br>    #<span class="hljs-keyword">set</span> ST  &quot;beijing&quot;;<br>    #<span class="hljs-keyword">set</span> L   &quot;beijing&quot;;<br>    #<span class="hljs-keyword">set</span> validity &quot;365&quot;;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>证书修改之后，数据包也要改。</p>
+<h2 id="webserver处理逻辑漏洞"><a href="#webserver处理逻辑漏洞" class="headerlink" title="webserver处理逻辑漏洞"></a>webserver处理逻辑漏洞</h2><h3 id="请求状态码异常"><a href="#请求状态码异常" class="headerlink" title="请求状态码异常"></a>请求状态码异常</h3><p>正常的服务器对于uri的开头不为/的情况，一般都会产生400的状态。</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/9725e6b1c895ec53b6efa38688a8b351.png" alt="image-20220526222654379"></p>
+<p>而teamserver在处理的时候，返回了404，</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/961c5c717bb2571e7d69a8dd5354915d.png"></p>
+<p>在处理OPTIONS请求时候，更是uri都不看，直接返回200，并且在后面会加上Allow: OPTIONS,GET,HEAD,POST</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/fcfcc669c7476c0f7f709f33dbc330fc.png" alt="image-20220527125856996"></p>
+<p>正常的网站感觉还是干不出来这种事情的。</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/ea4501d24315fecaee493db80d3aa719.png" alt="image-20220527130106960"></p>
+<h3 id="beacon-amp-stager-uri异常访问"><a href="#beacon-amp-stager-uri异常访问" class="headerlink" title="beacon&amp;stager uri异常访问"></a>beacon&amp;stager uri异常访问</h3><p>对于更特殊的请求，类似的情况如下，更是直接暴露了profile的http配置以及beacon。</p>
+<p>profile的流量情况：</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/57a30b1c286fd0f6661c9311c7ca01b3.png" alt="image-20220527130449921"></p>
+<p>beacon：</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/c26f1b02f46e0df71b8e2b78bfb4031b.png" alt="image-20220526184239394"></p>
+<h3 id="uri匹配问题"><a href="#uri匹配问题" class="headerlink" title="uri匹配问题"></a>uri匹配问题</h3><p>可以看到对于beacon.http-get、beacon.http-post的uri后面可以随意增加的，profile很灵活导致了webserver没办法做精准的匹配。</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/569f67139e21c44fc6cb5738f7c30565.png" alt="image-20220527153113217"></p>
+<h2 id="checksum8特征"><a href="#checksum8特征" class="headerlink" title="checksum8特征"></a>checksum8特征</h2><p>checksum8算法可以匹配多个值，如aaa9等，个人理解本意是在profile没有设置uri的时候，具有一定的随机性，多个uri都可以获取beacon，但是问题在于profile中 set uri之后，该算法依然可用（可能为了兼容msf的请求），配合默认解密方法可以获取完整的配置。</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/41b64e2d48db35c8fa1d6315d3cca5fc.png" alt="image-20220527161242273"></p>
+<h1 id="WebServer流程、特征分析"><a href="#WebServer流程、特征分析" class="headerlink" title="WebServer流程、特征分析"></a>WebServer流程、特征分析</h1><h2 id="UA校验"><a href="#UA校验" class="headerlink" title="UA校验"></a>UA校验</h2><p>我们对核心逻辑_serve进行简单的分析。可以看到先经过了一个UA的黑白名单，可以在profile中进行配置。默认黑名单有curl* lynx* wget*。</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/d6b4316c2b29be019cdb41c178a26154.png" alt="image-20220527132117861">如果不符合UA检测，则返回404，并在console中输出。</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/d08761189988e125a483b0241ad38b24.png" alt="image-20220527132432748"></p>
+<h2 id="处理OPTIONS请求"><a href="#处理OPTIONS请求" class="headerlink" title="处理OPTIONS请求"></a>处理OPTIONS请求</h2><p>这块发现teamserver是没有对uri做校验的，直接返回200，并添加了一个Allow的header。</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/64d75e5f873232f9e7ebab5aabf59974.png" alt="image-20220527125758640"></p>
+<h2 id="webserver核心逻辑"><a href="#webserver核心逻辑" class="headerlink" title="webserver核心逻辑"></a>webserver核心逻辑</h2><p>Webserver封装了一个名字叫hook的Map，里面push了多个WebService的实现，Map的key为uri，在监听创建的时候，默认会push上述4个WebService进去。</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">beacon.<span class="hljs-keyword">http</span>-<span class="hljs-built_in">get</span><br>stager<br>stager64<br>beacon.<span class="hljs-keyword">http</span>-<span class="hljs-built_in">post</span><br></code></pre></td></tr></table></figure>
+
+<p>其中beacon*类型为MalleableHOOK，负责处理beacon的通讯，如心跳，命令执行等，stager*类型为MalleableStager，负责推送beacon。</p>
+<p>当通过UA检测后区分了7种情况：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">1</span>.匹配响应一般的uri，用于host file，powershell script等一些情况 （beacon&amp;stager uri异常访问的原因）<br><span class="hljs-attribute">2</span>.匹配响应用户配置的beacon.post/get,stager/stagerx<span class="hljs-number">64</span>的请求<br><span class="hljs-attribute">3</span>.匹配响应目录的uri，自动补全结尾的/，没有找到场景<br><span class="hljs-attribute">4</span>.匹配以http://开始的uri，没有找到场景<br><span class="hljs-attribute">5</span>.匹配stager<span class="hljs-number">64</span>的uri，主要用于响应<span class="hljs-number">64</span>位场景下checksum<span class="hljs-number">8</span>算法生成的uri（uri长度有限制，checksum<span class="hljs-number">8</span>特征的原因）<br><span class="hljs-attribute">6</span>.匹配stager的uri，主要用于响应<span class="hljs-number">32</span>位场景下checksum<span class="hljs-number">8</span>算法生成的uri（uri长度有限制，checksum<span class="hljs-number">8</span>特征的原因）<br><span class="hljs-attribute">7</span>.所有条件轮空的处理<br></code></pre></td></tr></table></figure>
+
+<p>当第匹配到uri为hooks的key时，就会返回对应的响应，也就产生了beacon&amp;stager uri异常访问的问题。</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/c04eb46fca32f74113804f4f3cfa15c7.png" alt="image-20220527132811915"></p>
+<p>当所有条件轮空时，也就是第7种情况，会再次通过checksum8算法匹配uri是否返回beacon的响应，与上文相比，去掉了uri长度的限制。此外，也会判断是否stager关闭导致异常。如果i遍历完成，返回404，由于对uri有特殊的情况，没有判断uri是否需要以/开头。因此产生了一系列的特征。</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/d82b6dc35f4de10fb9c3ff9900dbbd34.png" alt="image-20220527151319454"></p>
+<p>这里比较有趣的是，while的条件是startsWith与isFuzzy判断，通过对WebService所有实现类进行分析。MalleableHook的isFuzzy为true。也就是说WebServer对于beacon的交互的uri在后面随便加东西都可以匹配、响应profile配置。个人感觉这也算是teamserver的特征吧。</p>
+<h1 id="特征修改"><a href="#特征修改" class="headerlink" title="特征修改"></a>特征修改</h1><p>主要处理了/的问题和checksum8的问题，其他问题暂时不处理了，头大。</p>
+<h2 id="webserver处理逻辑漏洞-1"><a href="#webserver处理逻辑漏洞-1" class="headerlink" title="webserver处理逻辑漏洞"></a>webserver处理逻辑漏洞</h2><p>请求状态码异常、beacon&amp;stager uri异常访问都是由于没有校验/的问题导致的，由于我使用的是javaagent，对于大段的代码修改比较麻烦，我选择在WebServer中serve进行修改。增加了一个/的检验，不过http://开头的请求可能会收到影响，目前还清楚是什么功能，还需要进一步测试一下。</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/047f0fe37839421a2911a22c39259daf.png" alt="image-20220526225223369"></p>
+<h2 id="checksum8特征-1"><a href="#checksum8特征-1" class="headerlink" title="checksum8特征"></a>checksum8特征</h2><p>checksum8特征有很多缓解的方法。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">1</span>.修改checkSum<span class="hljs-number">8</span>的<span class="hljs-number">92</span>L与<span class="hljs-number">93</span>L为非默认的值（可破解）<br><span class="hljs-attribute">2</span>.更换算法（成本较高）<br><span class="hljs-attribute">3</span>.固定URI（容易形成新的特征）<br><span class="hljs-attribute">4</span>.kill stager（依赖客户端操作）<br><span class="hljs-attribute">5</span>.设置host_stage（无法使用stager）<br></code></pre></td></tr></table></figure>
+
+<p>我同样在serve函数中进行了patch，废掉了checksum的匹配，缺点是必须配置profile的，可能也会有其他的问题，待测试。</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-keyword">set</span> uri_x86 <span class="hljs-comment">&quot;xx&quot;</span>;<br><span class="hljs-keyword">set</span> uri_x64 <span class="hljs-comment">&quot;xx&quot;</span>;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/462be9b76dd16cc3d644c80b50bb94b6.png" alt="image-20220527164717418"></p>
+<h2 id="javaagent实现"><a href="#javaagent实现" class="headerlink" title="javaagent实现"></a>javaagent实现</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(className.equals(<span class="hljs-string">&quot;cloudstrike/WebServer&quot;</span>))&#123;<br>       ClassPool classPool = ClassPool.getDefault();<br>       CtClass <span class="hljs-built_in">cls</span> = classPool.get(className.replace(<span class="hljs-string">&quot;/&quot;</span>,<span class="hljs-string">&quot;.&quot;</span>));<br>       CtMethod readResource = cls.getDeclaredMethod(<span class="hljs-string">&quot;serve&quot;</span>);<br>       readResource.setBody(<br>               <span class="hljs-string">&quot;&#123;&quot;</span>+<br>               <span class="hljs-string">&quot;   if(!<span class="hljs-variable">$1</span>.startsWith(\&quot;</span>/\<span class="hljs-string">&quot;)) &#123;&quot;</span> +<br>               <span class="hljs-string">&quot;       return <span class="hljs-variable">$0</span>.processResponse(<span class="hljs-variable">$1</span>, <span class="hljs-variable">$2</span>, <span class="hljs-variable">$3</span>, <span class="hljs-variable">$4</span>, false, null, new cloudstrike.Response(\&quot;</span><span class="hljs-number">400</span> Bad Request\<span class="hljs-string">&quot;, \&quot;</span>text/plain\<span class="hljs-string">&quot;, \&quot;</span>\<span class="hljs-string">&quot;));&quot;</span> +<br>               <span class="hljs-string">&quot;   &#125;&quot;</span> +<br>               <span class="hljs-string">&quot;   if(isStager(<span class="hljs-variable">$1</span>)||isStagerX64(<span class="hljs-variable">$1</span>))&#123;&quot;</span> +<br>               <span class="hljs-string">&quot;       return <span class="hljs-variable">$0</span>.processResponse(<span class="hljs-variable">$1</span>, <span class="hljs-variable">$2</span>, <span class="hljs-variable">$3</span>, <span class="hljs-variable">$4</span>, false, null, new cloudstrike.Response(\&quot;</span><span class="hljs-number">404</span> Not Found\<span class="hljs-string">&quot;, \&quot;</span>text/plain\<span class="hljs-string">&quot;, \&quot;</span>\<span class="hljs-string">&quot;));&quot;</span> +<br>               <span class="hljs-string">&quot;   &#125;&quot;</span> +<br>               <span class="hljs-string">&quot;   return handleRanges(<span class="hljs-variable">$2</span>, <span class="hljs-variable">$3</span>, <span class="hljs-variable">$0</span>._serve(<span class="hljs-variable">$1</span>, <span class="hljs-variable">$2</span>, <span class="hljs-variable">$3</span>, <span class="hljs-variable">$4</span>));&quot;</span> +<br>               <span class="hljs-string">&quot;&#125;&quot;</span>);<br>       <span class="hljs-keyword">return</span> cls.toBytecode();<br>   &#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h2><p>stager不会带出了</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/ae1fd72922e080855578ca31395d2b63.png" alt="image-20220526225335625"></p>
+<p>异常的404也顺带解决了</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/31c421c33b8335f996341f4737396ad9.png" alt="image-20220526225304337"></p>
+<p>aaa9已经无法请求</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/05/3beadd27511f0f51a3d45128c66b3c7c.png" alt="image-20220527165602354"></p>
+<h1 id="其他特征"><a href="#其他特征" class="headerlink" title="其他特征"></a>其他特征</h1><p>本文主要分析了webserver的几个特征，内存特征就不再这里提了，javaagent也是可以缓解的。4.5虽然对javaagent做了检查，但是依然很好绕过。4.6貌似server和client分开了，可能就比较麻烦了。</p>
+<p>参考</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">https:<span class="hljs-regexp">//</span>cloud.tencent.com<span class="hljs-regexp">/developer/</span>article/<span class="hljs-number">1967094</span>?from=article.detail.<span class="hljs-number">1818330</span><br>https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/Like0x/</span><span class="hljs-number">0</span>xagent<span class="hljs-regexp">/blob/m</span>ain/PreMain.java<br>http:<span class="hljs-regexp">//</span>cn-sec.com<span class="hljs-regexp">/archives/</span><span class="hljs-number">300922</span>.html checksum8<br><br></code></pre></td></tr></table></figure>
+    </article>
+    <!-- license -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://jd.army">JD.Army</a>
+            <p>原文链接：<a href="https://jd.army/2022/06/01/CobaltStrike%20WebServer%E7%89%B9%E5%BE%81%E5%88%86%E6%9E%90/">https://jd.army/2022/06/01/CobaltStrike%20WebServer%E7%89%B9%E5%BE%81%E5%88%86%E6%9E%90/</a>
+            <p>发表日期：<a href="https://jd.army/2022/06/01/CobaltStrike%20WebServer%E7%89%B9%E5%BE%81%E5%88%86%E6%9E%90/">June 1st 2022, 10:08:16 am</a>
+            <p>更新日期：<a href="https://jd.army/2022/06/01/CobaltStrike%20WebServer%E7%89%B9%E5%BE%81%E5%88%86%E6%9E%90/">October 24th 2022, 1:58:47 pm</a>
+            <p>版权声明：本文采用<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href="/2022/06/25/%E8%93%9D%E5%86%9B%E6%8A%80%E6%9C%AF%E6%8E%A8%E9%80%81-%E7%AC%AC25%E6%9C%9F/" title="蓝军技术推送-RPC最新漏洞分析、C2云函数、PetitPotam替代品">
+                    <div class="nextTitle">蓝军技术推送-RPC最新漏洞分析、C2云函数、PetitPotam替代品</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2022/05/27/%E8%93%9D%E5%86%9B%E6%8A%80%E6%9C%AF%E6%8E%A8%E9%80%81-%E7%AC%AC24%E6%9C%9F/" title="蓝军技术推送-windows域专题（KrbRelayUp、bypass机器用户添加限制、ad域渗透可视化工具）">
+                    <div class="prevTitle">蓝军技术推送-windows域专题（KrbRelayUp、bypass机器用户添加限制、ad域渗透可视化工具）</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- comment -->
+    
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+
+            
+    <div id="disqus_thread"></div>
+    <script>
+        /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+        
+        var disqus_config = function () {
+        this.page.url = "https://jd.army/2022/06/01/CobaltStrike%20WebServer%E7%89%B9%E5%BE%81%E5%88%86%E6%9E%90/";  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = "CobaltStrike WebServer特征分析"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        
+        (function () { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://jdarmy.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+            
+
+            
+
+            <!-- utteranc评论 -->
+
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+
+            
+            
+
+        </div>
+        <script>
+            setInterval(()=>{
+                var disqus_thread = document.getElementById("disqus_thread");
+            disqus_thread.getElementsByTagName("iframe")[0].hidden = true;
+            },2000);
+        </script>
+    
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    
+    <!-- Mathjax -->
+    
+</main>
+
+                <!-- profile -->
+                
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+        <div class="social">
+            
+    
+        
+            
+                <a href="mailto:Master@JD.Army" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/JDArmy" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+
+        </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    
+    <!-- 不蒜子  -->
+    
+        <div class="busuanzi-container">
+            
+             
+                <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+            
+        </div>
+    	
+</footer>
+
+        </div>
+        <!-- toc -->
+        
+            <div class="toc-wrapper toc-wrapper-loding" style=
+
+
+
+
+
+
+
+    top:50vh;
+
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#WebServer%E7%89%B9%E5%BE%81"><span class="toc-number">1.</span> <span class="toc-text">WebServer特征</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%81%E4%B9%A6%E7%89%B9%E5%BE%81%E4%BB%A5%E5%8F%8A%E6%B5%81%E9%87%8F%E7%89%B9%E5%BE%81"><span class="toc-number">1.1.</span> <span class="toc-text">证书特征以及流量特征</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webserver%E5%A4%84%E7%90%86%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.2.</span> <span class="toc-text">webserver处理逻辑漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E7%8A%B6%E6%80%81%E7%A0%81%E5%BC%82%E5%B8%B8"><span class="toc-number">1.2.1.</span> <span class="toc-text">请求状态码异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#beacon-amp-stager-uri%E5%BC%82%E5%B8%B8%E8%AE%BF%E9%97%AE"><span class="toc-number">1.2.2.</span> <span class="toc-text">beacon&amp;stager uri异常访问</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#uri%E5%8C%B9%E9%85%8D%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.3.</span> <span class="toc-text">uri匹配问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#checksum8%E7%89%B9%E5%BE%81"><span class="toc-number">1.3.</span> <span class="toc-text">checksum8特征</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#WebServer%E6%B5%81%E7%A8%8B%E3%80%81%E7%89%B9%E5%BE%81%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">WebServer流程、特征分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#UA%E6%A0%A1%E9%AA%8C"><span class="toc-number">2.1.</span> <span class="toc-text">UA校验</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%84%E7%90%86OPTIONS%E8%AF%B7%E6%B1%82"><span class="toc-number">2.2.</span> <span class="toc-text">处理OPTIONS请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webserver%E6%A0%B8%E5%BF%83%E9%80%BB%E8%BE%91"><span class="toc-number">2.3.</span> <span class="toc-text">webserver核心逻辑</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E4%BF%AE%E6%94%B9"><span class="toc-number">3.</span> <span class="toc-text">特征修改</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#webserver%E5%A4%84%E7%90%86%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E-1"><span class="toc-number">3.1.</span> <span class="toc-text">webserver处理逻辑漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#checksum8%E7%89%B9%E5%BE%81-1"><span class="toc-number">3.2.</span> <span class="toc-text">checksum8特征</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#javaagent%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.3.</span> <span class="toc-text">javaagent实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%88%E6%9E%9C"><span class="toc-number">3.4.</span> <span class="toc-text">效果</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E7%89%B9%E5%BE%81"><span class="toc-number">4.</span> <span class="toc-text">其他特征</span></a></li></ol>
+            </div>
+        
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 40
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+        
+            
+            
+            <div class="archive-year"> 2022 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/24</span>
+            <a class="archive-post-title" href="/2022/10/24/codeql-sql/">Codeql-Sql</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/10</span>
+            <a class="archive-post-title" href="/2022/10/10/Lsass%20memory%20dump/">Lsass Memory Dump</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/21</span>
+            <a class="archive-post-title" href="/2022/09/21/Java-Agent%E5%86%85%E5%AD%98%E9%A9%AC%E7%A0%94%E7%A9%B6%E5%AD%A6%E4%B9%A0/">Java Agent内存马研究学习</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/25</span>
+            <a class="archive-post-title" href="/2022/06/25/%E8%93%9D%E5%86%9B%E6%8A%80%E6%9C%AF%E6%8E%A8%E9%80%81-%E7%AC%AC25%E6%9C%9F/">蓝军技术推送-RPC最新漏洞分析、C2云函数、PetitPotam替代品</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/01</span>
+            <a class="archive-post-title" href="/2022/06/01/CobaltStrike%20WebServer%E7%89%B9%E5%BE%81%E5%88%86%E6%9E%90/">CobaltStrike WebServer特征分析</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/27</span>
+            <a class="archive-post-title" href="/2022/05/27/%E8%93%9D%E5%86%9B%E6%8A%80%E6%9C%AF%E6%8E%A8%E9%80%81-%E7%AC%AC24%E6%9C%9F/">蓝军技术推送-windows域专题（KrbRelayUp、bypass机器用户添加限制、ad域渗透可视化工具）</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/13</span>
+            <a class="archive-post-title" href="/2022/05/13/%E8%93%9D%E5%86%9B%E6%8A%80%E6%9C%AF%E6%8E%A8%E9%80%81-%E7%AC%AC23%E6%9C%9F/">蓝军技术推送-windows域专题(Azure、ADCS)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/07</span>
+            <a class="archive-post-title" href="/2022/05/07/%E5%9F%9F%E6%8E%A7%E8%A2%AB%E7%AA%81%E7%A0%B4%E7%9A%84%E5%87%A0%E7%A7%8D%E9%80%94%E5%BE%84v2/">域控被突破的几种途径V2</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/06</span>
+            <a class="archive-post-title" href="/2022/05/06/%E5%9F%9F%E6%8E%A7%E8%A2%AB%E7%AA%81%E7%A0%B4%E7%9A%84%E5%87%A0%E7%A7%8D%E9%80%94%E5%BE%84/">域控被突破的几种途径</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span>
+            <a class="archive-post-title" href="/2022/04/11/SpringCore%E5%88%86%E6%9E%90/">Spring-Core RCE分析</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/08</span>
+            <a class="archive-post-title" href="/2022/04/08/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC22%E6%9C%9F/">蓝军推送(第22期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/02</span>
+            <a class="archive-post-title" href="/2022/04/02/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC21%E6%9C%9F/">蓝军推送(第21期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/01</span>
+            <a class="archive-post-title" href="/2022/04/01/Spring4shell%E7%BB%95%E8%BF%87/">漏洞风险 | Spring4Shell通用WAF策略存在绕过风险，需尽快升级！</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/25</span>
+            <a class="archive-post-title" href="/2022/03/25/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC20%E6%9C%9F/">蓝军推送(第20期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/18</span>
+            <a class="archive-post-title" href="/2022/03/18/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC19%E6%9C%9F/">蓝军推送(第19期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/11</span>
+            <a class="archive-post-title" href="/2022/03/11/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC18%E6%9C%9F/">蓝军推送(第18期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/04</span>
+            <a class="archive-post-title" href="/2022/03/04/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC17%E6%9C%9F/">蓝军推送(第17期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/24</span>
+            <a class="archive-post-title" href="/2022/02/24/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC16%E6%9C%9F/">蓝军推送(第16期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/21</span>
+            <a class="archive-post-title" href="/2022/02/21/%E5%9F%BA%E4%BA%8E%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">基于字节码的Java代码审计</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/19</span>
+            <a class="archive-post-title" href="/2022/02/19/%E2%80%9C%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97%E6%BC%94%E7%BB%83%E8%AF%84%E5%88%86%E7%B3%BB%E7%BB%9F%E2%80%9D%E5%BC%80%E6%BA%90%E6%A1%86%E6%9E%B6%20(preview)/">“红蓝对抗演练评分系统”开源框架 (Preview)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/18</span>
+            <a class="archive-post-title" href="/2022/02/18/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC15%E6%9C%9F/">蓝军推送(第15期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/17</span>
+            <a class="archive-post-title" href="/2022/02/17/%E5%9F%9F%E5%86%85%E7%94%A8%E6%88%B7%E3%80%81%E7%BB%84%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B7%A5%E5%85%B7SamrSearch/">域内用户、组信息收集工具SamrSearch</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/16</span>
+            <a class="archive-post-title" href="/2022/02/16/%E6%9B%B4%E5%87%86%E7%A1%AE%E3%80%81%E5%85%A8%E9%9D%A2%E7%9A%84NoPac%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F%E5%99%A8/">更准确、全面的NoPac漏洞扫描器</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/10</span>
+            <a class="archive-post-title" href="/2022/02/10/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC14%E6%9C%9F/">蓝军推送(第14期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/20</span>
+            <a class="archive-post-title" href="/2022/01/20/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC13%E6%9C%9F/">蓝军推送(第13期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/14</span>
+            <a class="archive-post-title" href="/2022/01/14/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC12%E6%9C%9F/">蓝军推送(第12期)</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2021 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/29</span>
+            <a class="archive-post-title" href="/2021/12/29/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC11%E6%9C%9F/">蓝军推送(第11期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/09</span>
+            <a class="archive-post-title" href="/2021/12/09/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC10%E6%9C%9F/">蓝军推送(第10期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/02</span>
+            <a class="archive-post-title" href="/2021/12/02/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC9%E6%9C%9F/">蓝军推送(第9期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/25</span>
+            <a class="archive-post-title" href="/2021/11/25/red-teaming-assessment-scoring-system-rtass/">Red Teaming Assessment Scoring System - RTASS</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/25</span>
+            <a class="archive-post-title" href="/2021/11/25/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC8%E6%9C%9F/">蓝军推送(第8期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/18</span>
+            <a class="archive-post-title" href="/2021/11/18/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC7%E6%9C%9F/">蓝军推送(第7期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/11</span>
+            <a class="archive-post-title" href="/2021/11/11/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC6%E6%9C%9F/">蓝军推送(第6期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/05</span>
+            <a class="archive-post-title" href="/2021/11/05/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC5%E6%9C%9F/">蓝军推送(第5期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/04</span>
+            <a class="archive-post-title" href="/2021/11/04/kerberos%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%BB%A5%E5%8F%8A%E6%94%BB%E5%87%BB%E9%9D%A2/">Kerberos基础知识以及攻击面</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/28</span>
+            <a class="archive-post-title" href="/2021/10/28/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC4%E6%9C%9F/">蓝军推送(第4期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/20</span>
+            <a class="archive-post-title" href="/2021/10/20/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC3%E6%9C%9F/">蓝军推送(第3期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/13</span>
+            <a class="archive-post-title" href="/2021/10/13/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC2%E6%9C%9F/">蓝军推送(第2期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span>
+            <a class="archive-post-title" href="/2021/10/09/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC1%E6%9C%9F/">蓝军推送(第1期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/23</span>
+            <a class="archive-post-title" href="/2021/07/23/processghosting-%E4%B8%80%E5%A5%97%E9%80%9A%E7%94%A8%E7%9A%84%E5%85%8D%E6%9D%80%EF%BC%8C%E8%87%AA%E5%88%A0%E9%99%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">ProcessGhosting - 一套通用的免杀，自删除解决方案</a>
+        </li>
+    
+    </div>
+</div>
+
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+        
+            <span class="sidebar-tag-name" data-tags="kerberos">
+                <span class="iconfont-archer">&#xe606;</span>
+                kerberos
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="AD">
+                <span class="iconfont-archer">&#xe606;</span>
+                AD
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="金票">
+                <span class="iconfont-archer">&#xe606;</span>
+                金票
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="银票">
+                <span class="iconfont-archer">&#xe606;</span>
+                银票
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="kerberosting">
+                <span class="iconfont-archer">&#xe606;</span>
+                kerberosting
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="ProcessGhosting">
+                <span class="iconfont-archer">&#xe606;</span>
+                ProcessGhosting
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="进程">
+                <span class="iconfont-archer">&#xe606;</span>
+                进程
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Red Teaming">
+                <span class="iconfont-archer">&#xe606;</span>
+                Red Teaming
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Scoring System">
+                <span class="iconfont-archer">&#xe606;</span>
+                Scoring System
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="ZTNA">
+                <span class="iconfont-archer">&#xe606;</span>
+                ZTNA
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Jira">
+                <span class="iconfont-archer">&#xe606;</span>
+                Jira
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="HandleKatz">
+                <span class="iconfont-archer">&#xe606;</span>
+                HandleKatz
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="lsass">
+                <span class="iconfont-archer">&#xe606;</span>
+                lsass
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="procdump">
+                <span class="iconfont-archer">&#xe606;</span>
+                procdump
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="mimikatz">
+                <span class="iconfont-archer">&#xe606;</span>
+                mimikatz
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="凭证提取">
+                <span class="iconfont-archer">&#xe606;</span>
+                凭证提取
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Exchange">
+                <span class="iconfont-archer">&#xe606;</span>
+                Exchange
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Adobe Reader">
+                <span class="iconfont-archer">&#xe606;</span>
+                Adobe Reader
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="NimlineWhispers">
+                <span class="iconfont-archer">&#xe606;</span>
+                NimlineWhispers
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Bypass AMSI">
+                <span class="iconfont-archer">&#xe606;</span>
+                Bypass AMSI
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="本地提权">
+                <span class="iconfont-archer">&#xe606;</span>
+                本地提权
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="LDAPmonitor">
+                <span class="iconfont-archer">&#xe606;</span>
+                LDAPmonitor
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Payload">
+                <span class="iconfont-archer">&#xe606;</span>
+                Payload
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Bypass">
+                <span class="iconfont-archer">&#xe606;</span>
+                Bypass
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="chm">
+                <span class="iconfont-archer">&#xe606;</span>
+                chm
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="TeamTNT">
+                <span class="iconfont-archer">&#xe606;</span>
+                TeamTNT
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="DBIR">
+                <span class="iconfont-archer">&#xe606;</span>
+                DBIR
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="魔形女">
+                <span class="iconfont-archer">&#xe606;</span>
+                魔形女
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="delete-self-poc">
+                <span class="iconfont-archer">&#xe606;</span>
+                delete-self-poc
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="SharpUnhooker">
+                <span class="iconfont-archer">&#xe606;</span>
+                SharpUnhooker
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Sherlock">
+                <span class="iconfont-archer">&#xe606;</span>
+                Sherlock
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Collection">
+                <span class="iconfont-archer">&#xe606;</span>
+                Collection
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="CVE">
+                <span class="iconfont-archer">&#xe606;</span>
+                CVE
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Excel">
+                <span class="iconfont-archer">&#xe606;</span>
+                Excel
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="rpcfirewall">
+                <span class="iconfont-archer">&#xe606;</span>
+                rpcfirewall
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="dll镂空">
+                <span class="iconfont-archer">&#xe606;</span>
+                dll镂空
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="CVE-2021-37580">
+                <span class="iconfont-archer">&#xe606;</span>
+                CVE-2021-37580
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="lsarelayx">
+                <span class="iconfont-archer">&#xe606;</span>
+                lsarelayx
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="CobaltStrike">
+                <span class="iconfont-archer">&#xe606;</span>
+                CobaltStrike
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="RCE">
+                <span class="iconfont-archer">&#xe606;</span>
+                RCE
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="DACL">
+                <span class="iconfont-archer">&#xe606;</span>
+                DACL
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="蜜罐">
+                <span class="iconfont-archer">&#xe606;</span>
+                蜜罐
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="RE">
+                <span class="iconfont-archer">&#xe606;</span>
+                RE
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="E-office">
+                <span class="iconfont-archer">&#xe606;</span>
+                E-office
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="tools">
+                <span class="iconfont-archer">&#xe606;</span>
+                tools
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Windows">
+                <span class="iconfont-archer">&#xe606;</span>
+                Windows
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="LSASS">
+                <span class="iconfont-archer">&#xe606;</span>
+                LSASS
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Grafana">
+                <span class="iconfont-archer">&#xe606;</span>
+                Grafana
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="bypass">
+                <span class="iconfont-archer">&#xe606;</span>
+                bypass
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="APISIX">
+                <span class="iconfont-archer">&#xe606;</span>
+                APISIX
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="exploit">
+                <span class="iconfont-archer">&#xe606;</span>
+                exploit
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="BleedingBear">
+                <span class="iconfont-archer">&#xe606;</span>
+                BleedingBear
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="dll劫持">
+                <span class="iconfont-archer">&#xe606;</span>
+                dll劫持
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="打印机">
+                <span class="iconfont-archer">&#xe606;</span>
+                打印机
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="红蓝对抗">
+                <span class="iconfont-archer">&#xe606;</span>
+                红蓝对抗
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="RTASS">
+                <span class="iconfont-archer">&#xe606;</span>
+                RTASS
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="域渗透">
+                <span class="iconfont-archer">&#xe606;</span>
+                域渗透
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="工具">
+                <span class="iconfont-archer">&#xe606;</span>
+                工具
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Java">
+                <span class="iconfont-archer">&#xe606;</span>
+                Java
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="代码审计">
+                <span class="iconfont-archer">&#xe606;</span>
+                代码审计
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="NoPac">
+                <span class="iconfont-archer">&#xe606;</span>
+                NoPac
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="提权">
+                <span class="iconfont-archer">&#xe606;</span>
+                提权
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="VMware">
+                <span class="iconfont-archer">&#xe606;</span>
+                VMware
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="后门">
+                <span class="iconfont-archer">&#xe606;</span>
+                后门
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Xshell">
+                <span class="iconfont-archer">&#xe606;</span>
+                Xshell
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="knight">
+                <span class="iconfont-archer">&#xe606;</span>
+                knight
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="rdp">
+                <span class="iconfont-archer">&#xe606;</span>
+                rdp
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="java">
+                <span class="iconfont-archer">&#xe606;</span>
+                java
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="rpc">
+                <span class="iconfont-archer">&#xe606;</span>
+                rpc
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="rce">
+                <span class="iconfont-archer">&#xe606;</span>
+                rce
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="openssl">
+                <span class="iconfont-archer">&#xe606;</span>
+                openssl
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="cs">
+                <span class="iconfont-archer">&#xe606;</span>
+                cs
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Spring">
+                <span class="iconfont-archer">&#xe606;</span>
+                Spring
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="漏洞">
+                <span class="iconfont-archer">&#xe606;</span>
+                漏洞
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="勒索软件">
+                <span class="iconfont-archer">&#xe606;</span>
+                勒索软件
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="WPS OFFICE RCE">
+                <span class="iconfont-archer">&#xe606;</span>
+                WPS OFFICE RCE
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="MACOS">
+                <span class="iconfont-archer">&#xe606;</span>
+                MACOS
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="AV">
+                <span class="iconfont-archer">&#xe606;</span>
+                AV
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Rootkit">
+                <span class="iconfont-archer">&#xe606;</span>
+                Rootkit
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="ntlmquic">
+                <span class="iconfont-archer">&#xe606;</span>
+                ntlmquic
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="windows">
+                <span class="iconfont-archer">&#xe606;</span>
+                windows
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="C2">
+                <span class="iconfont-archer">&#xe606;</span>
+                C2
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="流量">
+                <span class="iconfont-archer">&#xe606;</span>
+                流量
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="codeql">
+                <span class="iconfont-archer">&#xe606;</span>
+                codeql
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="c2">
+                <span class="iconfont-archer">&#xe606;</span>
+                c2
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="RPC">
+                <span class="iconfont-archer">&#xe606;</span>
+                RPC
+            </span>
+        
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="渗透基础">
+            <span class="iconfont-archer">&#xe60a;</span>
+            渗透基础
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="渗透技术">
+            <span class="iconfont-archer">&#xe60a;</span>
+            渗透技术
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Research">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Research
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="蓝军推送">
+            <span class="iconfont-archer">&#xe60a;</span>
+            蓝军推送
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="红蓝对抗">
+            <span class="iconfont-archer">&#xe60a;</span>
+            红蓝对抗
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="渗透工具">
+            <span class="iconfont-archer">&#xe60a;</span>
+            渗透工具
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="漏洞预警">
+            <span class="iconfont-archer">&#xe60a;</span>
+            漏洞预警
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="漏洞分析">
+            <span class="iconfont-archer">&#xe60a;</span>
+            漏洞分析
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="java">
+            <span class="iconfont-archer">&#xe60a;</span>
+            java
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="windows">
+            <span class="iconfont-archer">&#xe60a;</span>
+            windows
+        </span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMeta = {
+        url: "https://jd.army",
+        root: "/",
+        author: "JD.Army"
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+
+        <!-- main func -->
+        <script src="/scripts/main.js?v=20210823"></script>
+        <!-- dark mode -->
+        <script src="/scripts/dark.js?v=20210823"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+        <!-- algolia -->
+        
+        <!-- busuanzi -->
+        
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        
+        <!-- CNZZ -->
+        
+        <!-- async load share.js -->
+        
+            <script src="/scripts/share.js?v=20210823" async></script>
+        
+        <!-- mermaid -->
+        
+    </body>
+</html>

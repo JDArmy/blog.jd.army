@@ -431,6 +431,106 @@
             
         
         <article class="index-post">
+            <a class="abstract-title" href="/2022/10/10/Lsass%20memory%20dump/">
+                
+                <span class="abstract-title-text">Lsass Memory Dump</span>
+            </a>
+            <div class="abstract-content">
+                [toc]
+lsass是windows中处理本地安全和登录策略的重要进程，几乎所有的windows身份认证程序都离不开lsass进程。因此在lsass的内存中会保存用户相关的凭证。它是windows主机中凭证的重要组成部分，因此获取lsass内存也是MITRE ATT&amp;CK框架中Credential Access战术下的重要技术点。
+
+在整个unified kill chain中Credential Access的环节起着重要的作用。在稳定获得初始化立足点后，需要获取目标主机上的相关凭证，并通过这些凭证进行后续的横向移动，当凭证获取不足时，无疑会加大后续的横向移动难度，因此Cre...
+            </div>
+            <!-- read more -->
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/10/24">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2022/10/10</span>
+                </div>
+                <!-- tags -->
+                
+                    <div class= abstract-tags >
+    
+        
+        
+            
+        
+        
+        <span class="post-category" data-categories="windows"">
+            <i class="fas fa-folder post-category-icon"></i>
+            <span class="post-category-text">
+                windows
+            </span>
+        </span>
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="lsass">lsass</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="windows">windows</a>
+    
+</div>
+
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+        
+        <article class="index-post">
+            <a class="abstract-title" href="/2022/05/27/%E8%93%9D%E5%86%9B%E6%8A%80%E6%9C%AF%E6%8E%A8%E9%80%81-%E7%AC%AC24%E6%9C%9F/">
+                
+                <span class="abstract-title-text">蓝军技术推送-windows域专题（KrbRelayUp、bypass机器用户添加限制、ad域渗透可视化工具）</span>
+            </a>
+            <div class="abstract-content">
+                [文章推荐] Detecting and preventing privilege escalation attacks leveraging Kerberos relaying (KrbRelayUp)文章看点：windows defender团队对KrbRelayUp提权利用工具的原理介绍。文章中最重要的是，defender对KrbRelayUp工具的检测及拦截方法。
+推送亮点：KrbRelayUp工具是是kerberos中继的一键化利用工具，目前主要是被用来在域中的主机提权。它的使用条件是ldap无签名，用户拥有创建机器账户的权限（和adcs提权、Nopac一样）。此文章大概介绍了...
+            </div>
+            <!-- read more -->
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/10/24">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2022/05/27</span>
+                </div>
+                <!-- tags -->
+                
+                    <div class= abstract-tags >
+    
+        
+        
+            
+        
+        
+        <span class="post-category" data-categories="蓝军推送"">
+            <i class="fas fa-folder post-category-icon"></i>
+            <span class="post-category-text">
+                蓝军推送
+            </span>
+        </span>
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="windows">windows</a>
+    
+</div>
+
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+        
+        <article class="index-post">
             <a class="abstract-title" href="/2022/05/13/%E8%93%9D%E5%86%9B%E6%8A%80%E6%9C%AF%E6%8E%A8%E9%80%81-%E7%AC%AC23%E6%9C%9F/">
                 
                 <span class="abstract-title-text">蓝军技术推送-windows域专题(Azure、ADCS)</span>
@@ -737,7 +837,105 @@
         
         
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -1022,7 +1220,7 @@
     
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 34
+        Total : 40
         </div>
         <!-- search  -->
         
@@ -1036,6 +1234,42 @@
             <div class="archive-year"> 2022 </div>
             <ul class="year-list">
             
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/24</span>
+            <a class="archive-post-title" href="/2022/10/24/codeql-sql/">Codeql-Sql</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/10</span>
+            <a class="archive-post-title" href="/2022/10/10/Lsass%20memory%20dump/">Lsass Memory Dump</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/21</span>
+            <a class="archive-post-title" href="/2022/09/21/Java-Agent%E5%86%85%E5%AD%98%E9%A9%AC%E7%A0%94%E7%A9%B6%E5%AD%A6%E4%B9%A0/">Java Agent内存马研究学习</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/25</span>
+            <a class="archive-post-title" href="/2022/06/25/%E8%93%9D%E5%86%9B%E6%8A%80%E6%9C%AF%E6%8E%A8%E9%80%81-%E7%AC%AC25%E6%9C%9F/">蓝军技术推送-RPC最新漏洞分析、C2云函数、PetitPotam替代品</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/01</span>
+            <a class="archive-post-title" href="/2022/06/01/CobaltStrike%20WebServer%E7%89%B9%E5%BE%81%E5%88%86%E6%9E%90/">CobaltStrike WebServer特征分析</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/27</span>
+            <a class="archive-post-title" href="/2022/05/27/%E8%93%9D%E5%86%9B%E6%8A%80%E6%9C%AF%E6%8E%A8%E9%80%81-%E7%AC%AC24%E6%9C%9F/">蓝军技术推送-windows域专题（KrbRelayUp、bypass机器用户添加限制、ad域渗透可视化工具）</a>
+        </li>
+    
         
         <li class="archive-post-item">
             <span class="archive-post-date">05/13</span>
@@ -1660,6 +1894,31 @@
                 windows
             </span>
         
+            <span class="sidebar-tag-name" data-tags="C2">
+                <span class="iconfont-archer">&#xe606;</span>
+                C2
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="流量">
+                <span class="iconfont-archer">&#xe606;</span>
+                流量
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="codeql">
+                <span class="iconfont-archer">&#xe606;</span>
+                codeql
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="c2">
+                <span class="iconfont-archer">&#xe606;</span>
+                c2
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="RPC">
+                <span class="iconfont-archer">&#xe606;</span>
+                RPC
+            </span>
+        
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
@@ -1711,6 +1970,16 @@
             漏洞分析
         </span>
     
+        <span class="sidebar-category-name" data-categories="java">
+            <span class="iconfont-archer">&#xe60a;</span>
+            java
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="windows">
+            <span class="iconfont-archer">&#xe60a;</span>
+            windows
+        </span>
+    
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
     <div class="sidebar-categories-list"></div>
@@ -1743,16 +2012,6 @@
         <!-- busuanzi -->
         
             <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-        
-        <!-- CNZZ -->
-        
-        <!-- async load share.js -->
-        
-        <!-- mermaid -->
-        
-    </body>
-</html>
-script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
         
         <!-- CNZZ -->
         

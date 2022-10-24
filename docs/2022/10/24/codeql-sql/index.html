@@ -1,0 +1,2306 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <!-- title -->
+
+
+    
+
+<!-- keywords -->
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="JD.Army">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="JD.Army">
+    
+        <meta name="keywords" content="JD.Army">
+    
+    <meta name="description" content="Red team of jd inc. ">
+    <meta name="description" content="前言为什么学习CodeQL呢？在学习了一段代码审计，逐渐感觉代码审计是个体力活。而且越大的项目想要较全面的审计起来更是耗时间，还有可能漏掉一些很容易发现的漏洞。而CodeQL就是用来辅助漏洞挖掘，半自动化挖掘+人工辅助审计可大大减少人工成本，也提高了漏洞准确率。随着近几年网上公开的越来越多的严重级漏洞都是通过CodeQL挖掘出来的，所以目前对想学代码审计的人来说，学习CodeQL利大于弊，其目前也">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Codeql-Sql">
+<meta property="og:url" content="https://jd.army/2022/10/24/codeql-sql/index.html">
+<meta property="og:site_name" content="JD.Army">
+<meta property="og:description" content="前言为什么学习CodeQL呢？在学习了一段代码审计，逐渐感觉代码审计是个体力活。而且越大的项目想要较全面的审计起来更是耗时间，还有可能漏掉一些很容易发现的漏洞。而CodeQL就是用来辅助漏洞挖掘，半自动化挖掘+人工辅助审计可大大减少人工成本，也提高了漏洞准确率。随着近几年网上公开的越来越多的严重级漏洞都是通过CodeQL挖掘出来的，所以目前对想学代码审计的人来说，学习CodeQL利大于弊，其目前也">
+<meta property="og:locale">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/0efc4de6fcbae435a5c58e7316b0cacd.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/556b8155b1c6f18acff41d0acd89dbac.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/4deaf44244959452082cac701b0a6668.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/09ba56eb9c353de9f56388acec73969c.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/e8c2843305184245cdc90c3ae761334b.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/13ee9338f057f96650fa2a8cc9f8397c.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/8686e9a255a0990ce98f38dcd90fa3cb.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/4833f6231e29d4c0b6f0aaf614a31ca3.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/ea87501155464b383a55337e909902ef.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/453f01ab5da0fef17efa7e27919fbc48.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/39aafd2b93496c866c6b16cce644b13c.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/8815a72e9848ae13cca73e26b2a84021.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/c796a6b5cdf65db052bfa0a50b7e81d7.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/3fdabc0049e9736b46e3567db84794b8.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/4565c3839ab7b52d64517152a4e21a75.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/821b094794c199d1d2f0b8edc731f001.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/96e65acab3d77e7fbc48245562148b1f.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/26fdd69905cf0cffe702b67178083d2f.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/e2dbe24d3303304ea75ef7bcf29d4a89.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/52e7c268625a991e4924cadda0ac96d9.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/66134a5f1bed3bee8d91288c67b23de3.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/2006e25264778f90934b6f15416058f4.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/febc450f02ae97ae630fcd0c89f78d43.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/04655e1c85b41ea5c3d4081ad66fdd78.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/3bc0b696842edf7b186afcabdbbedc93.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/3c1e48368b784b15c3e70de01cd59d02.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/57b425e03b358eb8fd47ea2e22e73107.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/d0f26fe84e400d9fc072583ae1d8cb61.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/f42896ce434459d68d29ca63d9f31129.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/0f0cdb39907654d48488db1deb1372ec.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/ce3b0ee52bb23e26ffd33e59bd88253a.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/34ff34bb7ed69ba3a841f6f9492aa9e4.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/4b6b558de349ee91da2bd2885c35427f.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/d3e22ede19955c41a2e4635627f0890b.png">
+<meta property="og:image" content="https://jd.army/2022/10/24/codeql-sql/images&#x2F;image-20221017085521315.png%20">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/9f1f1468038badd287f44c65940bf1cf.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/f7f7ce91763fc797ed2cebbbe312be1b.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/6f32bcfd72b50ab453210f2845990d0c.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/7d035457d0aa7179a002f962a310df16.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/d9cc7e9cfe5f622c5e2fa710f402c889.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/3047223b42784f753ee5ff096fa81cf7.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/724000043079b8c816c43c61761cac4a.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/f4e136f09b98bb6050bce8bb401bc6be.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/8f64002b2289c7282c5ff7e6706594e5.png">
+<meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/37616165c204b2785aeb9996470c0f02.png">
+<meta property="article:published_time" content="2022-10-24T06:26:16.000Z">
+<meta property="article:modified_time" content="2022-10-24T06:25:54.981Z">
+<meta property="article:author" content="JD.Army">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="代码审计">
+<meta property="article:tag" content="codeql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/0efc4de6fcbae435a5c58e7316b0cacd.png">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/assets/favicon.ico">
+    
+    <title>Codeql-Sql · JD.Army</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
+
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
+
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20210823" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/dark.css?v=20210823" as="style">
+    <link rel="stylesheet" href="/css/dark.css" media="(prefers-color-scheme: dark)">
+    <link rel="stylesheet" href="/css/mobile.css?v=20210823" media="(max-width: 960px)">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js?v=20210823" as="script">
+    <link rel="preload" href="/scripts/dark.js?v=20210823" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <!-- algolia -->
+    
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+    
+        <body class="post-body">
+    
+        <!-- header -->
+        <header class="header header-mobile">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
+    </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        
+            <div class="header-sidebar-menu">
+        
+            
+                <div style="padding-left: 1px;">&#xe775;</div>
+            
+        </div>
+    </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href=/>JD.Army</a>
+        </span>
+    </div>
+    <!-- toggle banner for post layout -->
+    
+        
+            <div class="banner">
+        
+            <div class="blog-title header-element">
+                <a href="/">JD.Army</a>
+            </div>
+            <div class="post-title header-element">
+                <a href="#" class="post-name">Codeql-Sql</a>
+            </div>
+        </div>
+    
+</header>
+
+        <!-- fixed footer -->
+        <footer class="footer-fixed">
+    <!-- back to top button -->
+    <div class="footer-fixed-element">
+        
+            <div class="back-top back-top-hidden">
+        
+        
+            <div>&#xe639;</div>
+        
+        </div>
+    </div>
+</footer>
+
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="
+
+
+
+
+
+
+
+    height:50vh;
+
+">
+    
+    <!-- 主页  -->
+    
+        
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+                Codeql-Sql
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+                
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页 meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        
+        
+            
+        
+        
+        <span class="post-category" data-categories="渗透基础"">
+            <i class="fas fa-folder post-category-icon"></i>
+            <span class="post-category-text">
+                渗透基础
+            </span>
+        </span>
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Java">Java</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="代码审计">代码审计</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="codeql">codeql</a>
+    
+</div>
+
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">4.4k</span>阅读时长: <span class="post-count reading-time">19 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2022/10/24</span>
+                    <!-- busuanzi -->
+                    
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+            <div class="container container-unloaded">
+                <main class="main post-page">
+    <article class="article-entry">
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>为什么学习CodeQL呢？在学习了一段代码审计，逐渐感觉代码审计是个体力活。而且越大的项目想要较全面的审计起来更是耗时间，还有可能漏掉一些很容易发现的漏洞。而CodeQL就是用来辅助漏洞挖掘，半自动化挖掘+人工辅助审计可大大减少人工成本，也提高了漏洞准确率。随着近几年网上公开的越来越多的严重级漏洞都是通过CodeQL挖掘出来的，所以目前对想学代码审计的人来说，学习CodeQL利大于弊，其目前也渐渐成为国内半自动化代码审计所使用的主流工具了。</p>
+<h3 id="安装及环境配置"><a href="#安装及环境配置" class="headerlink" title="安装及环境配置"></a>安装及环境配置</h3><h4 id="CodeQL安装"><a href="#CodeQL安装" class="headerlink" title="CodeQL安装"></a><strong>CodeQL安装</strong></h4><p>CodeQL本身包含两部分解析引擎+<code>SDK</code>。</p>
+<p>解析引擎用来解析我们编写的规则，虽然不开源，但是我们可以直接在官网下载二进制文件直接使用。</p>
+<p><code>SDK</code>完全开源，里面包含大部分现成的漏洞规则，我们也可以利用其编写自定义规则。</p>
+<h5 id="引擎安装"><a href="#引擎安装" class="headerlink" title="引擎安装"></a><strong>引擎安装</strong></h5><p>下载地址：<a target="_blank" rel="noopener" href="https://github.com/github/codeql-cli-binaries/releases%E8%A7%A3%E5%8E%8B%E6%96%87%E4%BB%B6%E5%A4%B9%EF%BC%8C%E5%A4%8D%E5%88%B6codeql%E6%96%87%E4%BB%B6%E5%A4%B9%E5%88%B0CodeQL(%E6%96%B0%E5%BB%BA%E7%9A%84)%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%8B">https://github.com/github/codeql-cli-binaries/releases解压文件夹，复制codeql文件夹到CodeQL(新建的)文件夹下</a></p>
+<p>配置环境变量指向codeql.exe目录即可</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/0efc4de6fcbae435a5c58e7316b0cacd.png" alt="image-20221015190628828"></p>
+<p>配置成功</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/556b8155b1c6f18acff41d0acd89dbac.png" alt="image-20221015190727439"></p>
+<h5 id="SDK安装"><a href="#SDK安装" class="headerlink" title="SDK安装"></a>SDK安装</h5><p>移动到CodeQL目录下</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/Semmle/</span>ql<br></code></pre></td></tr></table></figure>
+
+<p>安装成功后CodeQL目录下就有两个文件夹codeql和ql</p>
+<h4 id="CodeQL插件安装"><a href="#CodeQL插件安装" class="headerlink" title="CodeQL插件安装"></a><strong>CodeQL插件安装</strong></h4><p>在官网下载并安装 Visual Studio Code，并安装CodeQL插件</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/4deaf44244959452082cac701b0a6668.png" alt="image-20221015183528507"></p>
+<p>配置引擎路径</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/09ba56eb9c353de9f56388acec73969c.png" alt="image-20221015191053486"></p>
+<p>到此就完全配置好了CodeQL开发环境了</p>
+<h3 id="CodeQL测试"><a href="#CodeQL测试" class="headerlink" title="CodeQL测试"></a>CodeQL测试</h3><p>靶场环境：<a target="_blank" rel="noopener" href="https://github.com/l4yn3/micro_service_seclab/%EF%BC%88%E5%85%B6%E4%BB%96%E4%B9%9F%E5%8F%AF">https://github.com/l4yn3/micro_service_seclab/（其他也可</a>)</p>
+<p>先测试靶场环境是否可以正常调试，先测试下”Hello World”</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/e8c2843305184245cdc90c3ae761334b.png" alt="image-20221015200657345"></p>
+<p>由于<code>CodeQL</code>的处理对象并不是源码本身，而是中间生成的AST结构数据库，所以我们先需要把我们的项目源码转换成<code>CodeQL</code>能够识别的<code>CodeDatabase</code></p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gradle">codeql database create testdemo --language=<span class="hljs-string">&quot;java&quot;</span> --command=<span class="hljs-string">&quot;mvn clean install --file pom.xml&quot;</span> --<span class="hljs-keyword">source</span>-root=D:<span class="hljs-regexp">/codeql/</span>testdemo<span class="hljs-regexp">/micro_service_seclab-main/</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/13ee9338f057f96650fa2a8cc9f8397c.png" alt="image-20221015200824228"></p>
+<p>成功如下图所示</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/8686e9a255a0990ce98f38dcd90fa3cb.png" alt="image-20221015200854746"></p>
+<p>基础语法解释</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs gradle">database create testdemo 指我们要创建的database为testdemo(注:要先创建databases目录)<br>--language=<span class="hljs-string">&quot;java&quot;</span> 表示当前程序语言为Java<br>--command=<span class="hljs-string">&quot;mvn clean install --file pom.xml&quot;</span> 编译命令（因为Java是编译语言，所以需要使用–command命令先对项目进行编译，再进行转换，python和php这样的脚本语言不需要此命令）<br>--<span class="hljs-keyword">source</span>-root=D:<span class="hljs-regexp">/codeql/</span>testdemo<span class="hljs-regexp">/micro_service_seclab-main/</span> 指的是项目路径<br></code></pre></td></tr></table></figure>
+
+<p>导入database，选择testdemo文件夹</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/4833f6231e29d4c0b6f0aaf614a31ca3.png" alt="image-20221015201136276"></p>
+<p>导入成功</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/ea87501155464b383a55337e909902ef.png" alt="image-20221015201217525"></p>
+<p>编写查询打开刚才下载的SDK，在ql一一&gt;java一一&gt;ql一一&gt;examples目录下创建demo.ql</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/453f01ab5da0fef17efa7e27919fbc48.png" alt="image-20221015201319764"></p>
+<p>编写好查询语句，右击执行Run Query</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/39aafd2b93496c866c6b16cce644b13c.png" alt="image-20221015201523865"></p>
+<p>出现如下右侧结果说明调试成功</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/8815a72e9848ae13cca73e26b2a84021.png" alt="image-20221015201613098"></p>
+<h3 id="CodeQL语法"><a href="#CodeQL语法" class="headerlink" title="CodeQL语法"></a>CodeQL语法</h3><p>参考文档：<a target="_blank" rel="noopener" href="https://codeql.github.com/docs">https://codeql.github.com/docs</a></p>
+<p>因为CodeQL是识别不了源码本身的，而是通过CodeQL引擎把源码转换成CodeQL可识别的AST结构数据库，所以想要真正理解CodeQL原理，要学会看懂分析AST抽象语法树。</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/c796a6b5cdf65db052bfa0a50b7e81d7.png" alt="image-20221016185328223"></p>
+<p>选中某个源码文件</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/3fdabc0049e9736b46e3567db84794b8.png" alt="image-20221016185411908"></p>
+<p>点击View AST</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/4565c3839ab7b52d64517152a4e21a75.png" alt="image-20221016185443980"></p>
+<p>通过语法树来学习CodeQL语法，可以更好的理解接下来怎么编写规则，为啥这么编写规则</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/821b094794c199d1d2f0b8edc731f001.png" alt="image-20221016185541857"></p>
+<p>当然了，ql自身也提供了许多每种语言的Demo在snippets目录下供我们学习参考</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/96e65acab3d77e7fbc48245562148b1f.png" alt="image-20221016185943629"></p>
+<p><strong>接下看开始真正的CodeQL学习之旅！！！</strong></p>
+<p>先看一个小Demo</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk">from <span class="hljs-regexp">/* ... variable declarations ... */</span><br>where <span class="hljs-regexp">/* ... logical formula ... */</span><br>select <span class="hljs-regexp">/* ... expressions ... */</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">import</span> java<br>  <br><span class="hljs-keyword">from</span> <span class="hljs-type">int</span> i<br><span class="hljs-keyword">where</span> i = <span class="hljs-number">1</span><br><span class="hljs-keyword">select</span> i<br></code></pre></td></tr></table></figure>
+
+<p>第一行表示我们要引入CodeQL的类库，因为我们分析的项目是java的，所以在ql语句里，必不可少。</p>
+<p><code>from int i</code>, 定义一个变量i，它的类型是int，获取所有的int类型的数据</p>
+<p><code>where i = 1</code>, 当i等于1的时候，符合条件</p>
+<p><code>select i</code>, 输出i</p>
+<p>总结：获取项目中所有整形变量，当变量的值等于1时，输出这个变量。</p>
+<h4 id="类库"><a href="#类库" class="headerlink" title="类库"></a><strong>类库</strong></h4><p>ql中我们常用到的类库</p>
+<table>
+<thead>
+<tr>
+<th align="center">名称</th>
+<th align="center">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Method</td>
+<td align="center">方法类，Method method表示获取当前项目中所有的方法</td>
+</tr>
+<tr>
+<td align="center">MethodAccess</td>
+<td align="center">方法调用类，MethodAccess call表示获取当前项目当中的所有被调用的方法</td>
+</tr>
+<tr>
+<td align="center">Parameter</td>
+<td align="center">参数类，Parameter表示获取当前项目当中所有的参数</td>
+</tr>
+</tbody></table>
+<p>怎么理解呢？通过AST语法树来理解。</p>
+<p>Method method表示获取当前项目中所有的方法</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/26fdd69905cf0cffe702b67178083d2f.png" alt="image-20221016191159214"></p>
+<p>MethodAccess call表示获取当前项目当中的所有被调用的方法</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/e2dbe24d3303304ea75ef7bcf29d4a89.png" alt="image-20221016191229498"></p>
+<p>Parameter表示获取当前项目当中所有的参数</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/52e7c268625a991e4924cadda0ac96d9.png" alt="image-20221016191345693"></p>
+<p>通过demo更好的理解一下</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/66134a5f1bed3bee8d91288c67b23de3.png" alt="image-20221016191737709"></p>
+<h4 id="谓词"><a href="#谓词" class="headerlink" title="谓词"></a><strong>谓词</strong></h4><p>其实就是常说的”函数”</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">predicate is<span class="hljs-constructor">Small(<span class="hljs-params">int</span> <span class="hljs-params">i</span>)</span> &#123;<br>  i <span class="hljs-keyword">in</span> <span class="hljs-literal">[<span class="hljs-number">1</span> .. <span class="hljs-number">9</span>]</span><br>&#125;<br>  <br><span class="hljs-built_in">int</span> get<span class="hljs-constructor">Successor(<span class="hljs-params">int</span> <span class="hljs-params">i</span>)</span> &#123;<br>  result = i + <span class="hljs-number">1</span> <span class="hljs-keyword">and</span><br>  i <span class="hljs-keyword">in</span> <span class="hljs-literal">[<span class="hljs-number">1</span> .. <span class="hljs-number">9</span>]</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>predicate 表示当前方法没有返回值。</p>
+<p>result是CodeQL引入的特殊变量，代表返回的变量</p>
+<h4 id="重点"><a href="#重点" class="headerlink" title="重点"></a>重点</h4><p>如何进行全局污点追踪呢？</p>
+<p>通过继承类<code>DataFlow::Configuration</code>使用全局数据流库</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SqlInjectionConfiguration</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">DataFlow</span></span>::<span class="hljs-type">Configuration</span> &#123;<br>    <span class="hljs-type">MyDataFlowConfiguration</span>() &#123; <span class="hljs-keyword">this</span> = <span class="hljs-string">&quot;SqlInjectionConfiguration&quot;</span> &#125;<br>  <br>    <span class="hljs-keyword">override</span> predicate isSource(<span class="hljs-type">DataFlow</span>::<span class="hljs-type">Node</span> source) &#123;<br>    	...<br>    &#125;<br>  <br>    <span class="hljs-keyword">override</span> predicate isSink(<span class="hljs-type">DataFlow</span>::<span class="hljs-type">Node</span> sink) &#123;<br>    	...<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>下面是关于<code>DataFlow::Configuration</code>谓词的介绍</p>
+<p><code>isSource</code>-定义数据可能来源(输入点)。比如获取http请求的参数部分，就是非常明显的source。</p>
+<p><code>isSink</code>-定义数据可能流向的位置(执行点)。比如SQL注入漏洞，最终执行SQL语句的函数就是sink(这个函数可能叫query或者exeSql，或者其它)</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/2006e25264778f90934b6f15416058f4.png" alt="image-20221016214308470"></p>
+<p><code>isSanitizer</code>—可选，限制数据流(净化点)，代表污点传播到这里就会被阻断。比如SQL注入漏洞，虽然source经过多个Node可到达sink，但是数据类型是Int类型又或者其他原因使得漏洞不存在，则可以通过重写净化函数进行阻断，降低漏洞<strong>误报率</strong>。</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/febc450f02ae97ae630fcd0c89f78d43.png" alt="image-20221016214329124"></p>
+<p><code>isAdditionalFlowStep</code>—可选，添加额外的污点步骤。比如SQL注入Node1到Node2过程，由于QL本身规则没识别出该漏洞，而我们人工审核出是存在漏洞的，则可重写规则强制把Node1与Node2拼接起来，降低漏洞<strong>漏报率</strong>。</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/04655e1c85b41ea5c3d4081ad66fdd78.png" alt="image-20221016214353983"></p>
+<h4 id="exists公式讲解"><a href="#exists公式讲解" class="headerlink" title="exists公式讲解"></a>exists公式讲解</h4><p>这里有必要讲下<code>exists</code>公式，引入一些临时的变量。如果变量可以采用至少一组值来使正文中的公式为真，则它成立。</p>
+<p>exists子查询，是CodeQL谓词语法里非常常见的语法结构，它根据内部的子查询返回true or false，来决定筛选出哪些数据。</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/3bc0b696842edf7b186afcabdbbedc93.png" alt="image-20221016225053300"></p>
+<h4 id="获取source"><a href="#获取source" class="headerlink" title="获取source"></a>获取source</h4><p>靶场环境使用的是<code>Spring Boot</code>框架，可以根据spring控制器的特点，注解中都存在XXXMapping来进行路径映射。怎么获取到注解呢？通过AST语法树分析来获取。</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/3c1e48368b784b15c3e70de01cd59d02.png" alt="image-20221016222416879"></p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/57b425e03b358eb8fd47ea2e22e73107.png" alt="image-20221016222725557"></p>
+<p>CodeQL代码实现</p>
+<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs oxygene">import java<br>  <br><span class="hljs-keyword">from</span> <span class="hljs-function"><span class="hljs-keyword">Method</span> <span class="hljs-title">method</span>, <span class="hljs-title">string</span> <span class="hljs-title">c</span></span><br><span class="hljs-function"><span class="hljs-title">where</span> <span class="hljs-title">method</span>.<span class="hljs-title">getAnAnnotation</span><span class="hljs-params">()</span>.<span class="hljs-title">toString</span><span class="hljs-params">()</span> = <span class="hljs-title">c</span> + &quot;<span class="hljs-title">Mapping</span>&quot;</span><br><span class="hljs-function"><span class="hljs-title">select</span> <span class="hljs-title">method</span>.<span class="hljs-title">getName</span><span class="hljs-params">()</span> </span><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/d0f26fe84e400d9fc072583ae1d8cb61.png" alt="image-20221016222809988"></p>
+<p>这些方法的参数都可作为source，通过method.getParameter(n)获取Parameter</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/f42896ce434459d68d29ca63d9f31129.png" alt="image-20221016223250052"></p>
+<p>所以我们设置Source的代码为：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">override predicate is<span class="hljs-constructor">Source(DataFlow::Node <span class="hljs-params">src</span>)</span> &#123; <br>        exists(Method <span class="hljs-keyword">method</span>, <span class="hljs-built_in">string</span> c ,<span class="hljs-built_in">int</span> n <span class="hljs-pattern-match">| </span><br><span class="hljs-pattern-match">            src.<span class="hljs-keyword">as</span><span class="hljs-constructor">Parameter()</span> = <span class="hljs-keyword">method</span>.get<span class="hljs-constructor">Parameter(<span class="hljs-params">n</span>)</span></span><br><span class="hljs-pattern-match">            <span class="hljs-keyword">and</span> <span class="hljs-keyword">method</span>.get<span class="hljs-constructor">AnAnnotation()</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span> = c + &quot;<span class="hljs-constructor">Mapping</span>&quot;</span><br><span class="hljs-pattern-match">        )</span><br><span class="hljs-pattern-match">    &#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>当然还有一种很更方便的获取方式，一行代码解决。那作者为啥要反其道而行呢？</p>
+<p>①可以更好的理解分析AST语法树</p>
+<p>②每种框架获取http请求参数不一，以下方法可能涵盖不到。当遇到很小众、很新的框架等原因，利用以下方式获取不到我们想要的参数该怎么办？就是利用以上最原始的方式分析语法树，代码自己的风格来获取。</p>
+<p>③以下的方式不适合新手入门，可能理解不来。</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">override predicate isSource(DataFlow::<span class="hljs-keyword">Node</span> <span class="hljs-title">src</span>) &#123; src instanceof RemoteFlowSource &#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="设置sink"><a href="#设置sink" class="headerlink" title="设置sink"></a>设置sink</h4><p>本案例中，SQL语句最终执行点为query方法调用(MethodAccess)，且传入的参数是第一个。</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/0f0cdb39907654d48488db1deb1372ec.png" alt="image-20221016224541235"></p>
+<p>所以我们设置Sink的代码为：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">override predicate is<span class="hljs-constructor">Sink(DataFlow::Node <span class="hljs-params">sink</span>)</span> &#123;<br>     exists(Method <span class="hljs-keyword">method</span>, MethodAccess call <span class="hljs-pattern-match">|</span><br><span class="hljs-pattern-match">         <span class="hljs-keyword">method</span>.has<span class="hljs-constructor">Name(<span class="hljs-string">&quot;query&quot;</span>)</span></span><br><span class="hljs-pattern-match">         <span class="hljs-keyword">and</span> call.get<span class="hljs-constructor">Method()</span> = <span class="hljs-keyword">method</span> </span><br><span class="hljs-pattern-match">         <span class="hljs-keyword">and</span> sink.<span class="hljs-keyword">as</span><span class="hljs-constructor">Expr()</span> = call.get<span class="hljs-constructor">Argument(0)</span></span><br><span class="hljs-pattern-match">     )</span><br><span class="hljs-pattern-match"> &#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>意思为：查找一个query()方法的调用点，并把它的第一个参数设置为sink。</p>
+<h4 id="数据流"><a href="#数据流" class="headerlink" title="数据流"></a>数据流</h4><p>我们写好了source入口点和sink执行点，怎么实现一个污染参数通过头毫无拦截流到尾，成为可能真实存在的漏洞？这个连通工作就是CodeQL引擎本身来完成的。</p>
+<p>代码样例：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs vim">from VulConfig config, DataFlo<span class="hljs-variable">w:</span>:PathNode <span class="hljs-keyword">source</span>, DataFlo<span class="hljs-variable">w:</span>:PathNode sink<br>where config.hasFlowPath(<span class="hljs-keyword">source</span>, sink)<br>select <span class="hljs-keyword">source</span>.getNode(), <span class="hljs-keyword">source</span>, sink, <span class="hljs-string">&quot;source&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>我们传递给<code>config.hasFlowPath(source, sink)</code>我们定义好的source和sink，系统就会自动帮我们判断是否存在漏洞了。</p>
+<h3 id="第一代成果"><a href="#第一代成果" class="headerlink" title="第一代成果"></a>第一代成果</h3><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * @id java/examples/sqldemo</span><br><span class="hljs-comment"> * @name Sql-Injection</span><br><span class="hljs-comment"> * @description Sql-Injection</span><br><span class="hljs-comment"> * @kind path-problem</span><br><span class="hljs-comment"> * @problem.severity warning</span><br><span class="hljs-comment"> */</span><br>  <br>import java<br>import semmle.code.java.dataflow.FlowSources<br>import semmle.code.java.security.QueryInjection<br>import DataFlow::PathGraph<br>  <br><span class="hljs-keyword">class</span> SqlInjectionConfig extends TaintTracking::Configuration &#123;<br>    <span class="hljs-constructor">SqlInjectionConfig()</span> &#123; <br>        this = <span class="hljs-string">&quot;SqlInjectionConfig&quot;</span> <br>    &#125;<br>  <br>    override predicate is<span class="hljs-constructor">Source(DataFlow::Node <span class="hljs-params">src</span>)</span> &#123;  <br>        exists(Method <span class="hljs-keyword">method</span>, <span class="hljs-built_in">string</span> c ,<span class="hljs-built_in">int</span> n <span class="hljs-pattern-match">| </span><br><span class="hljs-pattern-match">            src.<span class="hljs-keyword">as</span><span class="hljs-constructor">Parameter()</span> = <span class="hljs-keyword">method</span>.get<span class="hljs-constructor">Parameter(<span class="hljs-params">n</span>)</span></span><br><span class="hljs-pattern-match">            <span class="hljs-keyword">and</span> <span class="hljs-keyword">method</span>.get<span class="hljs-constructor">AnAnnotation()</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span> = c + &quot;<span class="hljs-constructor">Mapping</span>&quot;</span><br><span class="hljs-pattern-match">        )</span><br><span class="hljs-pattern-match">    &#125;</span><br><span class="hljs-pattern-match">  </span><br><span class="hljs-pattern-match">    override predicate is<span class="hljs-constructor">Sink(DataFlow::Node <span class="hljs-params">sink</span>)</span> &#123;</span><br><span class="hljs-pattern-match">        exists(<span class="hljs-constructor">Method</span> <span class="hljs-keyword">method</span>, <span class="hljs-constructor">MethodAccess</span> call |</span><br><span class="hljs-pattern-match">            <span class="hljs-keyword">method</span>.has<span class="hljs-constructor">Name(<span class="hljs-string">&quot;query&quot;</span>)</span></span><br><span class="hljs-pattern-match">            <span class="hljs-keyword">and</span> call.get<span class="hljs-constructor">Method()</span> = <span class="hljs-keyword">method</span> </span><br><span class="hljs-pattern-match">            <span class="hljs-keyword">and</span> sink.<span class="hljs-keyword">as</span><span class="hljs-constructor">Expr()</span> = call.get<span class="hljs-constructor">Argument(0)</span></span><br><span class="hljs-pattern-match">        )</span><br><span class="hljs-pattern-match">    &#125;</span><br><span class="hljs-pattern-match">&#125;</span><br><span class="hljs-pattern-match">  </span><br><span class="hljs-pattern-match">from <span class="hljs-constructor">SqlInjectionConfig</span> config, <span class="hljs-constructor">DataFlow</span>::<span class="hljs-constructor">PathNode</span> source, <span class="hljs-constructor">DataFlow</span>::<span class="hljs-constructor">PathNode</span> sink</span><br><span class="hljs-pattern-match">where config.has<span class="hljs-constructor">FlowPath(<span class="hljs-params">source</span>, <span class="hljs-params">sink</span>)</span></span><br><span class="hljs-pattern-match">select source.get<span class="hljs-constructor">Node()</span>, source, sink, &quot;source&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>成功挖掘出SQL注入漏洞</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/ce3b0ee52bb23e26ffd33e59bd88253a.png" alt="image-20221016230242905"></p>
+<p>注：上面的注释不能够删除，它是程序的一部分，因为在我们生成测试报告的时候，上面注释当中的name，description等信息会写入到审计报告中<a target="_blank" rel="noopener" href="https://codeql.github.com/docs/writing-codeql-queries/metadata-for-codeql-queries/">Metadata for CodeQL queries — CodeQL (github.com)</a></p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/34ff34bb7ed69ba3a841f6f9492aa9e4.png" alt="image-20221016230706996"></p>
+<h3 id="漏报排除"><a href="#漏报排除" class="headerlink" title="漏报排除"></a>漏报排除</h3><p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/4b6b558de349ee91da2bd2885c35427f.png" alt="image-20221017084946974"></p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/d3e22ede19955c41a2e4635627f0890b.png" alt="image-20221017085012253"></p>
+<p>人工审核很容易发现这是MyBatis注解式写法因为&lt;img src=”<a target="_blank" rel="noopener" href="https://latex.codecogs.com/gif.latex?%E9%80%A0%E6%88%90%E7%9A%84SQL%E6%B3%A8%E5%85%A5%EF%BC%8C%E4%BD%86%E6%98%AFCodeQL%E5%A6%82%E4%BD%95%E5%8F%91%E7%8E%B0%E5%AE%83%E5%91%A2%EF%BC%9F%E8%AF%AF%E6%8A%A5%E5%BE%80%E5%BE%80%E5%8F%AF%E4%BB%A5%E9%80%9A%E8%BF%87%E4%BA%BA%E5%B7%A5%E8%BF%9B%E8%A1%8C%E6%8E%92%E6%9F%A5%EF%BC%8C%E8%80%8C%E6%BC%8F%E6%8A%A5%E4%B8%80%E4%BD%86%E9%A1%B9%E7%9B%AE%E4%B8%8A%E7%BA%BF%E5%B0%B1%E6%9C%89%E5%8F%AF%E8%83%BD%E9%80%A0%E6%88%90%E9%87%8D%E5%A4%A7%E7%9A%84%E7%BB%8F%E6%B5%8E%E6%8D%9F%E5%A4%B1%E7%AD%89%E3%80%82%E6%89%80%E4%BB%A5%E6%88%91%E4%BB%AC%E8%A6%81%E5%B0%BD%E5%8F%AF%E8%83%BD%E5%85%A8%E6%96%B9%E9%9D%A2%E6%B6%B5%E7%9B%96%E8%BF%9B%E8%A1%8C%E6%8C%96%E6%8E%98%E3%80%82">https://latex.codecogs.com/gif.latex?造成的SQL注入，但是CodeQL如何发现它呢？误报往往可以通过人工进行排查，而漏报一但项目上线就有可能造成重大的经济损失等。所以我们要尽可能全方面涵盖进行挖掘。</a></p>
+<p>老方法，依旧通过AST语法树来进行分析。</p>
+<p><img src="images&#x2F;image-20221017085521315.png%20" alt="image-20221017085521315"></p>
+<p>之前我们是通过定位query方法来发现漏洞，但是不够全面。现在大部分项目都是采用Mybatis注解方式，所以需要一起包含进去。</p>
+<p>①通过定位接口名称以及接口注解来定位Mapper</p>
+<p>②获得到相对应的Mapper后，通过注解字段Select，Update等来定位注解式语法</p>
+<p>③通过参数名，获取参数别名</p>
+<p>④将<code>&quot;/&gt;&#123;</code>+参数别名+<code>&#125;</code>在注解式子中进行匹配，发现漏洞</p>
+<p>CodeQL代码实现：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">import java<br>  <br>from Interface i, <span class="hljs-built_in">string</span> c, Method <span class="hljs-keyword">method</span>,<span class="hljs-built_in">string</span> name, <span class="hljs-built_in">int</span> n<br>  <br>where i.get<span class="hljs-constructor">Name()</span> = c + <span class="hljs-string">&quot;Mapper&quot;</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">method</span>.get<span class="hljs-constructor">AnAnnotation()</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span> = <span class="hljs-string">&quot;Select&quot;</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">method</span>.get<span class="hljs-constructor">AnAnnotation()</span>.get<span class="hljs-constructor">Value(<span class="hljs-params">name</span>)</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span>.index<span class="hljs-constructor">Of(<span class="hljs-string">&quot;$&#123;&quot;</span>+<span class="hljs-params">method</span>.<span class="hljs-params">getParameter</span>(<span class="hljs-params">n</span>)</span>.get<span class="hljs-constructor">AnAnnotation()</span>.get<span class="hljs-constructor">Value(<span class="hljs-params">name</span>)</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span>.replace<span class="hljs-constructor">All(<span class="hljs-string">&quot;\&quot;&quot;</span>, <span class="hljs-string">&quot;&quot;</span>)</span>+<span class="hljs-string">&quot;&#125;&quot;</span>) &gt; <span class="hljs-number">0</span><br>  <br>select <span class="hljs-keyword">method</span>.get<span class="hljs-constructor">Parameter(<span class="hljs-params">n</span>)</span>.get<span class="hljs-constructor">AnAnnotation()</span>.get<span class="hljs-constructor">Value(<span class="hljs-params">name</span>)</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="第二代成果"><a href="#第二代成果" class="headerlink" title="第二代成果"></a>第二代成果</h3><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * @id java/examples/sqldemo</span><br><span class="hljs-comment"> * @name Sql-Injection</span><br><span class="hljs-comment"> * @description Sql-Injection</span><br><span class="hljs-comment"> * @kind path-problem</span><br><span class="hljs-comment"> * @problem.severity warning</span><br><span class="hljs-comment"> */</span><br>  <br>import java<br>import semmle.code.java.dataflow.FlowSources<br>import semmle.code.java.security.QueryInjection<br>import DataFlow::PathGraph<br>  <br><span class="hljs-keyword">class</span> SqlInjectionConfig extends TaintTracking::Configuration &#123;<br>    <span class="hljs-constructor">SqlInjectionConfig()</span> &#123; <br>        this = <span class="hljs-string">&quot;SqlInjectionConfig&quot;</span> <br>    &#125;<br>  <br>    override predicate is<span class="hljs-constructor">Source(DataFlow::Node <span class="hljs-params">src</span>)</span> &#123; <br>        exists(Method <span class="hljs-keyword">method</span>, <span class="hljs-built_in">string</span> c ,<span class="hljs-built_in">int</span> n <span class="hljs-pattern-match">| </span><br><span class="hljs-pattern-match">            src.<span class="hljs-keyword">as</span><span class="hljs-constructor">Parameter()</span> = <span class="hljs-keyword">method</span>.get<span class="hljs-constructor">Parameter(<span class="hljs-params">n</span>)</span></span><br><span class="hljs-pattern-match">            <span class="hljs-keyword">and</span> <span class="hljs-keyword">method</span>.get<span class="hljs-constructor">AnAnnotation()</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span> = c + &quot;<span class="hljs-constructor">Mapping</span>&quot;</span><br><span class="hljs-pattern-match">        )</span><br><span class="hljs-pattern-match">    &#125;</span><br><span class="hljs-pattern-match">  </span><br><span class="hljs-pattern-match">    override predicate is<span class="hljs-constructor">Sink(DataFlow::Node <span class="hljs-params">sink</span>)</span> &#123;</span><br><span class="hljs-pattern-match">        exists(|my<span class="hljs-constructor">BatisSink(<span class="hljs-params">sink</span>)</span> <span class="hljs-keyword">or</span> query<span class="hljs-constructor">Sink(<span class="hljs-params">sink</span>)</span>)</span><br><span class="hljs-pattern-match">    &#125;</span><br><span class="hljs-pattern-match">&#125;</span><br><span class="hljs-pattern-match">  </span><br><span class="hljs-pattern-match">predicate my<span class="hljs-constructor">BatisSink(DataFlow::Node <span class="hljs-params">sink</span>)</span> &#123;</span><br><span class="hljs-pattern-match">    exists(<span class="hljs-constructor">Method</span> <span class="hljs-keyword">method</span>, <span class="hljs-constructor">MethodAccess</span> call, <span class="hljs-constructor">Interface</span> interface, <span class="hljs-built_in">string</span> name, <span class="hljs-built_in">int</span> n |</span><br><span class="hljs-pattern-match">        interface.get<span class="hljs-constructor">AnAnnotation()</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span> = &quot;<span class="hljs-constructor">Mapper</span>&quot; </span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">and</span> <span class="hljs-keyword">method</span>.get<span class="hljs-constructor">AnAnnotation()</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span> <span class="hljs-keyword">in</span> [&quot;<span class="hljs-constructor">Select</span>&quot;, &quot;<span class="hljs-constructor">Update</span>&quot;, &quot;<span class="hljs-constructor">Insert</span>&quot;, &quot;<span class="hljs-constructor">Delete</span>&quot;]</span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">and</span> call.get<span class="hljs-constructor">Method()</span> = <span class="hljs-keyword">method</span></span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">and</span> <span class="hljs-keyword">method</span>.get<span class="hljs-constructor">AnAnnotation()</span>.get<span class="hljs-constructor">Value(<span class="hljs-params">name</span>)</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span>.index<span class="hljs-constructor">Of(<span class="hljs-string">&quot;$&#123;&quot;</span>+<span class="hljs-params">method</span>.<span class="hljs-params">getParameter</span>(<span class="hljs-params">n</span>)</span>.get<span class="hljs-constructor">AnAnnotation()</span>.get<span class="hljs-constructor">Value(<span class="hljs-params">name</span>)</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span>.replace<span class="hljs-constructor">All(<span class="hljs-string">&quot;\&quot;&quot;</span>, <span class="hljs-string">&quot;&quot;</span>)</span>+&quot;&#125;&quot;) &gt; 0</span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">and</span> sink.<span class="hljs-keyword">as</span><span class="hljs-constructor">Expr()</span> = call.get<span class="hljs-constructor">Argument(0)</span></span><br><span class="hljs-pattern-match">    )</span><br><span class="hljs-pattern-match">&#125;</span><br><span class="hljs-pattern-match">  </span><br><span class="hljs-pattern-match">predicate query<span class="hljs-constructor">Sink(DataFlow::Node <span class="hljs-params">sink</span>)</span> &#123;</span><br><span class="hljs-pattern-match">    exists(<span class="hljs-constructor">Method</span> <span class="hljs-keyword">method</span>, <span class="hljs-constructor">MethodAccess</span> call |</span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">method</span>.has<span class="hljs-constructor">Name(<span class="hljs-string">&quot;query&quot;</span>)</span> </span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">and</span> call.get<span class="hljs-constructor">Method()</span> = <span class="hljs-keyword">method</span> </span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">and</span> sink.<span class="hljs-keyword">as</span><span class="hljs-constructor">Expr()</span> = call.get<span class="hljs-constructor">Argument(0)</span></span><br><span class="hljs-pattern-match">    )</span><br><span class="hljs-pattern-match">&#125;</span><br><span class="hljs-pattern-match">  </span><br><span class="hljs-pattern-match">from <span class="hljs-constructor">SqlInjectionConfig</span> config, <span class="hljs-constructor">DataFlow</span>::<span class="hljs-constructor">PathNode</span> source, <span class="hljs-constructor">DataFlow</span>::<span class="hljs-constructor">PathNode</span> sink</span><br><span class="hljs-pattern-match">where config.has<span class="hljs-constructor">FlowPath(<span class="hljs-params">source</span>, <span class="hljs-params">sink</span>)</span></span><br><span class="hljs-pattern-match">select source.get<span class="hljs-constructor">Node()</span>, source, sink, &quot;source&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/9f1f1468038badd287f44c65940bf1cf.png" alt="image-20221017090534705"></p>
+<p>成功挖掘出MyBatis注解类型SQL注入漏洞。当然靶场中还存在其他各种各样的漏报，比如<strong>Lombok</strong>问题。</p>
+<p>Lombok编写的项目，CodeQL在对项目解析时，会对CodeQL分析器造成干扰，导致所构建的数据库中少了很多源码。导致CodeQL分析不到Lombok带来的SQL注入问题。</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/f7f7ce91763fc797ed2cebbbe312be1b.png" alt="image-20221023160045939"></p>
+<p><strong>解决方法</strong>：</p>
+<p>①使用maven-delombok，在pom.xml中添加以下代码，重新编译即可。（推荐）</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-params">&lt;build&gt;</span><br>  <span class="hljs-params">&lt;sourceDirectory&gt;</span>$&#123;project.basedir&#125;<span class="hljs-meta-keyword">/src/</span>main/lombok<span class="hljs-params">&lt;/sourceDirectory&gt;</span><br>  <span class="hljs-params">&lt;plugins&gt;</span><br>    <span class="hljs-params">&lt;plugin&gt;</span><br>      <span class="hljs-params">&lt;groupId&gt;</span>org.projectlombok<span class="hljs-params">&lt;/groupId&gt;</span><br>      <span class="hljs-params">&lt;artifactId&gt;</span>lombok-maven-plugin<span class="hljs-params">&lt;/artifactId&gt;</span><br>      <span class="hljs-params">&lt;version&gt;</span><span class="hljs-number">1.18</span><span class="hljs-number">.20</span><span class="hljs-number">.0</span><span class="hljs-params">&lt;/version&gt;</span><br>      <span class="hljs-params">&lt;executions&gt;</span><br>        <span class="hljs-params">&lt;execution&gt;</span><br>          <span class="hljs-params">&lt;phase&gt;</span>generate-sources<span class="hljs-params">&lt;/phase&gt;</span><br>          <span class="hljs-params">&lt;goals&gt;</span><br>            <span class="hljs-params">&lt;goal&gt;</span>delombok<span class="hljs-params">&lt;/goal&gt;</span><br>          <span class="hljs-params">&lt;/goals&gt;</span><br>          <span class="hljs-params">&lt;configuration&gt;</span><br>            <span class="hljs-params">&lt;encoding&gt;</span>UTF<span class="hljs-number">-8</span><span class="hljs-params">&lt;/encoding&gt;</span><br>            <span class="hljs-params">&lt;addOutputDirectory&gt;</span>false<span class="hljs-params">&lt;/addOutputDirectory&gt;</span><br>            <span class="hljs-params">&lt;sourceDirectory&gt;</span>src<span class="hljs-meta-keyword">/main/</span>java<span class="hljs-params">&lt;/sourceDirectory&gt;</span><br>            <span class="hljs-params">&lt;outputDirectory&gt;</span>$&#123;project.basedir&#125;<span class="hljs-meta-keyword">/src/</span>main/lombok<span class="hljs-params">&lt;/outputDirectory&gt;</span><br>          <span class="hljs-params">&lt;/configuration&gt;</span><br>        <span class="hljs-params">&lt;/execution&gt;</span><br>      <span class="hljs-params">&lt;/executions&gt;</span><br>    <span class="hljs-params">&lt;/plugin&gt;</span><br>  <span class="hljs-params">&lt;/plugins&gt;</span><br><span class="hljs-params">&lt;/build&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>成功还原，并挖掘出Lombok插件带来的SQL注入风险。</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/6f32bcfd72b50ab453210f2845990d0c.png" alt="image-20221023160400883"></p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/7d035457d0aa7179a002f962a310df16.png" alt="image-20221023160713450"></p>
+<p>②官方也给出了解决方法<a target="_blank" rel="noopener" href="https://github.com/github/codeql/issues/4984%EF%BC%8C%E8%BF%99%E7%A7%8D%E8%BF%98%E5%8E%9F%E6%96%B9%E5%BC%8F%E6%9C%89%E5%8F%AF%E8%83%BD%E4%BC%9A%E5%87%BA%E7%8E%B0%E6%9C%AA%E5%AE%9A%E4%B9%89Object%E7%9A%84%E5%9C%BA%E6%99%AF%E3%80%82">https://github.com/github/codeql/issues/4984，这种还原方式有可能会出现未定义Object的场景。</a></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># get a copy of lombok.jar</span><br>wget https:<span class="hljs-regexp">//</span>projectlombok.org<span class="hljs-regexp">/downloads/</span>lombok.jar -O <span class="hljs-string">&quot;lombok.jar&quot;</span><br><span class="hljs-comment"># run &quot;delombok&quot; on the source files and write the generated files to a folder named &quot;delombok&quot;</span><br>java -jar <span class="hljs-string">&quot;lombok.jar&quot;</span> delombok -n --onlyChanged . -d <span class="hljs-string">&quot;delombok&quot;</span><br><span class="hljs-comment"># remove &quot;generated by&quot; comments</span><br>find <span class="hljs-string">&quot;delombok&quot;</span> -name <span class="hljs-string">&#x27;*.java&#x27;</span> -exec sed <span class="hljs-string">&#x27;/Generated by delombok/d&#x27;</span> -i <span class="hljs-string">&#x27;&#123;&#125;&#x27;</span> <span class="hljs-string">&#x27;;&#x27;</span><br><span class="hljs-comment"># remove any left-over import statements</span><br>find <span class="hljs-string">&quot;delombok&quot;</span> -name <span class="hljs-string">&#x27;*.java&#x27;</span> -exec sed <span class="hljs-string">&#x27;/import lombok/d&#x27;</span> -i <span class="hljs-string">&#x27;&#123;&#125;&#x27;</span> <span class="hljs-string">&#x27;;&#x27;</span><br><span class="hljs-comment"># copy delombok&#x27;d files over the original ones</span><br>cp -r <span class="hljs-string">&quot;delombok/.&quot;</span> <span class="hljs-string">&quot;./&quot;</span><br><span class="hljs-comment"># remove the &quot;delombok&quot; folder</span><br>rm -rf <span class="hljs-string">&quot;delombok&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="误报排除"><a href="#误报排除" class="headerlink" title="误报排除"></a>误报排除</h3><p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/d9cc7e9cfe5f622c5e2fa710f402c889.png" alt="image-20221016231250874"></p>
+<p>该方法的参数类型是List<Long>，不存在注入漏洞。所以我们需要用到上面所说的净化函数来进行阻断排除。</p>
+<p>检测思路：如果当前Node节点的类型为基础类型，数字类型和泛型数字类型(比如List)时，就切断数据流。</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/3047223b42784f753ee5ff096fa81cf7.png" alt="image-20221017091459850"></p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/724000043079b8c816c43c61761cac4a.png" alt="image-20221017091524060"></p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/f4e136f09b98bb6050bce8bb401bc6be.png" alt="image-20221017091542320"></p>
+<p>ParameterizedType：泛型类型的参数化</p>
+<p>CodeQL代码实现：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs css">override predicate isSanitizer(DataFlow::Node node) &#123;<br>    node.<span class="hljs-built_in">getType</span>() instanceof PrimitiveType or<br>    node.<span class="hljs-built_in">getType</span>() instanceof BoxedType or<br>    node.<span class="hljs-built_in">getType</span>() instanceof NumberType or<br>    <span class="hljs-built_in">exists</span>(ParameterizedType pt| node.<span class="hljs-built_in">getType</span>() = pt and pt.<span class="hljs-built_in">getTypeArgument</span>(<span class="hljs-number">0</span>) instanceof NumberType )<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="第三代成果"><a href="#第三代成果" class="headerlink" title="第三代成果"></a>第三代成果</h3><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * @id java/examples/sqldemo</span><br><span class="hljs-comment"> * @name Sql-Injection</span><br><span class="hljs-comment"> * @description Sql-Injection</span><br><span class="hljs-comment"> * @kind path-problem</span><br><span class="hljs-comment"> * @problem.severity warning</span><br><span class="hljs-comment"> */</span><br>  <br>import java<br>import semmle.code.java.dataflow.FlowSources<br>import semmle.code.java.security.QueryInjection<br>import DataFlow::PathGraph<br>  <br><span class="hljs-keyword">class</span> SqlInjectionConfig extends TaintTracking::Configuration &#123;<br>    <span class="hljs-constructor">SqlInjectionConfig()</span> &#123; <br>        this = <span class="hljs-string">&quot;SqlInjectionConfig&quot;</span> <br>    &#125;<br>  <br>    override predicate is<span class="hljs-constructor">Source(DataFlow::Node <span class="hljs-params">src</span>)</span> &#123; <br>        exists(Method <span class="hljs-keyword">method</span>, <span class="hljs-built_in">string</span> c ,<span class="hljs-built_in">int</span> n <span class="hljs-pattern-match">| </span><br><span class="hljs-pattern-match">            src.<span class="hljs-keyword">as</span><span class="hljs-constructor">Parameter()</span> = <span class="hljs-keyword">method</span>.get<span class="hljs-constructor">Parameter(<span class="hljs-params">n</span>)</span></span><br><span class="hljs-pattern-match">            <span class="hljs-keyword">and</span> <span class="hljs-keyword">method</span>.get<span class="hljs-constructor">AnAnnotation()</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span> = c + &quot;<span class="hljs-constructor">Mapping</span>&quot;</span><br><span class="hljs-pattern-match">        )</span><br><span class="hljs-pattern-match">    &#125;</span><br><span class="hljs-pattern-match">  </span><br><span class="hljs-pattern-match">    override predicate is<span class="hljs-constructor">Sink(DataFlow::Node <span class="hljs-params">sink</span>)</span> &#123;</span><br><span class="hljs-pattern-match">        exists(|my<span class="hljs-constructor">BatisSink(<span class="hljs-params">sink</span>)</span> <span class="hljs-keyword">or</span> query<span class="hljs-constructor">Sink(<span class="hljs-params">sink</span>)</span>)</span><br><span class="hljs-pattern-match">    &#125;</span><br><span class="hljs-pattern-match">  </span><br><span class="hljs-pattern-match">    override predicate is<span class="hljs-constructor">Sanitizer(DataFlow::Node <span class="hljs-params">node</span>)</span> &#123;</span><br><span class="hljs-pattern-match">        node.get<span class="hljs-constructor">Type()</span> instanceof <span class="hljs-constructor">PrimitiveType</span> <span class="hljs-keyword">or</span></span><br><span class="hljs-pattern-match">        node.get<span class="hljs-constructor">Type()</span> instanceof <span class="hljs-constructor">BoxedType</span> <span class="hljs-keyword">or</span></span><br><span class="hljs-pattern-match">        node.get<span class="hljs-constructor">Type()</span> instanceof <span class="hljs-constructor">NumberType</span> <span class="hljs-keyword">or</span></span><br><span class="hljs-pattern-match">        exists(<span class="hljs-constructor">ParameterizedType</span> pt| node.get<span class="hljs-constructor">Type()</span> = pt <span class="hljs-keyword">and</span> pt.get<span class="hljs-constructor">TypeArgument(0)</span> instanceof <span class="hljs-constructor">NumberType</span> )</span><br><span class="hljs-pattern-match">      &#125;</span><br><span class="hljs-pattern-match">&#125;</span><br><span class="hljs-pattern-match">  </span><br><span class="hljs-pattern-match">predicate my<span class="hljs-constructor">BatisSink(DataFlow::Node <span class="hljs-params">sink</span>)</span> &#123;</span><br><span class="hljs-pattern-match">    exists(<span class="hljs-constructor">Method</span> <span class="hljs-keyword">method</span>, <span class="hljs-constructor">MethodAccess</span> call, <span class="hljs-constructor">Interface</span> interface, <span class="hljs-built_in">string</span> name, <span class="hljs-built_in">int</span> n |</span><br><span class="hljs-pattern-match">        interface.get<span class="hljs-constructor">AnAnnotation()</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span> = &quot;<span class="hljs-constructor">Mapper</span>&quot; </span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">and</span> <span class="hljs-keyword">method</span>.get<span class="hljs-constructor">AnAnnotation()</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span> <span class="hljs-keyword">in</span> [&quot;<span class="hljs-constructor">Select</span>&quot;, &quot;<span class="hljs-constructor">Update</span>&quot;, &quot;<span class="hljs-constructor">Insert</span>&quot;, &quot;<span class="hljs-constructor">Delete</span>&quot;]</span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">and</span> call.get<span class="hljs-constructor">Method()</span> = <span class="hljs-keyword">method</span></span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">and</span> <span class="hljs-keyword">method</span>.get<span class="hljs-constructor">AnAnnotation()</span>.get<span class="hljs-constructor">Value(<span class="hljs-params">name</span>)</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span>.index<span class="hljs-constructor">Of(<span class="hljs-string">&quot;$&#123;&quot;</span>+<span class="hljs-params">method</span>.<span class="hljs-params">getParameter</span>(<span class="hljs-params">n</span>)</span>.get<span class="hljs-constructor">AnAnnotation()</span>.get<span class="hljs-constructor">Value(<span class="hljs-params">name</span>)</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span>.replace<span class="hljs-constructor">All(<span class="hljs-string">&quot;\&quot;&quot;</span>, <span class="hljs-string">&quot;&quot;</span>)</span>+&quot;&#125;&quot;) &gt; 0</span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">and</span> sink.<span class="hljs-keyword">as</span><span class="hljs-constructor">Expr()</span> = call.get<span class="hljs-constructor">Argument(<span class="hljs-params">n</span>)</span></span><br><span class="hljs-pattern-match">    )</span><br><span class="hljs-pattern-match">&#125;</span><br><span class="hljs-pattern-match">  </span><br><span class="hljs-pattern-match">predicate query<span class="hljs-constructor">Sink(DataFlow::Node <span class="hljs-params">sink</span>)</span> &#123;</span><br><span class="hljs-pattern-match">    exists(<span class="hljs-constructor">Method</span> <span class="hljs-keyword">method</span>, <span class="hljs-constructor">MethodAccess</span> call |</span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">method</span>.has<span class="hljs-constructor">Name(<span class="hljs-string">&quot;query&quot;</span>)</span> </span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">and</span> call.get<span class="hljs-constructor">Method()</span> = <span class="hljs-keyword">method</span> </span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">and</span> sink.<span class="hljs-keyword">as</span><span class="hljs-constructor">Expr()</span> = call.get<span class="hljs-constructor">Argument(0)</span></span><br><span class="hljs-pattern-match">    )</span><br><span class="hljs-pattern-match">&#125;</span><br><span class="hljs-pattern-match">  </span><br><span class="hljs-pattern-match">from <span class="hljs-constructor">SqlInjectionConfig</span> config, <span class="hljs-constructor">DataFlow</span>::<span class="hljs-constructor">PathNode</span> source, <span class="hljs-constructor">DataFlow</span>::<span class="hljs-constructor">PathNode</span> sink</span><br><span class="hljs-pattern-match">where config.has<span class="hljs-constructor">FlowPath(<span class="hljs-params">source</span>, <span class="hljs-params">sink</span>)</span></span><br><span class="hljs-pattern-match">select source.get<span class="hljs-constructor">Node()</span>, source, sink, &quot;source&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/8f64002b2289c7282c5ff7e6706594e5.png" alt="image-20221017091753741"></p>
+<p>成功排除，当然有时候还有其他因素，比如开发写的过滤函数，白名单检测等排除。需要大家自己开动脑筋！</p>
+<h3 id="MyBatis-XML问题"><a href="#MyBatis-XML问题" class="headerlink" title="MyBatis-XML问题"></a>MyBatis-XML问题</h3><p>这个问题CodeQL官网其实有提供相应特殊规则<a target="_blank" rel="noopener" href="https://github.com/github/codeql/blob/main/java/ql/src/experimental/Security/CWE/CWE-089/MyBatisMapperXmlSqlInjection.ql">MyBatisMapperXmlSqlInjection.ql</a>，该ql文件所做的事情是扫描Mapper配置Mybatis XML的${}的SQL注入。当然了包括上面所说的MyBatis注解式写法，官方也有提供相应的规则方便我们使用。</p>
+<h3 id="第四代成果"><a href="#第四代成果" class="headerlink" title="第四代成果"></a>第四代成果</h3><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * @id java/examples/SqlInject</span><br><span class="hljs-comment"> * @name Sql-Injection</span><br><span class="hljs-comment"> * @description Sql-Injection</span><br><span class="hljs-comment"> * @kind path-problem</span><br><span class="hljs-comment"> * @problem.severity error</span><br><span class="hljs-comment"> */</span><br>  <br>import java<br>import semmle.code.java.dataflow.FlowSources<br>import MyBatisMapperXmlSqlInjectionLib<br>import MyBatisCommonLib<br>import MyBatisAnnotationSqlInjectionLib<br>import DataFlow::PathGraph<br>  <br><span class="hljs-keyword">class</span> SqlInjectionConfiguration extends TaintTracking::Configuration &#123;<br>    <span class="hljs-constructor">SqlInjectionConfiguration()</span> &#123; <br>        this = <span class="hljs-string">&quot;SqlInjectionConfiguration&quot;</span> <br>    &#125;<br>  <br>    override predicate is<span class="hljs-constructor">Source(DataFlow::Node <span class="hljs-params">src</span>)</span> &#123;  <br>        src instanceof RemoteFlowSource<br>    &#125;<br>  <br>    override predicate is<span class="hljs-constructor">Sink(DataFlow::Node <span class="hljs-params">sink</span>)</span> &#123;<br>        exists(<span class="hljs-pattern-match">|</span><br><span class="hljs-pattern-match">            sink instanceof <span class="hljs-constructor">MyBatisAnnotatedMethodCallArgument</span> <span class="hljs-keyword">or</span></span><br><span class="hljs-pattern-match">            sink instanceof <span class="hljs-constructor">MyBatisMapperMethodCallAnArgument</span> <span class="hljs-keyword">or</span> </span><br><span class="hljs-pattern-match">            query<span class="hljs-constructor">Sink(<span class="hljs-params">sink</span>)</span></span><br><span class="hljs-pattern-match">        )</span><br><span class="hljs-pattern-match">    &#125;</span><br><span class="hljs-pattern-match">  </span><br><span class="hljs-pattern-match">    override predicate is<span class="hljs-constructor">Sanitizer(DataFlow::Node <span class="hljs-params">node</span>)</span> &#123;</span><br><span class="hljs-pattern-match">        node.get<span class="hljs-constructor">Type()</span> instanceof <span class="hljs-constructor">PrimitiveType</span> <span class="hljs-keyword">or</span></span><br><span class="hljs-pattern-match">        node.get<span class="hljs-constructor">Type()</span> instanceof <span class="hljs-constructor">BoxedType</span> <span class="hljs-keyword">or</span></span><br><span class="hljs-pattern-match">        node.get<span class="hljs-constructor">Type()</span> instanceof <span class="hljs-constructor">NumberType</span> <span class="hljs-keyword">or</span></span><br><span class="hljs-pattern-match">        exists(<span class="hljs-constructor">ParameterizedType</span> pt| node.get<span class="hljs-constructor">Type()</span> = pt <span class="hljs-keyword">and</span> pt.get<span class="hljs-constructor">TypeArgument(0)</span> instanceof <span class="hljs-constructor">NumberType</span> )</span><br><span class="hljs-pattern-match">      &#125;</span><br><span class="hljs-pattern-match">  </span><br><span class="hljs-pattern-match">    override predicate is<span class="hljs-constructor">AdditionalTaintStep(DataFlow::Node <span class="hljs-params">node1</span>, DataFlow::Node <span class="hljs-params">node2</span>)</span> &#123;</span><br><span class="hljs-pattern-match">        exists(<span class="hljs-constructor">MethodAccess</span> ma |</span><br><span class="hljs-pattern-match">            ma.get<span class="hljs-constructor">Method()</span>.get<span class="hljs-constructor">DeclaringType()</span> instanceof <span class="hljs-constructor">TypeObject</span> <span class="hljs-keyword">and</span></span><br><span class="hljs-pattern-match">            ma.get<span class="hljs-constructor">Method()</span>.get<span class="hljs-constructor">Name()</span> = &quot;<span class="hljs-keyword">to</span><span class="hljs-constructor">String</span>&quot; <span class="hljs-keyword">and</span></span><br><span class="hljs-pattern-match">            ma.get<span class="hljs-constructor">Qualifier()</span> = node1.<span class="hljs-keyword">as</span><span class="hljs-constructor">Expr()</span> <span class="hljs-keyword">and</span></span><br><span class="hljs-pattern-match">            ma = node2.<span class="hljs-keyword">as</span><span class="hljs-constructor">Expr()</span></span><br><span class="hljs-pattern-match">        )</span><br><span class="hljs-pattern-match">    &#125;</span><br><span class="hljs-pattern-match">&#125;</span><br><span class="hljs-pattern-match">  </span><br><span class="hljs-pattern-match">predicate query<span class="hljs-constructor">Sink(DataFlow::Node <span class="hljs-params">sink</span>)</span> &#123;</span><br><span class="hljs-pattern-match">    exists(<span class="hljs-constructor">Method</span> <span class="hljs-keyword">method</span>, <span class="hljs-constructor">MethodAccess</span> call |</span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">method</span>.has<span class="hljs-constructor">Name(<span class="hljs-string">&quot;query&quot;</span>)</span> </span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">and</span> call.get<span class="hljs-constructor">Method()</span> = <span class="hljs-keyword">method</span> </span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">and</span> sink.<span class="hljs-keyword">as</span><span class="hljs-constructor">Expr()</span> = call.get<span class="hljs-constructor">AnArgument()</span></span><br><span class="hljs-pattern-match">    )</span><br><span class="hljs-pattern-match">&#125;</span><br><span class="hljs-pattern-match">  </span><br><span class="hljs-pattern-match">from <span class="hljs-constructor">SqlInjectionConfiguration</span> config, <span class="hljs-constructor">DataFlow</span>::<span class="hljs-constructor">PathNode</span> source, <span class="hljs-constructor">DataFlow</span>::<span class="hljs-constructor">PathNode</span> sink</span><br><span class="hljs-pattern-match">where config.has<span class="hljs-constructor">FlowPath(<span class="hljs-params">source</span>, <span class="hljs-params">sink</span>)</span></span><br><span class="hljs-pattern-match">select source.get<span class="hljs-constructor">Node()</span>, source, sink, &quot;source&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>成功扫出MyBatis注解式和MyBatis-XML存在的SQL注入问题</p>
+<p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/37616165c204b2785aeb9996470c0f02.png" alt="image-20221023192235185"></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>相信通过上面的学习，大家也都发现了所有的分析都是离不开AST语法树的。因为CodeQL自身只能识别AST语法树，所以要进行任何的分析都需要围绕AST语法树来进行分析，也可以更好的理解QL语法原理，对自己的分析大有益处。当作者自己第一次看别人的分析文章看着CodeQL代码半天一筹莫展，丝毫没理解懂。当知道QL的核心就是AST语法树，再结合着语法树进行分析就很好理解了。也会同时有更多自己不一样的分析思路。</p>
+<p>当然了，通过CodeQL不可能挖掘出所有的漏洞。而且不同的源码需要不同的规则进行匹配。所以需要大家自己探索不断完善自己的规则，它的好处就是可以大大减少人工成本，在较通用的漏洞上帮助大家更好的发现。当然网上也有很多非常隐蔽的漏洞也是通过CodeQL进行挖掘的，这就需要大家自己独特的挖掘规则思路。</p>
+<h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><p><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/283795.html">https://www.freebuf.com/articles/web/283795.html</a></p>
+
+    </article>
+    <!-- license -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://jd.army">JD.Army</a>
+            <p>原文链接：<a href="https://jd.army/2022/10/24/codeql-sql/">https://jd.army/2022/10/24/codeql-sql/</a>
+            <p>发表日期：<a href="https://jd.army/2022/10/24/codeql-sql/">October 24th 2022, 2:26:16 pm</a>
+            <p>更新日期：<a href="https://jd.army/2022/10/24/codeql-sql/">October 24th 2022, 2:25:54 pm</a>
+            <p>版权声明：本文采用<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2022/10/10/Lsass%20memory%20dump/" title="Lsass Memory Dump">
+                    <div class="prevTitle">Lsass Memory Dump</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- comment -->
+    
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+
+            
+    <div id="disqus_thread"></div>
+    <script>
+        /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+        
+        var disqus_config = function () {
+        this.page.url = "https://jd.army/2022/10/24/codeql-sql/";  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = "Codeql-Sql"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        
+        (function () { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://jdarmy.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+            
+
+            
+
+            <!-- utteranc评论 -->
+
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+
+            
+            
+
+        </div>
+        <script>
+            setInterval(()=>{
+                var disqus_thread = document.getElementById("disqus_thread");
+            disqus_thread.getElementsByTagName("iframe")[0].hidden = true;
+            },2000);
+        </script>
+    
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    
+    <!-- Mathjax -->
+    
+</main>
+
+                <!-- profile -->
+                
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+        <div class="social">
+            
+    
+        
+            
+                <a href="mailto:Master@JD.Army" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/JDArmy" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+
+        </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    
+    <!-- 不蒜子  -->
+    
+        <div class="busuanzi-container">
+            
+             
+                <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+            
+        </div>
+    	
+</footer>
+
+        </div>
+        <!-- toc -->
+        
+            <div class="toc-wrapper toc-wrapper-loding" style=
+
+
+
+
+
+
+
+    top:50vh;
+
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E5%8F%8A%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">2.</span> <span class="toc-text">安装及环境配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CodeQL%E5%AE%89%E8%A3%85"><span class="toc-number">2.1.</span> <span class="toc-text">CodeQL安装</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BC%95%E6%93%8E%E5%AE%89%E8%A3%85"><span class="toc-number">2.1.1.</span> <span class="toc-text">引擎安装</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#SDK%E5%AE%89%E8%A3%85"><span class="toc-number">2.1.2.</span> <span class="toc-text">SDK安装</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CodeQL%E6%8F%92%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="toc-number">2.2.</span> <span class="toc-text">CodeQL插件安装</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CodeQL%E6%B5%8B%E8%AF%95"><span class="toc-number">3.</span> <span class="toc-text">CodeQL测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CodeQL%E8%AF%AD%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">CodeQL语法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B1%BB%E5%BA%93"><span class="toc-number">4.1.</span> <span class="toc-text">类库</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B0%93%E8%AF%8D"><span class="toc-number">4.2.</span> <span class="toc-text">谓词</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E7%82%B9"><span class="toc-number">4.3.</span> <span class="toc-text">重点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#exists%E5%85%AC%E5%BC%8F%E8%AE%B2%E8%A7%A3"><span class="toc-number">4.4.</span> <span class="toc-text">exists公式讲解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96source"><span class="toc-number">4.5.</span> <span class="toc-text">获取source</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AEsink"><span class="toc-number">4.6.</span> <span class="toc-text">设置sink</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%B5%81"><span class="toc-number">4.7.</span> <span class="toc-text">数据流</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E4%BB%A3%E6%88%90%E6%9E%9C"><span class="toc-number">5.</span> <span class="toc-text">第一代成果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%8A%A5%E6%8E%92%E9%99%A4"><span class="toc-number">6.</span> <span class="toc-text">漏报排除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E4%BB%A3%E6%88%90%E6%9E%9C"><span class="toc-number">7.</span> <span class="toc-text">第二代成果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AF%E6%8A%A5%E6%8E%92%E9%99%A4"><span class="toc-number">8.</span> <span class="toc-text">误报排除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E4%BB%A3%E6%88%90%E6%9E%9C"><span class="toc-number">9.</span> <span class="toc-text">第三代成果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MyBatis-XML%E9%97%AE%E9%A2%98"><span class="toc-number">10.</span> <span class="toc-text">MyBatis-XML问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E4%BB%A3%E6%88%90%E6%9E%9C"><span class="toc-number">11.</span> <span class="toc-text">第四代成果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">12.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="toc-number">13.</span> <span class="toc-text">参考文章</span></a></li></ol>
+            </div>
+        
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 40
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+        
+            
+            
+            <div class="archive-year"> 2022 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/24</span>
+            <a class="archive-post-title" href="/2022/10/24/codeql-sql/">Codeql-Sql</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/10</span>
+            <a class="archive-post-title" href="/2022/10/10/Lsass%20memory%20dump/">Lsass Memory Dump</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/21</span>
+            <a class="archive-post-title" href="/2022/09/21/Java-Agent%E5%86%85%E5%AD%98%E9%A9%AC%E7%A0%94%E7%A9%B6%E5%AD%A6%E4%B9%A0/">Java Agent内存马研究学习</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/25</span>
+            <a class="archive-post-title" href="/2022/06/25/%E8%93%9D%E5%86%9B%E6%8A%80%E6%9C%AF%E6%8E%A8%E9%80%81-%E7%AC%AC25%E6%9C%9F/">蓝军技术推送-RPC最新漏洞分析、C2云函数、PetitPotam替代品</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/01</span>
+            <a class="archive-post-title" href="/2022/06/01/CobaltStrike%20WebServer%E7%89%B9%E5%BE%81%E5%88%86%E6%9E%90/">CobaltStrike WebServer特征分析</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/27</span>
+            <a class="archive-post-title" href="/2022/05/27/%E8%93%9D%E5%86%9B%E6%8A%80%E6%9C%AF%E6%8E%A8%E9%80%81-%E7%AC%AC24%E6%9C%9F/">蓝军技术推送-windows域专题（KrbRelayUp、bypass机器用户添加限制、ad域渗透可视化工具）</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/13</span>
+            <a class="archive-post-title" href="/2022/05/13/%E8%93%9D%E5%86%9B%E6%8A%80%E6%9C%AF%E6%8E%A8%E9%80%81-%E7%AC%AC23%E6%9C%9F/">蓝军技术推送-windows域专题(Azure、ADCS)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/07</span>
+            <a class="archive-post-title" href="/2022/05/07/%E5%9F%9F%E6%8E%A7%E8%A2%AB%E7%AA%81%E7%A0%B4%E7%9A%84%E5%87%A0%E7%A7%8D%E9%80%94%E5%BE%84v2/">域控被突破的几种途径V2</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/06</span>
+            <a class="archive-post-title" href="/2022/05/06/%E5%9F%9F%E6%8E%A7%E8%A2%AB%E7%AA%81%E7%A0%B4%E7%9A%84%E5%87%A0%E7%A7%8D%E9%80%94%E5%BE%84/">域控被突破的几种途径</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span>
+            <a class="archive-post-title" href="/2022/04/11/SpringCore%E5%88%86%E6%9E%90/">Spring-Core RCE分析</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/08</span>
+            <a class="archive-post-title" href="/2022/04/08/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC22%E6%9C%9F/">蓝军推送(第22期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/02</span>
+            <a class="archive-post-title" href="/2022/04/02/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC21%E6%9C%9F/">蓝军推送(第21期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/01</span>
+            <a class="archive-post-title" href="/2022/04/01/Spring4shell%E7%BB%95%E8%BF%87/">漏洞风险 | Spring4Shell通用WAF策略存在绕过风险，需尽快升级！</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/25</span>
+            <a class="archive-post-title" href="/2022/03/25/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC20%E6%9C%9F/">蓝军推送(第20期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/18</span>
+            <a class="archive-post-title" href="/2022/03/18/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC19%E6%9C%9F/">蓝军推送(第19期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/11</span>
+            <a class="archive-post-title" href="/2022/03/11/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC18%E6%9C%9F/">蓝军推送(第18期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/04</span>
+            <a class="archive-post-title" href="/2022/03/04/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC17%E6%9C%9F/">蓝军推送(第17期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/24</span>
+            <a class="archive-post-title" href="/2022/02/24/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC16%E6%9C%9F/">蓝军推送(第16期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/21</span>
+            <a class="archive-post-title" href="/2022/02/21/%E5%9F%BA%E4%BA%8E%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">基于字节码的Java代码审计</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/19</span>
+            <a class="archive-post-title" href="/2022/02/19/%E2%80%9C%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97%E6%BC%94%E7%BB%83%E8%AF%84%E5%88%86%E7%B3%BB%E7%BB%9F%E2%80%9D%E5%BC%80%E6%BA%90%E6%A1%86%E6%9E%B6%20(preview)/">“红蓝对抗演练评分系统”开源框架 (Preview)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/18</span>
+            <a class="archive-post-title" href="/2022/02/18/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC15%E6%9C%9F/">蓝军推送(第15期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/17</span>
+            <a class="archive-post-title" href="/2022/02/17/%E5%9F%9F%E5%86%85%E7%94%A8%E6%88%B7%E3%80%81%E7%BB%84%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B7%A5%E5%85%B7SamrSearch/">域内用户、组信息收集工具SamrSearch</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/16</span>
+            <a class="archive-post-title" href="/2022/02/16/%E6%9B%B4%E5%87%86%E7%A1%AE%E3%80%81%E5%85%A8%E9%9D%A2%E7%9A%84NoPac%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F%E5%99%A8/">更准确、全面的NoPac漏洞扫描器</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/10</span>
+            <a class="archive-post-title" href="/2022/02/10/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC14%E6%9C%9F/">蓝军推送(第14期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/20</span>
+            <a class="archive-post-title" href="/2022/01/20/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC13%E6%9C%9F/">蓝军推送(第13期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/14</span>
+            <a class="archive-post-title" href="/2022/01/14/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC12%E6%9C%9F/">蓝军推送(第12期)</a>
+        </li>
+    
+        
+            
+            
+                
+                </ul>
+            
+            <div class="archive-year"> 2021 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/29</span>
+            <a class="archive-post-title" href="/2021/12/29/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC11%E6%9C%9F/">蓝军推送(第11期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/09</span>
+            <a class="archive-post-title" href="/2021/12/09/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC10%E6%9C%9F/">蓝军推送(第10期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/02</span>
+            <a class="archive-post-title" href="/2021/12/02/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC9%E6%9C%9F/">蓝军推送(第9期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/25</span>
+            <a class="archive-post-title" href="/2021/11/25/red-teaming-assessment-scoring-system-rtass/">Red Teaming Assessment Scoring System - RTASS</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/25</span>
+            <a class="archive-post-title" href="/2021/11/25/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC8%E6%9C%9F/">蓝军推送(第8期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/18</span>
+            <a class="archive-post-title" href="/2021/11/18/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC7%E6%9C%9F/">蓝军推送(第7期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/11</span>
+            <a class="archive-post-title" href="/2021/11/11/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC6%E6%9C%9F/">蓝军推送(第6期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/05</span>
+            <a class="archive-post-title" href="/2021/11/05/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC5%E6%9C%9F/">蓝军推送(第5期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/04</span>
+            <a class="archive-post-title" href="/2021/11/04/kerberos%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%BB%A5%E5%8F%8A%E6%94%BB%E5%87%BB%E9%9D%A2/">Kerberos基础知识以及攻击面</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/28</span>
+            <a class="archive-post-title" href="/2021/10/28/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC4%E6%9C%9F/">蓝军推送(第4期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/20</span>
+            <a class="archive-post-title" href="/2021/10/20/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC3%E6%9C%9F/">蓝军推送(第3期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/13</span>
+            <a class="archive-post-title" href="/2021/10/13/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC2%E6%9C%9F/">蓝军推送(第2期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/09</span>
+            <a class="archive-post-title" href="/2021/10/09/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC1%E6%9C%9F/">蓝军推送(第1期)</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/23</span>
+            <a class="archive-post-title" href="/2021/07/23/processghosting-%E4%B8%80%E5%A5%97%E9%80%9A%E7%94%A8%E7%9A%84%E5%85%8D%E6%9D%80%EF%BC%8C%E8%87%AA%E5%88%A0%E9%99%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">ProcessGhosting - 一套通用的免杀，自删除解决方案</a>
+        </li>
+    
+    </div>
+</div>
+
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+        
+            <span class="sidebar-tag-name" data-tags="kerberos">
+                <span class="iconfont-archer">&#xe606;</span>
+                kerberos
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="AD">
+                <span class="iconfont-archer">&#xe606;</span>
+                AD
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="金票">
+                <span class="iconfont-archer">&#xe606;</span>
+                金票
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="银票">
+                <span class="iconfont-archer">&#xe606;</span>
+                银票
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="kerberosting">
+                <span class="iconfont-archer">&#xe606;</span>
+                kerberosting
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="ProcessGhosting">
+                <span class="iconfont-archer">&#xe606;</span>
+                ProcessGhosting
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="进程">
+                <span class="iconfont-archer">&#xe606;</span>
+                进程
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Red Teaming">
+                <span class="iconfont-archer">&#xe606;</span>
+                Red Teaming
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Scoring System">
+                <span class="iconfont-archer">&#xe606;</span>
+                Scoring System
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="ZTNA">
+                <span class="iconfont-archer">&#xe606;</span>
+                ZTNA
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Jira">
+                <span class="iconfont-archer">&#xe606;</span>
+                Jira
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="HandleKatz">
+                <span class="iconfont-archer">&#xe606;</span>
+                HandleKatz
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="lsass">
+                <span class="iconfont-archer">&#xe606;</span>
+                lsass
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="procdump">
+                <span class="iconfont-archer">&#xe606;</span>
+                procdump
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="mimikatz">
+                <span class="iconfont-archer">&#xe606;</span>
+                mimikatz
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="凭证提取">
+                <span class="iconfont-archer">&#xe606;</span>
+                凭证提取
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Exchange">
+                <span class="iconfont-archer">&#xe606;</span>
+                Exchange
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Adobe Reader">
+                <span class="iconfont-archer">&#xe606;</span>
+                Adobe Reader
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="NimlineWhispers">
+                <span class="iconfont-archer">&#xe606;</span>
+                NimlineWhispers
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Bypass AMSI">
+                <span class="iconfont-archer">&#xe606;</span>
+                Bypass AMSI
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="本地提权">
+                <span class="iconfont-archer">&#xe606;</span>
+                本地提权
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="LDAPmonitor">
+                <span class="iconfont-archer">&#xe606;</span>
+                LDAPmonitor
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Payload">
+                <span class="iconfont-archer">&#xe606;</span>
+                Payload
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Bypass">
+                <span class="iconfont-archer">&#xe606;</span>
+                Bypass
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="chm">
+                <span class="iconfont-archer">&#xe606;</span>
+                chm
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="TeamTNT">
+                <span class="iconfont-archer">&#xe606;</span>
+                TeamTNT
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="DBIR">
+                <span class="iconfont-archer">&#xe606;</span>
+                DBIR
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="魔形女">
+                <span class="iconfont-archer">&#xe606;</span>
+                魔形女
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="delete-self-poc">
+                <span class="iconfont-archer">&#xe606;</span>
+                delete-self-poc
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="SharpUnhooker">
+                <span class="iconfont-archer">&#xe606;</span>
+                SharpUnhooker
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Sherlock">
+                <span class="iconfont-archer">&#xe606;</span>
+                Sherlock
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Collection">
+                <span class="iconfont-archer">&#xe606;</span>
+                Collection
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="CVE">
+                <span class="iconfont-archer">&#xe606;</span>
+                CVE
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Excel">
+                <span class="iconfont-archer">&#xe606;</span>
+                Excel
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="rpcfirewall">
+                <span class="iconfont-archer">&#xe606;</span>
+                rpcfirewall
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="dll镂空">
+                <span class="iconfont-archer">&#xe606;</span>
+                dll镂空
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="CVE-2021-37580">
+                <span class="iconfont-archer">&#xe606;</span>
+                CVE-2021-37580
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="lsarelayx">
+                <span class="iconfont-archer">&#xe606;</span>
+                lsarelayx
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="CobaltStrike">
+                <span class="iconfont-archer">&#xe606;</span>
+                CobaltStrike
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="RCE">
+                <span class="iconfont-archer">&#xe606;</span>
+                RCE
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="DACL">
+                <span class="iconfont-archer">&#xe606;</span>
+                DACL
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="蜜罐">
+                <span class="iconfont-archer">&#xe606;</span>
+                蜜罐
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="RE">
+                <span class="iconfont-archer">&#xe606;</span>
+                RE
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="E-office">
+                <span class="iconfont-archer">&#xe606;</span>
+                E-office
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="tools">
+                <span class="iconfont-archer">&#xe606;</span>
+                tools
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Windows">
+                <span class="iconfont-archer">&#xe606;</span>
+                Windows
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="LSASS">
+                <span class="iconfont-archer">&#xe606;</span>
+                LSASS
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Grafana">
+                <span class="iconfont-archer">&#xe606;</span>
+                Grafana
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="bypass">
+                <span class="iconfont-archer">&#xe606;</span>
+                bypass
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="APISIX">
+                <span class="iconfont-archer">&#xe606;</span>
+                APISIX
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="exploit">
+                <span class="iconfont-archer">&#xe606;</span>
+                exploit
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="BleedingBear">
+                <span class="iconfont-archer">&#xe606;</span>
+                BleedingBear
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="dll劫持">
+                <span class="iconfont-archer">&#xe606;</span>
+                dll劫持
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="打印机">
+                <span class="iconfont-archer">&#xe606;</span>
+                打印机
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="红蓝对抗">
+                <span class="iconfont-archer">&#xe606;</span>
+                红蓝对抗
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="RTASS">
+                <span class="iconfont-archer">&#xe606;</span>
+                RTASS
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="域渗透">
+                <span class="iconfont-archer">&#xe606;</span>
+                域渗透
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="工具">
+                <span class="iconfont-archer">&#xe606;</span>
+                工具
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Java">
+                <span class="iconfont-archer">&#xe606;</span>
+                Java
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="代码审计">
+                <span class="iconfont-archer">&#xe606;</span>
+                代码审计
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="NoPac">
+                <span class="iconfont-archer">&#xe606;</span>
+                NoPac
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="提权">
+                <span class="iconfont-archer">&#xe606;</span>
+                提权
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="VMware">
+                <span class="iconfont-archer">&#xe606;</span>
+                VMware
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="后门">
+                <span class="iconfont-archer">&#xe606;</span>
+                后门
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Xshell">
+                <span class="iconfont-archer">&#xe606;</span>
+                Xshell
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="knight">
+                <span class="iconfont-archer">&#xe606;</span>
+                knight
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="rdp">
+                <span class="iconfont-archer">&#xe606;</span>
+                rdp
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="java">
+                <span class="iconfont-archer">&#xe606;</span>
+                java
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="rpc">
+                <span class="iconfont-archer">&#xe606;</span>
+                rpc
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="rce">
+                <span class="iconfont-archer">&#xe606;</span>
+                rce
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="openssl">
+                <span class="iconfont-archer">&#xe606;</span>
+                openssl
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="cs">
+                <span class="iconfont-archer">&#xe606;</span>
+                cs
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Spring">
+                <span class="iconfont-archer">&#xe606;</span>
+                Spring
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="漏洞">
+                <span class="iconfont-archer">&#xe606;</span>
+                漏洞
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="勒索软件">
+                <span class="iconfont-archer">&#xe606;</span>
+                勒索软件
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="WPS OFFICE RCE">
+                <span class="iconfont-archer">&#xe606;</span>
+                WPS OFFICE RCE
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="MACOS">
+                <span class="iconfont-archer">&#xe606;</span>
+                MACOS
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="AV">
+                <span class="iconfont-archer">&#xe606;</span>
+                AV
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Rootkit">
+                <span class="iconfont-archer">&#xe606;</span>
+                Rootkit
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="ntlmquic">
+                <span class="iconfont-archer">&#xe606;</span>
+                ntlmquic
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="windows">
+                <span class="iconfont-archer">&#xe606;</span>
+                windows
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="C2">
+                <span class="iconfont-archer">&#xe606;</span>
+                C2
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="流量">
+                <span class="iconfont-archer">&#xe606;</span>
+                流量
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="codeql">
+                <span class="iconfont-archer">&#xe606;</span>
+                codeql
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="c2">
+                <span class="iconfont-archer">&#xe606;</span>
+                c2
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="RPC">
+                <span class="iconfont-archer">&#xe606;</span>
+                RPC
+            </span>
+        
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="渗透基础">
+            <span class="iconfont-archer">&#xe60a;</span>
+            渗透基础
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="渗透技术">
+            <span class="iconfont-archer">&#xe60a;</span>
+            渗透技术
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Research">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Research
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="蓝军推送">
+            <span class="iconfont-archer">&#xe60a;</span>
+            蓝军推送
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="红蓝对抗">
+            <span class="iconfont-archer">&#xe60a;</span>
+            红蓝对抗
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="渗透工具">
+            <span class="iconfont-archer">&#xe60a;</span>
+            渗透工具
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="漏洞预警">
+            <span class="iconfont-archer">&#xe60a;</span>
+            漏洞预警
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="漏洞分析">
+            <span class="iconfont-archer">&#xe60a;</span>
+            漏洞分析
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="java">
+            <span class="iconfont-archer">&#xe60a;</span>
+            java
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="windows">
+            <span class="iconfont-archer">&#xe60a;</span>
+            windows
+        </span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMeta = {
+        url: "https://jd.army",
+        root: "/",
+        author: "JD.Army"
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+
+        <!-- main func -->
+        <script src="/scripts/main.js?v=20210823"></script>
+        <!-- dark mode -->
+        <script src="/scripts/dark.js?v=20210823"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+        <!-- algolia -->
+        
+        <!-- busuanzi -->
+        
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        
+        <!-- CNZZ -->
+        
+        <!-- async load share.js -->
+        
+            <script src="/scripts/share.js?v=20210823" async></script>
+        
+        <!-- mermaid -->
+        
+    </body>
+</html>

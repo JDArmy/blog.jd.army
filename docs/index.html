@@ -446,6 +446,339 @@
             
         
         <article class="index-post">
+            <a class="abstract-title" href="/2022/10/24/codeql-sql/">
+                
+                <span class="abstract-title-text">Codeql-Sql</span>
+            </a>
+            <div class="abstract-content">
+                前言为什么学习CodeQL呢？在学习了一段代码审计，逐渐感觉代码审计是个体力活。而且越大的项目想要较全面的审计起来更是耗时间，还有可能漏掉一些很容易发现的漏洞。而CodeQL就是用来辅助漏洞挖掘，半自动化挖掘+人工辅助审计可大大减少人工成本，也提高了漏洞准确率。随着近几年网上公开的越来越多的严重级漏洞都是通过CodeQL挖掘出来的，所以目前对想学代码审计的人来说，学习CodeQL利大于弊，其目前也渐渐成为国内半自动化代码审计所使用的主流工具了。
+安装及环境配置CodeQL安装CodeQL本身包含两部分解析引擎+SDK。
+解析引擎用来解析我们编写的规则，虽然不开源，但是我们可以直接在官网下...
+            </div>
+            <!-- read more -->
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/10/24">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2022/10/24</span>
+                </div>
+                <!-- tags -->
+                
+                    <div class= abstract-tags >
+    
+        
+        
+            
+        
+        
+        <span class="post-category" data-categories="渗透基础"">
+            <i class="fas fa-folder post-category-icon"></i>
+            <span class="post-category-text">
+                渗透基础
+            </span>
+        </span>
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Java">Java</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="代码审计">代码审计</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="codeql">codeql</a>
+    
+</div>
+
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+        
+        <article class="index-post">
+            <a class="abstract-title" href="/2022/10/10/Lsass%20memory%20dump/">
+                
+                <span class="abstract-title-text">Lsass Memory Dump</span>
+            </a>
+            <div class="abstract-content">
+                [toc]
+lsass是windows中处理本地安全和登录策略的重要进程，几乎所有的windows身份认证程序都离不开lsass进程。因此在lsass的内存中会保存用户相关的凭证。它是windows主机中凭证的重要组成部分，因此获取lsass内存也是MITRE ATT&amp;CK框架中Credential Access战术下的重要技术点。
+
+在整个unified kill chain中Credential Access的环节起着重要的作用。在稳定获得初始化立足点后，需要获取目标主机上的相关凭证，并通过这些凭证进行后续的横向移动，当凭证获取不足时，无疑会加大后续的横向移动难度，因此Cre...
+            </div>
+            <!-- read more -->
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/10/24">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2022/10/10</span>
+                </div>
+                <!-- tags -->
+                
+                    <div class= abstract-tags >
+    
+        
+        
+            
+        
+        
+        <span class="post-category" data-categories="windows"">
+            <i class="fas fa-folder post-category-icon"></i>
+            <span class="post-category-text">
+                windows
+            </span>
+        </span>
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="lsass">lsass</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="windows">windows</a>
+    
+</div>
+
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+        
+        <article class="index-post">
+            <a class="abstract-title" href="/2022/09/21/Java-Agent%E5%86%85%E5%AD%98%E9%A9%AC%E7%A0%94%E7%A9%B6%E5%AD%A6%E4%B9%A0/">
+                
+                <span class="abstract-title-text">Java Agent内存马研究学习</span>
+            </a>
+            <div class="abstract-content">
+                ​    根据Java Agent内存马演变历史进行研究学习：
+第一阶段：
+
+
+上传inject.jar到服务器用来枚举jvm并进行植入；
+上传agent.jar到服务器用来承载webshell功能；
+执行系统命令java -jar inject.jar。
+
+
+
+第二阶段：
+
+
+上传agent.jar到服务器用来承载webshell功能；
+冰蝎服务端调用Java API将agent.jar植入自身进程完成注入。
+
+
+
+第三阶段：
+
+内存马防检测
+无文件落地agent植入技术
+
+第四阶段：
+
+《论如何优雅的注入Java Agent内存马》
+
+0x01 Java Agent概述​    在 ...
+            </div>
+            <!-- read more -->
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/10/24">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2022/09/21</span>
+                </div>
+                <!-- tags -->
+                
+                    <div class= abstract-tags >
+    
+        
+        
+            
+        
+        
+        <span class="post-category" data-categories="java"">
+            <i class="fas fa-folder post-category-icon"></i>
+            <span class="post-category-text">
+                java
+            </span>
+        </span>
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Java">Java</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="代码审计">代码审计</a>
+    
+</div>
+
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+        
+        <article class="index-post">
+            <a class="abstract-title" href="/2022/06/25/%E8%93%9D%E5%86%9B%E6%8A%80%E6%9C%AF%E6%8E%A8%E9%80%81-%E7%AC%AC25%E6%9C%9F/">
+                
+                <span class="abstract-title-text">蓝军技术推送-RPC最新漏洞分析、C2云函数、PetitPotam替代品</span>
+            </a>
+            <div class="abstract-content">
+                [文章推荐] CVE-2022-26809 Reaching Vulnerable Point starting from 0 Knowledge on RPC文章看点：本文非常详细的讲述了，从0开始调试最新RPC RCE漏洞（CVE-2022-26809）的步骤及方法，非常适合学习windows RPC协议。文章通过bindiff补丁来分析具体的漏洞位置，再搭建smb的测试环境，来进行漏洞测试，分析漏洞中ProcessReceivedPDU、GetCoalescedBuffer等几个关键修复点。最后尝试对此漏洞进行利用，虽然最后没有成功利用，但是整个利用思路可以学习参考。
+推送亮点：C...
+            </div>
+            <!-- read more -->
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/10/24">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2022/06/25</span>
+                </div>
+                <!-- tags -->
+                
+                    <div class= abstract-tags >
+    
+        
+        
+            
+        
+        
+        <span class="post-category" data-categories="蓝军推送"">
+            <i class="fas fa-folder post-category-icon"></i>
+            <span class="post-category-text">
+                蓝军推送
+            </span>
+        </span>
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="c2">c2</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="RPC">RPC</a>
+    
+</div>
+
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+        
+        <article class="index-post">
+            <a class="abstract-title" href="/2022/06/01/CobaltStrike%20WebServer%E7%89%B9%E5%BE%81%E5%88%86%E6%9E%90/">
+                
+                <span class="abstract-title-text">CobaltStrike WebServer特征分析</span>
+            </a>
+            <div class="abstract-content">
+                [toc]
+WebServer特征本文简单介绍了Cobalt Stike 4.4版本的一些特征以及缓解措施。
+证书特征以及流量特征三种方式都可以，一定要改。
+12345678910111213141516171819202122https-certificate &#123;        ## Option 1) Trusted and Signed Certificate    ## Use keytool to create a Java Keystore file.     ## Refer to https://www.cobaltstrike.com/help-malleab...
+            </div>
+            <!-- read more -->
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/10/24">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2022/06/01</span>
+                </div>
+                <!-- tags -->
+                
+                    <div class= abstract-tags >
+    
+        
+        
+            
+        
+        
+        <span class="post-category" data-categories="渗透工具"">
+            <i class="fas fa-folder post-category-icon"></i>
+            <span class="post-category-text">
+                渗透工具
+            </span>
+        </span>
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="cs">cs</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="C2">C2</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="流量">流量</a>
+    
+</div>
+
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+        
+        <article class="index-post">
+            <a class="abstract-title" href="/2022/05/27/%E8%93%9D%E5%86%9B%E6%8A%80%E6%9C%AF%E6%8E%A8%E9%80%81-%E7%AC%AC24%E6%9C%9F/">
+                
+                <span class="abstract-title-text">蓝军技术推送-windows域专题（KrbRelayUp、bypass机器用户添加限制、ad域渗透可视化工具）</span>
+            </a>
+            <div class="abstract-content">
+                [文章推荐] Detecting and preventing privilege escalation attacks leveraging Kerberos relaying (KrbRelayUp)文章看点：windows defender团队对KrbRelayUp提权利用工具的原理介绍。文章中最重要的是，defender对KrbRelayUp工具的检测及拦截方法。
+推送亮点：KrbRelayUp工具是是kerberos中继的一键化利用工具，目前主要是被用来在域中的主机提权。它的使用条件是ldap无签名，用户拥有创建机器账户的权限（和adcs提权、Nopac一样）。此文章大概介绍了...
+            </div>
+            <!-- read more -->
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/10/24">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2022/05/27</span>
+                </div>
+                <!-- tags -->
+                
+                    <div class= abstract-tags >
+    
+        
+        
+            
+        
+        
+        <span class="post-category" data-categories="蓝军推送"">
+            <i class="fas fa-folder post-category-icon"></i>
+            <span class="post-category-text">
+                蓝军推送
+            </span>
+        </span>
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="windows">windows</a>
+    
+</div>
+
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+        
+        <article class="index-post">
             <a class="abstract-title" href="/2022/05/13/%E8%93%9D%E5%86%9B%E6%8A%80%E6%9C%AF%E6%8E%A8%E9%80%81-%E7%AC%AC23%E6%9C%9F/">
                 
                 <span class="abstract-title-text">蓝军技术推送-windows域专题(Azure、ADCS)</span>
@@ -629,316 +962,6 @@
         <a class="post-tag" href="javascript:void(0);" data-tags="Spring">Spring</a>
     
         <a class="post-tag" href="javascript:void(0);" data-tags="漏洞">漏洞</a>
-    
-</div>
-
-                
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
-    
-        
-        
-        
-        
-            
-            
-        
-        <article class="index-post">
-            <a class="abstract-title" href="/2022/04/08/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC22%E6%9C%9F/">
-                
-                <span class="abstract-title-text">蓝军推送(第22期)</span>
-            </a>
-            <div class="abstract-content">
-                <p>创建蜜罐账户、VMware Workspace ONE RCE、SMB over QUIC工具</p>
-            </div>
-            <!-- read more -->
-            
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2022/04/20">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2022/04/08</span>
-                </div>
-                <!-- tags -->
-                
-                    <div class= abstract-tags >
-    
-        
-        
-            
-        
-        
-        <span class="post-category" data-categories="蓝军推送"">
-            <i class="fas fa-folder post-category-icon"></i>
-            <span class="post-category-text">
-                蓝军推送
-            </span>
-        </span>
-    
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="蜜罐">蜜罐</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="VMware">VMware</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="ntlmquic">ntlmquic</a>
-    
-</div>
-
-                
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
-    
-        
-        
-        
-        
-            
-            
-        
-        <article class="index-post">
-            <a class="abstract-title" href="/2022/04/02/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC21%E6%9C%9F/">
-                
-                <span class="abstract-title-text">蓝军推送(第21期)</span>
-            </a>
-            <div class="abstract-content">
-                <p>武器化AV驱动程序、Spring Core RCE、Windows Rootkit</p>
-            </div>
-            <!-- read more -->
-            
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2022/04/20">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2022/04/02</span>
-                </div>
-                <!-- tags -->
-                
-                    <div class= abstract-tags >
-    
-        
-        
-            
-        
-        
-        <span class="post-category" data-categories="蓝军推送"">
-            <i class="fas fa-folder post-category-icon"></i>
-            <span class="post-category-text">
-                蓝军推送
-            </span>
-        </span>
-    
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="Spring">Spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="AV">AV</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="Rootkit">Rootkit</a>
-    
-</div>
-
-                
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
-    
-        
-        
-        
-        
-            
-            
-        
-        <article class="index-post">
-            <a class="abstract-title" href="/2022/04/01/Spring4shell%E7%BB%95%E8%BF%87/">
-                
-                <span class="abstract-title-text">漏洞风险 | Spring4Shell通用WAF策略存在绕过风险，需尽快升级！</span>
-            </a>
-            <div class="abstract-content">
-                <p>经团队研究发现，所有针对 Spring4Shell 漏洞的基于关键字的WAF防护策略均存在被绕过风险。</p>
-            </div>
-            <!-- read more -->
-            
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2022/04/20">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2022/04/01</span>
-                </div>
-                <!-- tags -->
-                
-                    <div class= abstract-tags >
-    
-        
-        
-            
-        
-        
-        <span class="post-category" data-categories="漏洞预警"">
-            <i class="fas fa-folder post-category-icon"></i>
-            <span class="post-category-text">
-                漏洞预警
-            </span>
-        </span>
-    
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="Spring">Spring</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="漏洞">漏洞</a>
-    
-</div>
-
-                
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
-    
-        
-        
-        
-        
-            
-            
-        
-        <article class="index-post">
-            <a class="abstract-title" href="/2022/03/25/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC20%E6%9C%9F/">
-                
-                <span class="abstract-title-text">蓝军推送(第20期)</span>
-            </a>
-            <div class="abstract-content">
-                <p>逆向分析勒索软件LockBit；CVE-2022-24934，WPS客户端RCE；MACOS的点击劫持工具</p>
-            </div>
-            <!-- read more -->
-            
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2022/04/20">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2022/03/25</span>
-                </div>
-                <!-- tags -->
-                
-                    <div class= abstract-tags >
-    
-        
-        
-            
-        
-        
-        <span class="post-category" data-categories="蓝军推送"">
-            <i class="fas fa-folder post-category-icon"></i>
-            <span class="post-category-text">
-                蓝军推送
-            </span>
-        </span>
-    
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="勒索软件">勒索软件</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="WPS OFFICE RCE">WPS OFFICE RCE</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="MACOS">MACOS</a>
-    
-</div>
-
-                
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
-    
-        
-        
-        
-        
-            
-            
-        
-        <article class="index-post">
-            <a class="abstract-title" href="/2022/03/18/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC19%E6%9C%9F/">
-                
-                <span class="abstract-title-text">蓝军推送(第19期)</span>
-            </a>
-            <div class="abstract-content">
-                <p>内存模块加载的检测与绕过；OpenssL DOS；Knight大作，密码喷射工具</p>
-            </div>
-            <!-- read more -->
-            
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2022/03/18">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2022/03/18</span>
-                </div>
-                <!-- tags -->
-                
-                    <div class= abstract-tags >
-    
-        
-        
-            
-        
-        
-        <span class="post-category" data-categories="蓝军推送"">
-            <i class="fas fa-folder post-category-icon"></i>
-            <span class="post-category-text">
-                蓝军推送
-            </span>
-        </span>
-    
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="knight">knight</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="openssl">openssl</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="cs">cs</a>
-    
-</div>
-
-                
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
-    
-        
-        
-        
-        
-            
-            
-        
-        <article class="index-post">
-            <a class="abstract-title" href="/2022/03/11/%E8%93%9D%E5%86%9B%E6%8E%A8%E9%80%81-%E7%AC%AC18%E6%9C%9F/">
-                
-                <span class="abstract-title-text">蓝军推送(第18期)</span>
-            </a>
-            <div class="abstract-content">
-                <p>Windows RPC简介；Exchange后台RCE；Windows SMB RCE；域内密码爆破工具；Hacking8 安全信息流</p>
-            </div>
-            <!-- read more -->
-            
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2022/03/18">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2022/03/11</span>
-                </div>
-                <!-- tags -->
-                
-                    <div class= abstract-tags >
-    
-        
-        
-            
-        
-        
-        <span class="post-category" data-categories="蓝军推送"">
-            <i class="fas fa-folder post-category-icon"></i>
-            <span class="post-category-text">
-                蓝军推送
-            </span>
-        </span>
-    
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="tools">tools</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="rpc">rpc</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="rce">rce</a>
     
 </div>
 
@@ -1355,7 +1378,105 @@
         
         
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -1640,7 +1761,7 @@
     
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 34
+        Total : 40
         </div>
         <!-- search  -->
         
@@ -1654,6 +1775,42 @@
             <div class="archive-year"> 2022 </div>
             <ul class="year-list">
             
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/24</span>
+            <a class="archive-post-title" href="/2022/10/24/codeql-sql/">Codeql-Sql</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/10</span>
+            <a class="archive-post-title" href="/2022/10/10/Lsass%20memory%20dump/">Lsass Memory Dump</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/21</span>
+            <a class="archive-post-title" href="/2022/09/21/Java-Agent%E5%86%85%E5%AD%98%E9%A9%AC%E7%A0%94%E7%A9%B6%E5%AD%A6%E4%B9%A0/">Java Agent内存马研究学习</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/25</span>
+            <a class="archive-post-title" href="/2022/06/25/%E8%93%9D%E5%86%9B%E6%8A%80%E6%9C%AF%E6%8E%A8%E9%80%81-%E7%AC%AC25%E6%9C%9F/">蓝军技术推送-RPC最新漏洞分析、C2云函数、PetitPotam替代品</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/01</span>
+            <a class="archive-post-title" href="/2022/06/01/CobaltStrike%20WebServer%E7%89%B9%E5%BE%81%E5%88%86%E6%9E%90/">CobaltStrike WebServer特征分析</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/27</span>
+            <a class="archive-post-title" href="/2022/05/27/%E8%93%9D%E5%86%9B%E6%8A%80%E6%9C%AF%E6%8E%A8%E9%80%81-%E7%AC%AC24%E6%9C%9F/">蓝军技术推送-windows域专题（KrbRelayUp、bypass机器用户添加限制、ad域渗透可视化工具）</a>
+        </li>
+    
         
         <li class="archive-post-item">
             <span class="archive-post-date">05/13</span>
@@ -2278,6 +2435,31 @@
                 windows
             </span>
         
+            <span class="sidebar-tag-name" data-tags="C2">
+                <span class="iconfont-archer">&#xe606;</span>
+                C2
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="流量">
+                <span class="iconfont-archer">&#xe606;</span>
+                流量
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="codeql">
+                <span class="iconfont-archer">&#xe606;</span>
+                codeql
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="c2">
+                <span class="iconfont-archer">&#xe606;</span>
+                c2
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="RPC">
+                <span class="iconfont-archer">&#xe606;</span>
+                RPC
+            </span>
+        
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
@@ -2327,6 +2509,16 @@
         <span class="sidebar-category-name" data-categories="漏洞分析">
             <span class="iconfont-archer">&#xe60a;</span>
             漏洞分析
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="java">
+            <span class="iconfont-archer">&#xe60a;</span>
+            java
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="windows">
+            <span class="iconfont-archer">&#xe60a;</span>
+            windows
         </span>
     
     </div>
