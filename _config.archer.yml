@@ -31,7 +31,7 @@ social:
   rss: 
 # friends
 friends:
-  Monyer: //Monyer.com
+  # Monyer: //Monyer.com
   # friendB: //www.google.com
 about:
   enable: true
@@ -53,15 +53,18 @@ profile_icons:
   search: 'fas fa-search'
 # Additional profile links
 profile_links:
-  - name: RTASS Project
+  - name: JDARMY RTASS
     url: //github.com/JDArmy/RTASS
-    icon: 'fas fa-balance-scale'
+    icon: 'fab fa-github'
   - name: RTASS Calculator
     url: //jd.army/RTASS/?lang=en
-    icon: 'fas fa-balance-scale-left'
-  - name: Redteaming Route Map
-    url: //jd.army/RouteMap/
-    icon: 'fas fa-route'
+    icon: 'fas fa-balance-scale'
+  - name: JDARMY BREAK
+    url: //github.com/JDArmy/BREAK
+    icon: 'fab fa-github'
+  - name: BREAK Online
+    url: //break.jd.army/
+    icon: 'fas fa-book'
   # - name: GALLERY
   #   url: //www.unsplash.com
   #   icon: 'fas fa-images'
