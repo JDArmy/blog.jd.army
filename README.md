@@ -39,16 +39,4 @@ hexo g
 git push
 ```
 
-## 删除广告
-
-`themes/archer/layout/post.ejs`中增加代码
-
-```html
-<script>
-            setInterval(()=>{
-                var disqus_thread = document.getElementById("disqus_thread");
-            disqus_thread.getElementsByTagName("iframe")[0].hidden = true;
-            },3000);
-</script>
-```
 
