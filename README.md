@@ -6,7 +6,9 @@ git clone https://github.com/JDArmy/JDArmy.github.io.git
 cd JD.Army
 npm install
 #安装皮肤 && 替换静态资源
-git submodule add https://github.com/fi3ework/hexo-theme-archer.git themes/archer --depth=1 #  提示'themes/archer' already exists in the index 时使用命令 git submodule update --init 代替
+git submodule add https://github.com/fi3ework/hexo-theme-archer.git themes/archer --depth=1 
+#  若提示'themes/archer' already exists in the index 时使用命令 git submodule update --init 代替
+
 rm -rf themes/archer/_config.yml
 cp -r CopyToThemes/* themes/
 ```
@@ -14,13 +16,15 @@ cp -r CopyToThemes/* themes/
 ## check是否安装正确
 ```bash
 # 本地查看效果
-hexo s
+npx hexo s
 ```
 ## 写新文章
 > 文章名可以中文
 ```bash
+# 先同步到最新
 git pull
-hexo new post "article name"
+# 创建新文章
+npx hexo new post "article name"
 # 点击链接打开md文档
 # 补充tags
 tags: [AD, Exchange, RCE, DACL, CVE, CobaltStrike, 蜜罐]
@@ -34,7 +38,7 @@ categories: 蓝军推送
 > 注：archer模板不需要更新，更新JDArmy.github.io即可
 ```bash
 #生成网站数据到 /docs 文件夹中
-hexo g
+npx hexo g
 #提交到仓库
 git push
 ```
