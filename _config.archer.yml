@@ -57,13 +57,19 @@ profile_links:
     url: //github.com/JDArmy/RTASS
     icon: 'fab fa-github'
   - name: RTASS Calculator
-    url: //jd.army/RTASS/?lang=en
+    url: //rtass.jd.army/?lang=en
     icon: 'fas fa-balance-scale'
   - name: JDARMY BREAK
     url: //github.com/JDArmy/BREAK
     icon: 'fab fa-github'
   - name: BREAK Online
     url: //break.jd.army/
+    icon: 'fas fa-book'
+  - name: JDARMY DSRE
+    url: //github.com/JDArmy/DSRE
+    icon: 'fab fa-github'
+  - name: DSRE Online
+    url: //dsre.jd.army/
     icon: 'fas fa-book'
   # - name: GALLERY
   #   url: //www.unsplash.com
