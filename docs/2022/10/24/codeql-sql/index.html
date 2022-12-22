@@ -16,14 +16,14 @@
     <meta name="renderer" content="webkit">
     <meta name="copyright" content="JD.Army">
     
-        <meta name="keywords" content="JD.Army">
+        <meta name="keywords" content="Blog.JD.Army">
     
     <meta name="description" content="Red team of jd inc. ">
     <meta name="description" content="前言为什么学习CodeQL呢？在学习了一段代码审计，逐渐感觉代码审计是个体力活。而且越大的项目想要较全面的审计起来更是耗时间，还有可能漏掉一些很容易发现的漏洞。而CodeQL就是用来辅助漏洞挖掘，半自动化挖掘+人工辅助审计可大大减少人工成本，也提高了漏洞准确率。随着近几年网上公开的越来越多的严重级漏洞都是通过CodeQL挖掘出来的，所以目前对想学代码审计的人来说，学习CodeQL利大于弊，其目前也">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Codeql-Sql">
-<meta property="og:url" content="https://jd.army/2022/10/24/codeql-sql/index.html">
-<meta property="og:site_name" content="JD.Army">
+<meta property="og:url" content="https://blog.jd.army/2022/10/24/codeql-sql/index.html">
+<meta property="og:site_name" content="Blog.JD.Army">
 <meta property="og:description" content="前言为什么学习CodeQL呢？在学习了一段代码审计，逐渐感觉代码审计是个体力活。而且越大的项目想要较全面的审计起来更是耗时间，还有可能漏掉一些很容易发现的漏洞。而CodeQL就是用来辅助漏洞挖掘，半自动化挖掘+人工辅助审计可大大减少人工成本，也提高了漏洞准确率。随着近几年网上公开的越来越多的严重级漏洞都是通过CodeQL挖掘出来的，所以目前对想学代码审计的人来说，学习CodeQL利大于弊，其目前也">
 <meta property="og:locale">
 <meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/0efc4de6fcbae435a5c58e7316b0cacd.png">
@@ -60,7 +60,7 @@
 <meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/34ff34bb7ed69ba3a841f6f9492aa9e4.png">
 <meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/4b6b558de349ee91da2bd2885c35427f.png">
 <meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/d3e22ede19955c41a2e4635627f0890b.png">
-<meta property="og:image" content="https://jd.army/2022/10/24/codeql-sql/images&#x2F;image-20221017085521315.png%20">
+<meta property="og:image" content="https://blog.jd.army/images&#x2F;image-20221017085521315.png%20">
 <meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/9f1f1468038badd287f44c65940bf1cf.png">
 <meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/f7f7ce91763fc797ed2cebbbe312be1b.png">
 <meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/6f32bcfd72b50ab453210f2845990d0c.png">
@@ -72,7 +72,7 @@
 <meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/8f64002b2289c7282c5ff7e6706594e5.png">
 <meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/37616165c204b2785aeb9996470c0f02.png">
 <meta property="article:published_time" content="2022-10-24T06:26:16.000Z">
-<meta property="article:modified_time" content="2022-11-02T04:42:09.000Z">
+<meta property="article:modified_time" content="2022-11-02T04:42:09.805Z">
 <meta property="article:author" content="JD.Army">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="代码审计">
@@ -83,7 +83,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="icon" href="/assets/favicon.ico">
     
-    <title>Codeql-Sql · JD.Army</title>
+    <title>Codeql-Sql · Blog.JD.Army</title>
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
 - testing support for link[rel=preload]
@@ -260,7 +260,7 @@
     
     <!-- 谷歌统计  -->
     
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.2"></head>
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script type="text/javascript">
@@ -296,7 +296,7 @@
         </span>
         <!-- back to home page text -->
         <span class="home-link header-element">
-            <a href=/>JD.Army</a>
+            <a href=/>Blog.JD.Army</a>
         </span>
     </div>
     <!-- toggle banner for post layout -->
@@ -305,7 +305,7 @@
             <div class="banner">
         
             <div class="blog-title header-element">
-                <a href="/">JD.Army</a>
+                <a href="/">Blog.JD.Army</a>
             </div>
             <div class="post-title header-element">
                 <a href="#" class="post-name">Codeql-Sql</a>
@@ -657,7 +657,7 @@
 <p>result是CodeQL引入的特殊变量，代表返回的变量</p>
 <h4 id="重点"><a href="#重点" class="headerlink" title="重点"></a>重点</h4><p>如何进行全局污点追踪呢？</p>
 <p>通过继承类<code>DataFlow::Configuration</code>使用全局数据流库</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SqlInjectionConfiguration</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">DataFlow</span></span>::<span class="hljs-type">Configuration</span> &#123;<br>    <span class="hljs-type">MyDataFlowConfiguration</span>() &#123; <span class="hljs-keyword">this</span> = <span class="hljs-string">&quot;SqlInjectionConfiguration&quot;</span> &#125;<br>  <br>    <span class="hljs-keyword">override</span> predicate isSource(<span class="hljs-type">DataFlow</span>::<span class="hljs-type">Node</span> source) &#123;<br>    	...<br>    &#125;<br>  <br>    <span class="hljs-keyword">override</span> predicate isSink(<span class="hljs-type">DataFlow</span>::<span class="hljs-type">Node</span> sink) &#123;<br>    	...<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SqlInjectionConfiguration</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">DataFlow</span></span>::<span class="hljs-type">Configuration</span> &#123;<br>    <span class="hljs-type">MyDataFlowConfiguration</span>() &#123; <span class="hljs-keyword">this</span> = <span class="hljs-string">&quot;SqlInjectionConfiguration&quot;</span> &#125;<br>  <br>    <span class="hljs-keyword">override</span> predicate isSource(<span class="hljs-type">DataFlow</span>::<span class="hljs-type">Node</span> source) &#123;<br>      ...<br>    &#125;<br>  <br>    <span class="hljs-keyword">override</span> predicate isSink(<span class="hljs-type">DataFlow</span>::<span class="hljs-type">Node</span> sink) &#123;<br>      ...<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>下面是关于<code>DataFlow::Configuration</code>谓词的介绍</p>
 <p><code>isSource</code>-定义数据可能来源(输入点)。比如获取http请求的参数部分，就是非常明显的source。</p>
@@ -674,7 +674,7 @@
 <p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/3c1e48368b784b15c3e70de01cd59d02.png" alt="image-20221016222416879"></p>
 <p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/57b425e03b358eb8fd47ea2e22e73107.png" alt="image-20221016222725557"></p>
 <p>CodeQL代码实现</p>
-<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs oxygene">import java<br>  <br><span class="hljs-keyword">from</span> <span class="hljs-function"><span class="hljs-keyword">Method</span> <span class="hljs-title">method</span>, <span class="hljs-title">string</span> <span class="hljs-title">c</span></span><br><span class="hljs-function"><span class="hljs-title">where</span> <span class="hljs-title">method</span>.<span class="hljs-title">getAnAnnotation</span><span class="hljs-params">()</span>.<span class="hljs-title">toString</span><span class="hljs-params">()</span> = <span class="hljs-title">c</span> + &quot;<span class="hljs-title">Mapping</span>&quot;</span><br><span class="hljs-function"><span class="hljs-title">select</span> <span class="hljs-title">method</span>.<span class="hljs-title">getName</span><span class="hljs-params">()</span> </span><br></code></pre></td></tr></table></figure>
+<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs oxygene">import java<br>  <br><span class="hljs-keyword">from</span> <span class="hljs-keyword">Method</span> <span class="hljs-title function_">method</span>, <span class="hljs-title function_">string</span> <span class="hljs-title function_">c</span><br><span class="hljs-title function_">where</span> <span class="hljs-title function_">method</span>.<span class="hljs-title function_">getAnAnnotation</span><span class="hljs-params">()</span>.<span class="hljs-title function_">toString</span><span class="hljs-params">()</span> = <span class="hljs-title function_">c</span> + &quot;<span class="hljs-title function_">Mapping</span>&quot;<br><span class="hljs-title function_">select</span> <span class="hljs-title function_">method</span>.<span class="hljs-title function_">getName</span><span class="hljs-params">()</span> <br></code></pre></td></tr></table></figure>
 
 <p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/d0f26fe84e400d9fc072583ae1d8cb61.png" alt="image-20221016222809988"></p>
 <p>这些方法的参数都可作为source，通过method.getParameter(n)获取Parameter</p>
@@ -686,7 +686,7 @@
 <p>①可以更好的理解分析AST语法树</p>
 <p>②每种框架获取http请求参数不一，以下方法可能涵盖不到。当遇到很小众、很新的框架等原因，利用以下方式获取不到我们想要的参数该怎么办？就是利用以上最原始的方式分析语法树，代码自己的风格来获取。</p>
 <p>③以下的方式不适合新手入门，可能理解不来。</p>
-<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">override predicate isSource(DataFlow::<span class="hljs-keyword">Node</span> <span class="hljs-title">src</span>) &#123; src instanceof RemoteFlowSource &#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">override</span> predicate <span class="hljs-title function_">isSource</span>(<span class="hljs-params">DataFlow::Node src</span>) &#123; src <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">RemoteFlowSource</span> &#125;<br></code></pre></td></tr></table></figure>
 
 <h4 id="设置sink"><a href="#设置sink" class="headerlink" title="设置sink"></a>设置sink</h4><p>本案例中，SQL语句最终执行点为query方法调用(MethodAccess)，且传入的参数是第一个。</p>
 <p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/0f0cdb39907654d48488db1deb1372ec.png" alt="image-20221016224541235"></p>
@@ -696,7 +696,7 @@
 <p>意思为：查找一个query()方法的调用点，并把它的第一个参数设置为sink。</p>
 <h4 id="数据流"><a href="#数据流" class="headerlink" title="数据流"></a>数据流</h4><p>我们写好了source入口点和sink执行点，怎么实现一个污染参数通过头毫无拦截流到尾，成为可能真实存在的漏洞？这个连通工作就是CodeQL引擎本身来完成的。</p>
 <p>代码样例：</p>
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs vim">from VulConfig config, DataFlo<span class="hljs-variable">w:</span>:PathNode <span class="hljs-keyword">source</span>, DataFlo<span class="hljs-variable">w:</span>:PathNode sink<br>where config.hasFlowPath(<span class="hljs-keyword">source</span>, sink)<br>select <span class="hljs-keyword">source</span>.getNode(), <span class="hljs-keyword">source</span>, sink, <span class="hljs-string">&quot;source&quot;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs gradle"><span class="hljs-keyword">from</span> VulConfig config, DataFlow::PathNode <span class="hljs-keyword">source</span>, DataFlow::PathNode sink<br>where config.hasFlowPath(<span class="hljs-keyword">source</span>, sink)<br>select <span class="hljs-keyword">source</span>.getNode(), <span class="hljs-keyword">source</span>, sink, <span class="hljs-string">&quot;source&quot;</span><br></code></pre></td></tr></table></figure>
 
 <p>我们传递给<code>config.hasFlowPath(source, sink)</code>我们定义好的source和sink，系统就会自动帮我们判断是否存在漏洞了。</p>
 <h3 id="第一代成果"><a href="#第一代成果" class="headerlink" title="第一代成果"></a>第一代成果</h3><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * @id java/examples/sqldemo</span><br><span class="hljs-comment"> * @name Sql-Injection</span><br><span class="hljs-comment"> * @description Sql-Injection</span><br><span class="hljs-comment"> * @kind path-problem</span><br><span class="hljs-comment"> * @problem.severity warning</span><br><span class="hljs-comment"> */</span><br>  <br>import java<br>import semmle.code.java.dataflow.FlowSources<br>import semmle.code.java.security.QueryInjection<br>import DataFlow::PathGraph<br>  <br><span class="hljs-keyword">class</span> SqlInjectionConfig extends TaintTracking::Configuration &#123;<br>    <span class="hljs-constructor">SqlInjectionConfig()</span> &#123; <br>        this = <span class="hljs-string">&quot;SqlInjectionConfig&quot;</span> <br>    &#125;<br>  <br>    override predicate is<span class="hljs-constructor">Source(DataFlow::Node <span class="hljs-params">src</span>)</span> &#123;  <br>        exists(Method <span class="hljs-keyword">method</span>, <span class="hljs-built_in">string</span> c ,<span class="hljs-built_in">int</span> n <span class="hljs-pattern-match">| </span><br><span class="hljs-pattern-match">            src.<span class="hljs-keyword">as</span><span class="hljs-constructor">Parameter()</span> = <span class="hljs-keyword">method</span>.get<span class="hljs-constructor">Parameter(<span class="hljs-params">n</span>)</span></span><br><span class="hljs-pattern-match">            <span class="hljs-keyword">and</span> <span class="hljs-keyword">method</span>.get<span class="hljs-constructor">AnAnnotation()</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span> = c + &quot;<span class="hljs-constructor">Mapping</span>&quot;</span><br><span class="hljs-pattern-match">        )</span><br><span class="hljs-pattern-match">    &#125;</span><br><span class="hljs-pattern-match">  </span><br><span class="hljs-pattern-match">    override predicate is<span class="hljs-constructor">Sink(DataFlow::Node <span class="hljs-params">sink</span>)</span> &#123;</span><br><span class="hljs-pattern-match">        exists(<span class="hljs-constructor">Method</span> <span class="hljs-keyword">method</span>, <span class="hljs-constructor">MethodAccess</span> call |</span><br><span class="hljs-pattern-match">            <span class="hljs-keyword">method</span>.has<span class="hljs-constructor">Name(<span class="hljs-string">&quot;query&quot;</span>)</span></span><br><span class="hljs-pattern-match">            <span class="hljs-keyword">and</span> call.get<span class="hljs-constructor">Method()</span> = <span class="hljs-keyword">method</span> </span><br><span class="hljs-pattern-match">            <span class="hljs-keyword">and</span> sink.<span class="hljs-keyword">as</span><span class="hljs-constructor">Expr()</span> = call.get<span class="hljs-constructor">Argument(0)</span></span><br><span class="hljs-pattern-match">        )</span><br><span class="hljs-pattern-match">    &#125;</span><br><span class="hljs-pattern-match">&#125;</span><br><span class="hljs-pattern-match">  </span><br><span class="hljs-pattern-match">from <span class="hljs-constructor">SqlInjectionConfig</span> config, <span class="hljs-constructor">DataFlow</span>::<span class="hljs-constructor">PathNode</span> source, <span class="hljs-constructor">DataFlow</span>::<span class="hljs-constructor">PathNode</span> sink</span><br><span class="hljs-pattern-match">where config.has<span class="hljs-constructor">FlowPath(<span class="hljs-params">source</span>, <span class="hljs-params">sink</span>)</span></span><br><span class="hljs-pattern-match">select source.get<span class="hljs-constructor">Node()</span>, source, sink, &quot;source&quot;</span><br></code></pre></td></tr></table></figure>
@@ -707,9 +707,9 @@
 <p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/34ff34bb7ed69ba3a841f6f9492aa9e4.png" alt="image-20221016230706996"></p>
 <h3 id="漏报排除"><a href="#漏报排除" class="headerlink" title="漏报排除"></a>漏报排除</h3><p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/4b6b558de349ee91da2bd2885c35427f.png" alt="image-20221017084946974"></p>
 <p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/d3e22ede19955c41a2e4635627f0890b.png" alt="image-20221017085012253"></p>
-<p>人工审核很容易发现这是MyBatis注解式写法因为&lt;img src=”<a target="_blank" rel="noopener" href="https://latex.codecogs.com/gif.latex?%E9%80%A0%E6%88%90%E7%9A%84SQL%E6%B3%A8%E5%85%A5%EF%BC%8C%E4%BD%86%E6%98%AFCodeQL%E5%A6%82%E4%BD%95%E5%8F%91%E7%8E%B0%E5%AE%83%E5%91%A2%EF%BC%9F%E8%AF%AF%E6%8A%A5%E5%BE%80%E5%BE%80%E5%8F%AF%E4%BB%A5%E9%80%9A%E8%BF%87%E4%BA%BA%E5%B7%A5%E8%BF%9B%E8%A1%8C%E6%8E%92%E6%9F%A5%EF%BC%8C%E8%80%8C%E6%BC%8F%E6%8A%A5%E4%B8%80%E4%BD%86%E9%A1%B9%E7%9B%AE%E4%B8%8A%E7%BA%BF%E5%B0%B1%E6%9C%89%E5%8F%AF%E8%83%BD%E9%80%A0%E6%88%90%E9%87%8D%E5%A4%A7%E7%9A%84%E7%BB%8F%E6%B5%8E%E6%8D%9F%E5%A4%B1%E7%AD%89%E3%80%82%E6%89%80%E4%BB%A5%E6%88%91%E4%BB%AC%E8%A6%81%E5%B0%BD%E5%8F%AF%E8%83%BD%E5%85%A8%E6%96%B9%E9%9D%A2%E6%B6%B5%E7%9B%96%E8%BF%9B%E8%A1%8C%E6%8C%96%E6%8E%98%E3%80%82">https://latex.codecogs.com/gif.latex?造成的SQL注入，但是CodeQL如何发现它呢？误报往往可以通过人工进行排查，而漏报一但项目上线就有可能造成重大的经济损失等。所以我们要尽可能全方面涵盖进行挖掘。</a></p>
+<p>人工审核很容易发现这是MyBatis注解式写法因为&lt;img src&#x3D;”<a target="_blank" rel="noopener" href="https://latex.codecogs.com/gif.latex?%E9%80%A0%E6%88%90%E7%9A%84SQL%E6%B3%A8%E5%85%A5%EF%BC%8C%E4%BD%86%E6%98%AFCodeQL%E5%A6%82%E4%BD%95%E5%8F%91%E7%8E%B0%E5%AE%83%E5%91%A2%EF%BC%9F%E8%AF%AF%E6%8A%A5%E5%BE%80%E5%BE%80%E5%8F%AF%E4%BB%A5%E9%80%9A%E8%BF%87%E4%BA%BA%E5%B7%A5%E8%BF%9B%E8%A1%8C%E6%8E%92%E6%9F%A5%EF%BC%8C%E8%80%8C%E6%BC%8F%E6%8A%A5%E4%B8%80%E4%BD%86%E9%A1%B9%E7%9B%AE%E4%B8%8A%E7%BA%BF%E5%B0%B1%E6%9C%89%E5%8F%AF%E8%83%BD%E9%80%A0%E6%88%90%E9%87%8D%E5%A4%A7%E7%9A%84%E7%BB%8F%E6%B5%8E%E6%8D%9F%E5%A4%B1%E7%AD%89%E3%80%82%E6%89%80%E4%BB%A5%E6%88%91%E4%BB%AC%E8%A6%81%E5%B0%BD%E5%8F%AF%E8%83%BD%E5%85%A8%E6%96%B9%E9%9D%A2%E6%B6%B5%E7%9B%96%E8%BF%9B%E8%A1%8C%E6%8C%96%E6%8E%98%E3%80%82">https://latex.codecogs.com/gif.latex?造成的SQL注入，但是CodeQL如何发现它呢？误报往往可以通过人工进行排查，而漏报一但项目上线就有可能造成重大的经济损失等。所以我们要尽可能全方面涵盖进行挖掘。</a></p>
 <p>老方法，依旧通过AST语法树来进行分析。</p>
-<p><img src="images&#x2F;image-20221017085521315.png%20" alt="image-20221017085521315"></p>
+<p><img src="/images&#x2F;image-20221017085521315.png%20" alt="image-20221017085521315"></p>
 <p>之前我们是通过定位query方法来发现漏洞，但是不够全面。现在大部分项目都是采用Mybatis注解方式，所以需要一起包含进去。</p>
 <p>①通过定位接口名称以及接口注解来定位Mapper</p>
 <p>②获得到相对应的Mapper后，通过注解字段Select，Update等来定位注解式语法</p>
@@ -726,13 +726,13 @@
 <p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/f7f7ce91763fc797ed2cebbbe312be1b.png" alt="image-20221023160045939"></p>
 <p><strong>解决方法</strong>：</p>
 <p>①使用maven-delombok，在pom.xml中添加以下代码，重新编译即可。（推荐）</p>
-<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-params">&lt;build&gt;</span><br>  <span class="hljs-params">&lt;sourceDirectory&gt;</span>$&#123;project.basedir&#125;<span class="hljs-meta-keyword">/src/</span>main/lombok<span class="hljs-params">&lt;/sourceDirectory&gt;</span><br>  <span class="hljs-params">&lt;plugins&gt;</span><br>    <span class="hljs-params">&lt;plugin&gt;</span><br>      <span class="hljs-params">&lt;groupId&gt;</span>org.projectlombok<span class="hljs-params">&lt;/groupId&gt;</span><br>      <span class="hljs-params">&lt;artifactId&gt;</span>lombok-maven-plugin<span class="hljs-params">&lt;/artifactId&gt;</span><br>      <span class="hljs-params">&lt;version&gt;</span><span class="hljs-number">1.18</span><span class="hljs-number">.20</span><span class="hljs-number">.0</span><span class="hljs-params">&lt;/version&gt;</span><br>      <span class="hljs-params">&lt;executions&gt;</span><br>        <span class="hljs-params">&lt;execution&gt;</span><br>          <span class="hljs-params">&lt;phase&gt;</span>generate-sources<span class="hljs-params">&lt;/phase&gt;</span><br>          <span class="hljs-params">&lt;goals&gt;</span><br>            <span class="hljs-params">&lt;goal&gt;</span>delombok<span class="hljs-params">&lt;/goal&gt;</span><br>          <span class="hljs-params">&lt;/goals&gt;</span><br>          <span class="hljs-params">&lt;configuration&gt;</span><br>            <span class="hljs-params">&lt;encoding&gt;</span>UTF<span class="hljs-number">-8</span><span class="hljs-params">&lt;/encoding&gt;</span><br>            <span class="hljs-params">&lt;addOutputDirectory&gt;</span>false<span class="hljs-params">&lt;/addOutputDirectory&gt;</span><br>            <span class="hljs-params">&lt;sourceDirectory&gt;</span>src<span class="hljs-meta-keyword">/main/</span>java<span class="hljs-params">&lt;/sourceDirectory&gt;</span><br>            <span class="hljs-params">&lt;outputDirectory&gt;</span>$&#123;project.basedir&#125;<span class="hljs-meta-keyword">/src/</span>main/lombok<span class="hljs-params">&lt;/outputDirectory&gt;</span><br>          <span class="hljs-params">&lt;/configuration&gt;</span><br>        <span class="hljs-params">&lt;/execution&gt;</span><br>      <span class="hljs-params">&lt;/executions&gt;</span><br>    <span class="hljs-params">&lt;/plugin&gt;</span><br>  <span class="hljs-params">&lt;/plugins&gt;</span><br><span class="hljs-params">&lt;/build&gt;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span></span><br><span class="language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">sourceDirectory</span>&gt;</span>$</span><span class="hljs-template-variable">&#123;project.basedir&#125;</span><span class="language-xml">/src/main/lombok<span class="hljs-tag">&lt;/<span class="hljs-name">sourceDirectory</span>&gt;</span></span><br><span class="language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.projectlombok<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lombok-maven-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.18.20.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">executions</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">execution</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">phase</span>&gt;</span>generate-sources<span class="hljs-tag">&lt;/<span class="hljs-name">phase</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">goals</span>&gt;</span></span><br><span class="language-xml">            <span class="hljs-tag">&lt;<span class="hljs-name">goal</span>&gt;</span>delombok<span class="hljs-tag">&lt;/<span class="hljs-name">goal</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;/<span class="hljs-name">goals</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span></span><br><span class="language-xml">            <span class="hljs-tag">&lt;<span class="hljs-name">encoding</span>&gt;</span>UTF-8<span class="hljs-tag">&lt;/<span class="hljs-name">encoding</span>&gt;</span></span><br><span class="language-xml">            <span class="hljs-tag">&lt;<span class="hljs-name">addOutputDirectory</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">addOutputDirectory</span>&gt;</span></span><br><span class="language-xml">            <span class="hljs-tag">&lt;<span class="hljs-name">sourceDirectory</span>&gt;</span>src/main/java<span class="hljs-tag">&lt;/<span class="hljs-name">sourceDirectory</span>&gt;</span></span><br><span class="language-xml">            <span class="hljs-tag">&lt;<span class="hljs-name">outputDirectory</span>&gt;</span>$</span><span class="hljs-template-variable">&#123;project.basedir&#125;</span><span class="language-xml">/src/main/lombok<span class="hljs-tag">&lt;/<span class="hljs-name">outputDirectory</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">execution</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">executions</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span></span><br><span class="language-xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span></span><br><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
 
 <p>成功还原，并挖掘出Lombok插件带来的SQL注入风险。</p>
 <p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/6f32bcfd72b50ab453210f2845990d0c.png" alt="image-20221023160400883"></p>
 <p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/7d035457d0aa7179a002f962a310df16.png" alt="image-20221023160713450"></p>
 <p>②官方也给出了解决方法<a target="_blank" rel="noopener" href="https://github.com/github/codeql/issues/4984%EF%BC%8C%E8%BF%99%E7%A7%8D%E8%BF%98%E5%8E%9F%E6%96%B9%E5%BC%8F%E6%9C%89%E5%8F%AF%E8%83%BD%E4%BC%9A%E5%87%BA%E7%8E%B0%E6%9C%AA%E5%AE%9A%E4%B9%89Object%E7%9A%84%E5%9C%BA%E6%99%AF%E3%80%82">https://github.com/github/codeql/issues/4984，这种还原方式有可能会出现未定义Object的场景。</a></p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># get a copy of lombok.jar</span><br>wget https:<span class="hljs-regexp">//</span>projectlombok.org<span class="hljs-regexp">/downloads/</span>lombok.jar -O <span class="hljs-string">&quot;lombok.jar&quot;</span><br><span class="hljs-comment"># run &quot;delombok&quot; on the source files and write the generated files to a folder named &quot;delombok&quot;</span><br>java -jar <span class="hljs-string">&quot;lombok.jar&quot;</span> delombok -n --onlyChanged . -d <span class="hljs-string">&quot;delombok&quot;</span><br><span class="hljs-comment"># remove &quot;generated by&quot; comments</span><br>find <span class="hljs-string">&quot;delombok&quot;</span> -name <span class="hljs-string">&#x27;*.java&#x27;</span> -exec sed <span class="hljs-string">&#x27;/Generated by delombok/d&#x27;</span> -i <span class="hljs-string">&#x27;&#123;&#125;&#x27;</span> <span class="hljs-string">&#x27;;&#x27;</span><br><span class="hljs-comment"># remove any left-over import statements</span><br>find <span class="hljs-string">&quot;delombok&quot;</span> -name <span class="hljs-string">&#x27;*.java&#x27;</span> -exec sed <span class="hljs-string">&#x27;/import lombok/d&#x27;</span> -i <span class="hljs-string">&#x27;&#123;&#125;&#x27;</span> <span class="hljs-string">&#x27;;&#x27;</span><br><span class="hljs-comment"># copy delombok&#x27;d files over the original ones</span><br>cp -r <span class="hljs-string">&quot;delombok/.&quot;</span> <span class="hljs-string">&quot;./&quot;</span><br><span class="hljs-comment"># remove the &quot;delombok&quot; folder</span><br>rm -rf <span class="hljs-string">&quot;delombok&quot;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># get a copy of lombok.jar</span><br>wget https://projectlombok.org/downloads/lombok.jar -O <span class="hljs-string">&quot;lombok.jar&quot;</span><br><span class="hljs-comment"># run &quot;delombok&quot; on the source files and write the generated files to a folder named &quot;delombok&quot;</span><br>java -jar <span class="hljs-string">&quot;lombok.jar&quot;</span> delombok -n --onlyChanged . -d <span class="hljs-string">&quot;delombok&quot;</span><br><span class="hljs-comment"># remove &quot;generated by&quot; comments</span><br>find <span class="hljs-string">&quot;delombok&quot;</span> -name <span class="hljs-string">&#x27;*.java&#x27;</span> -<span class="hljs-built_in">exec</span> sed <span class="hljs-string">&#x27;/Generated by delombok/d&#x27;</span> -i <span class="hljs-string">&#x27;&#123;&#125;&#x27;</span> <span class="hljs-string">&#x27;;&#x27;</span><br><span class="hljs-comment"># remove any left-over import statements</span><br>find <span class="hljs-string">&quot;delombok&quot;</span> -name <span class="hljs-string">&#x27;*.java&#x27;</span> -<span class="hljs-built_in">exec</span> sed <span class="hljs-string">&#x27;/import lombok/d&#x27;</span> -i <span class="hljs-string">&#x27;&#123;&#125;&#x27;</span> <span class="hljs-string">&#x27;;&#x27;</span><br><span class="hljs-comment"># copy delombok&#x27;d files over the original ones</span><br><span class="hljs-built_in">cp</span> -r <span class="hljs-string">&quot;delombok/.&quot;</span> <span class="hljs-string">&quot;./&quot;</span><br><span class="hljs-comment"># remove the &quot;delombok&quot; folder</span><br><span class="hljs-built_in">rm</span> -rf <span class="hljs-string">&quot;delombok&quot;</span><br></code></pre></td></tr></table></figure>
 
 <h3 id="误报排除"><a href="#误报排除" class="headerlink" title="误报排除"></a>误报排除</h3><p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/d9cc7e9cfe5f622c5e2fa710f402c889.png" alt="image-20221016231250874"></p>
 <p>该方法的参数类型是List<Long>，不存在注入漏洞。所以我们需要用到上面所说的净化函数来进行阻断排除。</p>
@@ -742,7 +742,7 @@
 <p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/f4e136f09b98bb6050bce8bb401bc6be.png" alt="image-20221017091542320"></p>
 <p>ParameterizedType：泛型类型的参数化</p>
 <p>CodeQL代码实现：</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs css">override predicate isSanitizer(DataFlow::Node node) &#123;<br>    node.<span class="hljs-built_in">getType</span>() instanceof PrimitiveType or<br>    node.<span class="hljs-built_in">getType</span>() instanceof BoxedType or<br>    node.<span class="hljs-built_in">getType</span>() instanceof NumberType or<br>    <span class="hljs-built_in">exists</span>(ParameterizedType pt| node.<span class="hljs-built_in">getType</span>() = pt and pt.<span class="hljs-built_in">getTypeArgument</span>(<span class="hljs-number">0</span>) instanceof NumberType )<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">override predicate is<span class="hljs-constructor">Sanitizer(DataFlow::Node <span class="hljs-params">node</span>)</span> &#123;<br>    node.get<span class="hljs-constructor">Type()</span> instanceof PrimitiveType <span class="hljs-keyword">or</span><br>    node.get<span class="hljs-constructor">Type()</span> instanceof BoxedType <span class="hljs-keyword">or</span><br>    node.get<span class="hljs-constructor">Type()</span> instanceof NumberType <span class="hljs-keyword">or</span><br>    exists(ParameterizedType pt<span class="hljs-pattern-match">| node.get<span class="hljs-constructor">Type()</span> = pt <span class="hljs-keyword">and</span> pt.get<span class="hljs-constructor">TypeArgument(0)</span> instanceof <span class="hljs-constructor">NumberType</span> )</span><br><span class="hljs-pattern-match">&#125;</span><br></code></pre></td></tr></table></figure>
 
 <h3 id="第三代成果"><a href="#第三代成果" class="headerlink" title="第三代成果"></a>第三代成果</h3><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * @id java/examples/sqldemo</span><br><span class="hljs-comment"> * @name Sql-Injection</span><br><span class="hljs-comment"> * @description Sql-Injection</span><br><span class="hljs-comment"> * @kind path-problem</span><br><span class="hljs-comment"> * @problem.severity warning</span><br><span class="hljs-comment"> */</span><br>  <br>import java<br>import semmle.code.java.dataflow.FlowSources<br>import semmle.code.java.security.QueryInjection<br>import DataFlow::PathGraph<br>  <br><span class="hljs-keyword">class</span> SqlInjectionConfig extends TaintTracking::Configuration &#123;<br>    <span class="hljs-constructor">SqlInjectionConfig()</span> &#123; <br>        this = <span class="hljs-string">&quot;SqlInjectionConfig&quot;</span> <br>    &#125;<br>  <br>    override predicate is<span class="hljs-constructor">Source(DataFlow::Node <span class="hljs-params">src</span>)</span> &#123; <br>        exists(Method <span class="hljs-keyword">method</span>, <span class="hljs-built_in">string</span> c ,<span class="hljs-built_in">int</span> n <span class="hljs-pattern-match">| </span><br><span class="hljs-pattern-match">            src.<span class="hljs-keyword">as</span><span class="hljs-constructor">Parameter()</span> = <span class="hljs-keyword">method</span>.get<span class="hljs-constructor">Parameter(<span class="hljs-params">n</span>)</span></span><br><span class="hljs-pattern-match">            <span class="hljs-keyword">and</span> <span class="hljs-keyword">method</span>.get<span class="hljs-constructor">AnAnnotation()</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span> = c + &quot;<span class="hljs-constructor">Mapping</span>&quot;</span><br><span class="hljs-pattern-match">        )</span><br><span class="hljs-pattern-match">    &#125;</span><br><span class="hljs-pattern-match">  </span><br><span class="hljs-pattern-match">    override predicate is<span class="hljs-constructor">Sink(DataFlow::Node <span class="hljs-params">sink</span>)</span> &#123;</span><br><span class="hljs-pattern-match">        exists(|my<span class="hljs-constructor">BatisSink(<span class="hljs-params">sink</span>)</span> <span class="hljs-keyword">or</span> query<span class="hljs-constructor">Sink(<span class="hljs-params">sink</span>)</span>)</span><br><span class="hljs-pattern-match">    &#125;</span><br><span class="hljs-pattern-match">  </span><br><span class="hljs-pattern-match">    override predicate is<span class="hljs-constructor">Sanitizer(DataFlow::Node <span class="hljs-params">node</span>)</span> &#123;</span><br><span class="hljs-pattern-match">        node.get<span class="hljs-constructor">Type()</span> instanceof <span class="hljs-constructor">PrimitiveType</span> <span class="hljs-keyword">or</span></span><br><span class="hljs-pattern-match">        node.get<span class="hljs-constructor">Type()</span> instanceof <span class="hljs-constructor">BoxedType</span> <span class="hljs-keyword">or</span></span><br><span class="hljs-pattern-match">        node.get<span class="hljs-constructor">Type()</span> instanceof <span class="hljs-constructor">NumberType</span> <span class="hljs-keyword">or</span></span><br><span class="hljs-pattern-match">        exists(<span class="hljs-constructor">ParameterizedType</span> pt| node.get<span class="hljs-constructor">Type()</span> = pt <span class="hljs-keyword">and</span> pt.get<span class="hljs-constructor">TypeArgument(0)</span> instanceof <span class="hljs-constructor">NumberType</span> )</span><br><span class="hljs-pattern-match">      &#125;</span><br><span class="hljs-pattern-match">&#125;</span><br><span class="hljs-pattern-match">  </span><br><span class="hljs-pattern-match">predicate my<span class="hljs-constructor">BatisSink(DataFlow::Node <span class="hljs-params">sink</span>)</span> &#123;</span><br><span class="hljs-pattern-match">    exists(<span class="hljs-constructor">Method</span> <span class="hljs-keyword">method</span>, <span class="hljs-constructor">MethodAccess</span> call, <span class="hljs-constructor">Interface</span> interface, <span class="hljs-built_in">string</span> name, <span class="hljs-built_in">int</span> n |</span><br><span class="hljs-pattern-match">        interface.get<span class="hljs-constructor">AnAnnotation()</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span> = &quot;<span class="hljs-constructor">Mapper</span>&quot; </span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">and</span> <span class="hljs-keyword">method</span>.get<span class="hljs-constructor">AnAnnotation()</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span> <span class="hljs-keyword">in</span> [&quot;<span class="hljs-constructor">Select</span>&quot;, &quot;<span class="hljs-constructor">Update</span>&quot;, &quot;<span class="hljs-constructor">Insert</span>&quot;, &quot;<span class="hljs-constructor">Delete</span>&quot;]</span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">and</span> call.get<span class="hljs-constructor">Method()</span> = <span class="hljs-keyword">method</span></span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">and</span> <span class="hljs-keyword">method</span>.get<span class="hljs-constructor">AnAnnotation()</span>.get<span class="hljs-constructor">Value(<span class="hljs-params">name</span>)</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span>.index<span class="hljs-constructor">Of(<span class="hljs-string">&quot;$&#123;&quot;</span>+<span class="hljs-params">method</span>.<span class="hljs-params">getParameter</span>(<span class="hljs-params">n</span>)</span>.get<span class="hljs-constructor">AnAnnotation()</span>.get<span class="hljs-constructor">Value(<span class="hljs-params">name</span>)</span>.<span class="hljs-keyword">to</span><span class="hljs-constructor">String()</span>.replace<span class="hljs-constructor">All(<span class="hljs-string">&quot;\&quot;&quot;</span>, <span class="hljs-string">&quot;&quot;</span>)</span>+&quot;&#125;&quot;) &gt; 0</span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">and</span> sink.<span class="hljs-keyword">as</span><span class="hljs-constructor">Expr()</span> = call.get<span class="hljs-constructor">Argument(<span class="hljs-params">n</span>)</span></span><br><span class="hljs-pattern-match">    )</span><br><span class="hljs-pattern-match">&#125;</span><br><span class="hljs-pattern-match">  </span><br><span class="hljs-pattern-match">predicate query<span class="hljs-constructor">Sink(DataFlow::Node <span class="hljs-params">sink</span>)</span> &#123;</span><br><span class="hljs-pattern-match">    exists(<span class="hljs-constructor">Method</span> <span class="hljs-keyword">method</span>, <span class="hljs-constructor">MethodAccess</span> call |</span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">method</span>.has<span class="hljs-constructor">Name(<span class="hljs-string">&quot;query&quot;</span>)</span> </span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">and</span> call.get<span class="hljs-constructor">Method()</span> = <span class="hljs-keyword">method</span> </span><br><span class="hljs-pattern-match">        <span class="hljs-keyword">and</span> sink.<span class="hljs-keyword">as</span><span class="hljs-constructor">Expr()</span> = call.get<span class="hljs-constructor">Argument(0)</span></span><br><span class="hljs-pattern-match">    )</span><br><span class="hljs-pattern-match">&#125;</span><br><span class="hljs-pattern-match">  </span><br><span class="hljs-pattern-match">from <span class="hljs-constructor">SqlInjectionConfig</span> config, <span class="hljs-constructor">DataFlow</span>::<span class="hljs-constructor">PathNode</span> source, <span class="hljs-constructor">DataFlow</span>::<span class="hljs-constructor">PathNode</span> sink</span><br><span class="hljs-pattern-match">where config.has<span class="hljs-constructor">FlowPath(<span class="hljs-params">source</span>, <span class="hljs-params">sink</span>)</span></span><br><span class="hljs-pattern-match">select source.get<span class="hljs-constructor">Node()</span>, source, sink, &quot;source&quot;</span><br></code></pre></td></tr></table></figure>
 
@@ -761,10 +761,10 @@
     <!-- license -->
     
         <div class="license-wrapper">
-            <p>原文作者：<a href="https://jd.army">JD.Army</a>
-            <p>原文链接：<a href="https://jd.army/2022/10/24/codeql-sql/">https://jd.army/2022/10/24/codeql-sql/</a>
-            <p>发表日期：<a href="https://jd.army/2022/10/24/codeql-sql/">October 24th 2022, 2:26:16 pm</a>
-            <p>更新日期：<a href="https://jd.army/2022/10/24/codeql-sql/">November 2nd 2022, 12:42:09 pm</a>
+            <p>原文作者：<a href="https://blog.jd.army">JD.Army</a>
+            <p>原文链接：<a href="https://blog.jd.army/2022/10/24/codeql-sql/">https://blog.jd.army/2022/10/24/codeql-sql/</a>
+            <p>发表日期：<a href="https://blog.jd.army/2022/10/24/codeql-sql/">October 24th 2022, 2:26:16 pm</a>
+            <p>更新日期：<a href="https://blog.jd.army/2022/10/24/codeql-sql/">November 2nd 2022, 12:42:09 pm</a>
             <p>版权声明：本文采用<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -1453,6 +1453,8 @@
         
         
         
+        
+        
     
     
     
@@ -1743,16 +1745,6 @@
                 流量
             </span>
         
-            <span class="sidebar-tag-name" data-tags="Java">
-                <span class="iconfont-archer">&#xe606;</span>
-                Java
-            </span>
-        
-            <span class="sidebar-tag-name" data-tags="代码审计">
-                <span class="iconfont-archer">&#xe606;</span>
-                代码审计
-            </span>
-        
             <span class="sidebar-tag-name" data-tags="windows">
                 <span class="iconfont-archer">&#xe606;</span>
                 windows
@@ -1771,6 +1763,16 @@
             <span class="sidebar-tag-name" data-tags="漏洞">
                 <span class="iconfont-archer">&#xe606;</span>
                 漏洞
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Java">
+                <span class="iconfont-archer">&#xe606;</span>
+                Java
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="代码审计">
+                <span class="iconfont-archer">&#xe606;</span>
+                代码审计
             </span>
         
             <span class="sidebar-tag-name" data-tags="codeql">
@@ -1803,16 +1805,6 @@
                 kerberosting
             </span>
         
-            <span class="sidebar-tag-name" data-tags="Red Teaming">
-                <span class="iconfont-archer">&#xe606;</span>
-                Red Teaming
-            </span>
-        
-            <span class="sidebar-tag-name" data-tags="Scoring System">
-                <span class="iconfont-archer">&#xe606;</span>
-                Scoring System
-            </span>
-        
             <span class="sidebar-tag-name" data-tags="ProcessGhosting">
                 <span class="iconfont-archer">&#xe606;</span>
                 ProcessGhosting
@@ -1821,6 +1813,16 @@
             <span class="sidebar-tag-name" data-tags="进程">
                 <span class="iconfont-archer">&#xe606;</span>
                 进程
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Red Teaming">
+                <span class="iconfont-archer">&#xe606;</span>
+                Red Teaming
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Scoring System">
+                <span class="iconfont-archer">&#xe606;</span>
+                Scoring System
             </span>
         
             <span class="sidebar-tag-name" data-tags="红蓝对抗">
@@ -2174,11 +2176,6 @@
             渗透工具
         </span>
     
-        <span class="sidebar-category-name" data-categories="java">
-            <span class="iconfont-archer">&#xe60a;</span>
-            java
-        </span>
-    
         <span class="sidebar-category-name" data-categories="windows">
             <span class="iconfont-archer">&#xe60a;</span>
             windows
@@ -2194,19 +2191,24 @@
             漏洞分析
         </span>
     
+        <span class="sidebar-category-name" data-categories="java">
+            <span class="iconfont-archer">&#xe60a;</span>
+            java
+        </span>
+    
         <span class="sidebar-category-name" data-categories="渗透基础">
             <span class="iconfont-archer">&#xe60a;</span>
             渗透基础
         </span>
     
-        <span class="sidebar-category-name" data-categories="Research">
-            <span class="iconfont-archer">&#xe60a;</span>
-            Research
-        </span>
-    
         <span class="sidebar-category-name" data-categories="渗透技术">
             <span class="iconfont-archer">&#xe60a;</span>
             渗透技术
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Research">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Research
         </span>
     
         <span class="sidebar-category-name" data-categories="红蓝对抗">
@@ -2234,7 +2236,7 @@
         siteMetaRoot = '/'
     }
     var siteMeta = {
-        url: "https://jd.army",
+        url: "https://blog.jd.army",
         root: siteMetaRoot,
         author: "JD.Army"
     }

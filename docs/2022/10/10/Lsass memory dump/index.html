@@ -16,14 +16,14 @@
     <meta name="renderer" content="webkit">
     <meta name="copyright" content="JD.Army">
     
-        <meta name="keywords" content="JD.Army">
+        <meta name="keywords" content="Blog.JD.Army">
     
     <meta name="description" content="Red team of jd inc. ">
     <meta name="description" content="[toc] lsass是windows中处理本地安全和登录策略的重要进程，几乎所有的windows身份认证程序都离不开lsass进程。因此在lsass的内存中会保存用户相关的凭证。它是windows主机中凭证的重要组成部分，因此获取lsass内存也是MITRE ATT&amp;CK框架中Credential Access战术下的重要技术点。  在整个unified kill chain中Crede">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Lsass Memory Dump">
-<meta property="og:url" content="https://jd.army/2022/10/10/Lsass%20memory%20dump/index.html">
-<meta property="og:site_name" content="JD.Army">
+<meta property="og:url" content="https://blog.jd.army/2022/10/10/Lsass%20memory%20dump/index.html">
+<meta property="og:site_name" content="Blog.JD.Army">
 <meta property="og:description" content="[toc] lsass是windows中处理本地安全和登录策略的重要进程，几乎所有的windows身份认证程序都离不开lsass进程。因此在lsass的内存中会保存用户相关的凭证。它是windows主机中凭证的重要组成部分，因此获取lsass内存也是MITRE ATT&amp;CK框架中Credential Access战术下的重要技术点。  在整个unified kill chain中Crede">
 <meta property="og:locale">
 <meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/ba3f4cb1e9552a139297eae6dc5b1313.png">
@@ -40,7 +40,7 @@
 <meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/1ee8182fe5784ad203813bff2a5c82da.png">
 <meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/cb043e43a237a02d325b17a279d7f6fe.png">
 <meta property="article:published_time" content="2022-10-10T06:26:16.000Z">
-<meta property="article:modified_time" content="2022-11-02T04:42:09.000Z">
+<meta property="article:modified_time" content="2022-11-02T04:42:09.804Z">
 <meta property="article:author" content="JD.Army">
 <meta property="article:tag" content="windows">
 <meta property="article:tag" content="lsass">
@@ -50,7 +50,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="icon" href="/assets/favicon.ico">
     
-    <title>Lsass Memory Dump · JD.Army</title>
+    <title>Lsass Memory Dump · Blog.JD.Army</title>
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
 - testing support for link[rel=preload]
@@ -227,7 +227,7 @@
     
     <!-- 谷歌统计  -->
     
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.2"></head>
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script type="text/javascript">
@@ -263,7 +263,7 @@
         </span>
         <!-- back to home page text -->
         <span class="home-link header-element">
-            <a href=/>JD.Army</a>
+            <a href=/>Blog.JD.Army</a>
         </span>
     </div>
     <!-- toggle banner for post layout -->
@@ -272,7 +272,7 @@
             <div class="banner">
         
             <div class="blog-title header-element">
-                <a href="/">JD.Army</a>
+                <a href="/">Blog.JD.Army</a>
             </div>
             <div class="post-title header-element">
                 <a href="#" class="post-name">Lsass Memory Dump</a>
@@ -539,7 +539,7 @@
 <p>使用命令：<code>sqldump.exe LsassPid 0 0x01100</code></p>
 <h3 id="ProcessDump"><a href="#ProcessDump" class="headerlink" title="ProcessDump"></a>ProcessDump</h3><p>思科Cisco Jabber会在<code>C:\program file (86)\cisco systems\cisco jabber\x64\</code>目录下存放processdump.exe，jabber会使用此程序来进行内存转储。</p>
 <p>使用命令：<code>processdump.exe (ps lsass).id c:\lsass.dmp</code></p>
-<h2 id="二、使用windows自带的应用-命令来dump-lsass内存"><a href="#二、使用windows自带的应用-命令来dump-lsass内存" class="headerlink" title="二、使用windows自带的应用/命令来dump lsass内存"></a>二、使用windows自带的应用/命令来dump lsass内存</h2><h3 id="Task-Manager"><a href="#Task-Manager" class="headerlink" title="Task Manager"></a>Task Manager</h3><p>windows任务管理器，可直接通过图形化界面打开windows任务管理器，后直接右键单击相关进程，可直接dump出lsass的进程。</p>
+<h2 id="二、使用windows自带的应用-x2F-命令来dump-lsass内存"><a href="#二、使用windows自带的应用-x2F-命令来dump-lsass内存" class="headerlink" title="二、使用windows自带的应用&#x2F;命令来dump lsass内存"></a>二、使用windows自带的应用&#x2F;命令来dump lsass内存</h2><h3 id="Task-Manager"><a href="#Task-Manager" class="headerlink" title="Task Manager"></a>Task Manager</h3><p>windows任务管理器，可直接通过图形化界面打开windows任务管理器，后直接右键单击相关进程，可直接dump出lsass的进程。</p>
 <h3 id="Comsvcs-dll"><a href="#Comsvcs-dll" class="headerlink" title="Comsvcs.dll"></a>Comsvcs.dll</h3><p>此方法主要是通过rundll32来调用comsvcs.dll中的MiniDump来直接dump相关内存。</p>
 <p>MiniDumpW通过OpenProcess+CreateFileW+MiniDumpWriteDump函数来dump内存。</p>
 <p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/3d353c240d20376c93fcefbbf68924e7.png" alt="image-20220927145121881"></p>
@@ -602,7 +602,7 @@
 <p>二、针对文件的写，MirrorDump通过MinHook来对MiniDumpWriteDump中涉及到的SetFilePointer、GetFileSize、WriteFile函数进行hook，从而改变相关行为，规避杀软查杀。</p>
 <p>MirrorDump具体流程：</p>
 <p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/10/72f03913438f95379ebc55aa4c7c1365.png" alt="image-20221010152533409"></p>
-<h3 id="MalSeclogon"><a href="#MalSeclogon" class="headerlink" title="MalSeclogon"></a>MalSeclogon</h3><p>一、针对OpenProcess获取进程句柄的监控，MalSeclogon采用两种方法来获取lsass进程的句柄，第一种是通过CreateProcessWithLogonW/CreateProcessWithTokenW的父进程欺骗和CreateProcessWithLogonW函数的句柄泄露来从其他进程中寻找lsass泄露的句柄。第二种是在CreateProcessWithLogonW/CreateProcessWithTokenW进行父进程欺骗时，会打开lsass进程句柄，通过条件竞争获取到此lsass进程句柄。下面将详细介绍两种方法。</p>
+<h3 id="MalSeclogon"><a href="#MalSeclogon" class="headerlink" title="MalSeclogon"></a>MalSeclogon</h3><p>一、针对OpenProcess获取进程句柄的监控，MalSeclogon采用两种方法来获取lsass进程的句柄，第一种是通过CreateProcessWithLogonW&#x2F;CreateProcessWithTokenW的父进程欺骗和CreateProcessWithLogonW函数的句柄泄露来从其他进程中寻找lsass泄露的句柄。第二种是在CreateProcessWithLogonW&#x2F;CreateProcessWithTokenW进行父进程欺骗时，会打开lsass进程句柄，通过条件竞争获取到此lsass进程句柄。下面将详细介绍两种方法。</p>
 <p>方法一：</p>
 <ol>
 <li>枚举进程句柄并找到lsass打开的句柄。</li>
@@ -635,10 +635,10 @@
     <!-- license -->
     
         <div class="license-wrapper">
-            <p>原文作者：<a href="https://jd.army">JD.Army</a>
-            <p>原文链接：<a href="https://jd.army/2022/10/10/Lsass%20memory%20dump/">https://jd.army/2022/10/10/Lsass%20memory%20dump/</a>
-            <p>发表日期：<a href="https://jd.army/2022/10/10/Lsass%20memory%20dump/">October 10th 2022, 2:26:16 pm</a>
-            <p>更新日期：<a href="https://jd.army/2022/10/10/Lsass%20memory%20dump/">November 2nd 2022, 12:42:09 pm</a>
+            <p>原文作者：<a href="https://blog.jd.army">JD.Army</a>
+            <p>原文链接：<a href="https://blog.jd.army/2022/10/10/Lsass%20memory%20dump/">https://blog.jd.army/2022/10/10/Lsass%20memory%20dump/</a>
+            <p>发表日期：<a href="https://blog.jd.army/2022/10/10/Lsass%20memory%20dump/">October 10th 2022, 2:26:16 pm</a>
+            <p>更新日期：<a href="https://blog.jd.army/2022/10/10/Lsass%20memory%20dump/">November 2nd 2022, 12:42:09 pm</a>
             <p>版权声明：本文采用<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -789,7 +789,7 @@
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%BD%BF%E7%94%A8%E7%AD%BE%E5%90%8D%E7%A8%8B%E5%BA%8Fdump-lsass%E5%86%85%E5%AD%98"><span class="toc-number">1.</span> <span class="toc-text">一、使用签名程序dump lsass内存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Procdump"><span class="toc-number">1.1.</span> <span class="toc-text">Procdump</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Process-Explorer"><span class="toc-number">1.2.</span> <span class="toc-text">Process Explorer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SQLDumper"><span class="toc-number">1.3.</span> <span class="toc-text">SQLDumper</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ProcessDump"><span class="toc-number">1.4.</span> <span class="toc-text">ProcessDump</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%BD%BF%E7%94%A8windows%E8%87%AA%E5%B8%A6%E7%9A%84%E5%BA%94%E7%94%A8-%E5%91%BD%E4%BB%A4%E6%9D%A5dump-lsass%E5%86%85%E5%AD%98"><span class="toc-number">2.</span> <span class="toc-text">二、使用windows自带的应用&#x2F;命令来dump lsass内存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Task-Manager"><span class="toc-number">2.1.</span> <span class="toc-text">Task Manager</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Comsvcs-dll"><span class="toc-number">2.2.</span> <span class="toc-text">Comsvcs.dll</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rdrleakdiag"><span class="toc-number">2.3.</span> <span class="toc-text">rdrleakdiag</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%BD%BF%E7%94%A8windows%E6%9C%BA%E5%88%B6%E6%9D%A5dump%E5%86%85%E5%AD%98"><span class="toc-number">3.</span> <span class="toc-text">三、使用windows机制来dump内存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SlientProcessExit"><span class="toc-number">3.1.</span> <span class="toc-text">SlientProcessExit</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Silent-Process-Exit%E6%9C%BA%E5%88%B6"><span class="toc-number">3.1.1.</span> <span class="toc-text">Silent Process Exit机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dump-lsass%E8%BF%9B%E7%A8%8B"><span class="toc-number">3.1.2.</span> <span class="toc-text">dump lsass进程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LsassShtinkering"><span class="toc-number">3.2.</span> <span class="toc-text">LsassShtinkering</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%85%8D%E6%9D%80%E5%AF%B9%E6%8A%97"><span class="toc-number">4.</span> <span class="toc-text">四、免杀对抗</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Dumpert"><span class="toc-number">4.1.</span> <span class="toc-text">Dumpert</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PssCaptureSnapshot-API"><span class="toc-number">4.2.</span> <span class="toc-text">PssCaptureSnapshot API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pypykatz"><span class="toc-number">4.3.</span> <span class="toc-text">pypykatz</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MirrorDump"><span class="toc-number">4.4.</span> <span class="toc-text">MirrorDump</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MalSeclogon"><span class="toc-number">4.5.</span> <span class="toc-text">MalSeclogon</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">4.6.</span> <span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E9%98%B2%E6%8A%A4"><span class="toc-number">5.</span> <span class="toc-text">五、防护</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="toc-number">6.</span> <span class="toc-text">六、参考文章</span></a></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%BD%BF%E7%94%A8%E7%AD%BE%E5%90%8D%E7%A8%8B%E5%BA%8Fdump-lsass%E5%86%85%E5%AD%98"><span class="toc-number">1.</span> <span class="toc-text">一、使用签名程序dump lsass内存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Procdump"><span class="toc-number">1.1.</span> <span class="toc-text">Procdump</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Process-Explorer"><span class="toc-number">1.2.</span> <span class="toc-text">Process Explorer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SQLDumper"><span class="toc-number">1.3.</span> <span class="toc-text">SQLDumper</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ProcessDump"><span class="toc-number">1.4.</span> <span class="toc-text">ProcessDump</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%BD%BF%E7%94%A8windows%E8%87%AA%E5%B8%A6%E7%9A%84%E5%BA%94%E7%94%A8-x2F-%E5%91%BD%E4%BB%A4%E6%9D%A5dump-lsass%E5%86%85%E5%AD%98"><span class="toc-number">2.</span> <span class="toc-text">二、使用windows自带的应用&#x2F;命令来dump lsass内存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Task-Manager"><span class="toc-number">2.1.</span> <span class="toc-text">Task Manager</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Comsvcs-dll"><span class="toc-number">2.2.</span> <span class="toc-text">Comsvcs.dll</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rdrleakdiag"><span class="toc-number">2.3.</span> <span class="toc-text">rdrleakdiag</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%BD%BF%E7%94%A8windows%E6%9C%BA%E5%88%B6%E6%9D%A5dump%E5%86%85%E5%AD%98"><span class="toc-number">3.</span> <span class="toc-text">三、使用windows机制来dump内存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SlientProcessExit"><span class="toc-number">3.1.</span> <span class="toc-text">SlientProcessExit</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Silent-Process-Exit%E6%9C%BA%E5%88%B6"><span class="toc-number">3.1.1.</span> <span class="toc-text">Silent Process Exit机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dump-lsass%E8%BF%9B%E7%A8%8B"><span class="toc-number">3.1.2.</span> <span class="toc-text">dump lsass进程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LsassShtinkering"><span class="toc-number">3.2.</span> <span class="toc-text">LsassShtinkering</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%85%8D%E6%9D%80%E5%AF%B9%E6%8A%97"><span class="toc-number">4.</span> <span class="toc-text">四、免杀对抗</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Dumpert"><span class="toc-number">4.1.</span> <span class="toc-text">Dumpert</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PssCaptureSnapshot-API"><span class="toc-number">4.2.</span> <span class="toc-text">PssCaptureSnapshot API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pypykatz"><span class="toc-number">4.3.</span> <span class="toc-text">pypykatz</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MirrorDump"><span class="toc-number">4.4.</span> <span class="toc-text">MirrorDump</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MalSeclogon"><span class="toc-number">4.5.</span> <span class="toc-text">MalSeclogon</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">4.6.</span> <span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E9%98%B2%E6%8A%A4"><span class="toc-number">5.</span> <span class="toc-text">五、防护</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="toc-number">6.</span> <span class="toc-text">六、参考文章</span></a></li></ol>
             </div>
         
         <!-- sidebar -->
@@ -1004,6 +1004,8 @@
         
         
     
+        
+        
         
         
         
@@ -1622,16 +1624,6 @@
                 流量
             </span>
         
-            <span class="sidebar-tag-name" data-tags="Java">
-                <span class="iconfont-archer">&#xe606;</span>
-                Java
-            </span>
-        
-            <span class="sidebar-tag-name" data-tags="代码审计">
-                <span class="iconfont-archer">&#xe606;</span>
-                代码审计
-            </span>
-        
             <span class="sidebar-tag-name" data-tags="windows">
                 <span class="iconfont-archer">&#xe606;</span>
                 windows
@@ -1650,6 +1642,16 @@
             <span class="sidebar-tag-name" data-tags="漏洞">
                 <span class="iconfont-archer">&#xe606;</span>
                 漏洞
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Java">
+                <span class="iconfont-archer">&#xe606;</span>
+                Java
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="代码审计">
+                <span class="iconfont-archer">&#xe606;</span>
+                代码审计
             </span>
         
             <span class="sidebar-tag-name" data-tags="codeql">
@@ -1682,16 +1684,6 @@
                 kerberosting
             </span>
         
-            <span class="sidebar-tag-name" data-tags="Red Teaming">
-                <span class="iconfont-archer">&#xe606;</span>
-                Red Teaming
-            </span>
-        
-            <span class="sidebar-tag-name" data-tags="Scoring System">
-                <span class="iconfont-archer">&#xe606;</span>
-                Scoring System
-            </span>
-        
             <span class="sidebar-tag-name" data-tags="ProcessGhosting">
                 <span class="iconfont-archer">&#xe606;</span>
                 ProcessGhosting
@@ -1700,6 +1692,16 @@
             <span class="sidebar-tag-name" data-tags="进程">
                 <span class="iconfont-archer">&#xe606;</span>
                 进程
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Red Teaming">
+                <span class="iconfont-archer">&#xe606;</span>
+                Red Teaming
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Scoring System">
+                <span class="iconfont-archer">&#xe606;</span>
+                Scoring System
             </span>
         
             <span class="sidebar-tag-name" data-tags="红蓝对抗">
@@ -2053,11 +2055,6 @@
             渗透工具
         </span>
     
-        <span class="sidebar-category-name" data-categories="java">
-            <span class="iconfont-archer">&#xe60a;</span>
-            java
-        </span>
-    
         <span class="sidebar-category-name" data-categories="windows">
             <span class="iconfont-archer">&#xe60a;</span>
             windows
@@ -2073,19 +2070,24 @@
             漏洞分析
         </span>
     
+        <span class="sidebar-category-name" data-categories="java">
+            <span class="iconfont-archer">&#xe60a;</span>
+            java
+        </span>
+    
         <span class="sidebar-category-name" data-categories="渗透基础">
             <span class="iconfont-archer">&#xe60a;</span>
             渗透基础
         </span>
     
-        <span class="sidebar-category-name" data-categories="Research">
-            <span class="iconfont-archer">&#xe60a;</span>
-            Research
-        </span>
-    
         <span class="sidebar-category-name" data-categories="渗透技术">
             <span class="iconfont-archer">&#xe60a;</span>
             渗透技术
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Research">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Research
         </span>
     
         <span class="sidebar-category-name" data-categories="红蓝对抗">
@@ -2113,7 +2115,7 @@
         siteMetaRoot = '/'
     }
     var siteMeta = {
-        url: "https://jd.army",
+        url: "https://blog.jd.army",
         root: siteMetaRoot,
         author: "JD.Army"
     }

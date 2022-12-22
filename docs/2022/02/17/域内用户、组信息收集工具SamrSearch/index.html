@@ -16,21 +16,21 @@
     <meta name="renderer" content="webkit">
     <meta name="copyright" content="JD.Army">
     
-        <meta name="keywords" content="JD.Army">
+        <meta name="keywords" content="Blog.JD.Army">
     
     <meta name="description" content="Red team of jd inc. ">
     <meta name="description" content="在impacket进行域渗透中，通过MS-SAMR协议实现net user和net group的功能，能方便在渗透过程中，如果域内没有可控的windows主机，但能通过web手段获取到域内用户账号的情况下，来对用户权限、用户信息和组信息进行收集。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="域内用户、组信息收集工具SamrSearch">
-<meta property="og:url" content="https://jd.army/2022/02/17/%E5%9F%9F%E5%86%85%E7%94%A8%E6%88%B7%E3%80%81%E7%BB%84%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B7%A5%E5%85%B7SamrSearch/index.html">
-<meta property="og:site_name" content="JD.Army">
+<meta property="og:url" content="https://blog.jd.army/2022/02/17/%E5%9F%9F%E5%86%85%E7%94%A8%E6%88%B7%E3%80%81%E7%BB%84%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B7%A5%E5%85%B7SamrSearch/index.html">
+<meta property="og:site_name" content="Blog.JD.Army">
 <meta property="og:description" content="在impacket进行域渗透中，通过MS-SAMR协议实现net user和net group的功能，能方便在渗透过程中，如果域内没有可控的windows主机，但能通过web手段获取到域内用户账号的情况下，来对用户权限、用户信息和组信息进行收集。">
 <meta property="og:locale">
 <meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/02/63c70147e793e893e7d7298a0456d3b6.png">
 <meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/02/a956f4fd3d18953dba27b9cb96ad498e.png">
 <meta property="og:image" content="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/02/3465f2847676e73fa6d5c46e76d02fee.png">
 <meta property="article:published_time" content="2022-02-17T02:08:16.000Z">
-<meta property="article:modified_time" content="2022-11-02T04:42:09.000Z">
+<meta property="article:modified_time" content="2022-11-02T04:42:09.806Z">
 <meta property="article:author" content="JD.Army">
 <meta property="article:tag" content="域渗透">
 <meta property="article:tag" content="工具">
@@ -40,7 +40,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="icon" href="/assets/favicon.ico">
     
-    <title>域内用户、组信息收集工具SamrSearch · JD.Army</title>
+    <title>域内用户、组信息收集工具SamrSearch · Blog.JD.Army</title>
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
 - testing support for link[rel=preload]
@@ -217,7 +217,7 @@
     
     <!-- 谷歌统计  -->
     
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.2"></head>
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script type="text/javascript">
@@ -253,7 +253,7 @@
         </span>
         <!-- back to home page text -->
         <span class="home-link header-element">
-            <a href=/>JD.Army</a>
+            <a href=/>Blog.JD.Army</a>
         </span>
     </div>
     <!-- toggle banner for post layout -->
@@ -262,7 +262,7 @@
             <div class="banner">
         
             <div class="blog-title header-element">
-                <a href="/">JD.Army</a>
+                <a href="/">Blog.JD.Army</a>
             </div>
             <div class="post-title header-element">
                 <a href="#" class="post-name">域内用户、组信息收集工具SamrSearch</a>
@@ -352,7 +352,7 @@
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">400</span>阅读时长: <span class="post-count reading-time">2 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">402</span>阅读时长: <span class="post-count reading-time">2 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -520,9 +520,9 @@
 
 
 
-<p>net user windows8 /domain: <code>python3 samrsearch.py windows.local/test:aaa@172.16.178.9 -username &quot;windows8&quot;</code></p>
+<p>net user windows8 &#x2F;domain: <code>python3 samrsearch.py windows.local/test:aaa@172.16.178.9 -username &quot;windows8&quot;</code></p>
 <p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/02/63c70147e793e893e7d7298a0456d3b6.png" alt="图片"></p>
-<p>net group “Domain Admins” /domain:<code>python3 samrsearch.py windows.local/test:aaa@172.16.178.9 -groupname &quot;Domain Admins&quot;</code></p>
+<p>net group “Domain Admins” &#x2F;domain:<code>python3 samrsearch.py windows.local/test:aaa@172.16.178.9 -groupname &quot;Domain Admins&quot;</code></p>
 <p><img src="https://wiki-oss.s3.cn-north-1.jdcloud-oss.com/2022/02/a956f4fd3d18953dba27b9cb96ad498e.png" alt="图片"></p>
 <p>如果未添加参数，将对dump所有域内的用户信息。</p>
 <figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">python3</span> samrsearch.<span class="hljs-keyword">py</span> windows.local/tes<span class="hljs-variable">t:aaa</span>@<span class="hljs-number">172.16</span>.<span class="hljs-number">178.9</span><br></code></pre></td></tr></table></figure>
@@ -535,10 +535,10 @@
     <!-- license -->
     
         <div class="license-wrapper">
-            <p>原文作者：<a href="https://jd.army">JD.Army</a>
-            <p>原文链接：<a href="https://jd.army/2022/02/17/%E5%9F%9F%E5%86%85%E7%94%A8%E6%88%B7%E3%80%81%E7%BB%84%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B7%A5%E5%85%B7SamrSearch/">https://jd.army/2022/02/17/%E5%9F%9F%E5%86%85%E7%94%A8%E6%88%B7%E3%80%81%E7%BB%84%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B7%A5%E5%85%B7SamrSearch/</a>
-            <p>发表日期：<a href="https://jd.army/2022/02/17/%E5%9F%9F%E5%86%85%E7%94%A8%E6%88%B7%E3%80%81%E7%BB%84%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B7%A5%E5%85%B7SamrSearch/">February 17th 2022, 10:08:16 am</a>
-            <p>更新日期：<a href="https://jd.army/2022/02/17/%E5%9F%9F%E5%86%85%E7%94%A8%E6%88%B7%E3%80%81%E7%BB%84%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B7%A5%E5%85%B7SamrSearch/">November 2nd 2022, 12:42:09 pm</a>
+            <p>原文作者：<a href="https://blog.jd.army">JD.Army</a>
+            <p>原文链接：<a href="https://blog.jd.army/2022/02/17/%E5%9F%9F%E5%86%85%E7%94%A8%E6%88%B7%E3%80%81%E7%BB%84%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B7%A5%E5%85%B7SamrSearch/">https://blog.jd.army/2022/02/17/%E5%9F%9F%E5%86%85%E7%94%A8%E6%88%B7%E3%80%81%E7%BB%84%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B7%A5%E5%85%B7SamrSearch/</a>
+            <p>发表日期：<a href="https://blog.jd.army/2022/02/17/%E5%9F%9F%E5%86%85%E7%94%A8%E6%88%B7%E3%80%81%E7%BB%84%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B7%A5%E5%85%B7SamrSearch/">February 17th 2022, 10:08:16 am</a>
+            <p>更新日期：<a href="https://blog.jd.army/2022/02/17/%E5%9F%9F%E5%86%85%E7%94%A8%E6%88%B7%E3%80%81%E7%BB%84%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B7%A5%E5%85%B7SamrSearch/">November 2nd 2022, 12:42:09 pm</a>
             <p>版权声明：本文采用<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -1232,6 +1232,8 @@
         
         
         
+        
+        
     
     
     
@@ -1522,16 +1524,6 @@
                 流量
             </span>
         
-            <span class="sidebar-tag-name" data-tags="Java">
-                <span class="iconfont-archer">&#xe606;</span>
-                Java
-            </span>
-        
-            <span class="sidebar-tag-name" data-tags="代码审计">
-                <span class="iconfont-archer">&#xe606;</span>
-                代码审计
-            </span>
-        
             <span class="sidebar-tag-name" data-tags="windows">
                 <span class="iconfont-archer">&#xe606;</span>
                 windows
@@ -1550,6 +1542,16 @@
             <span class="sidebar-tag-name" data-tags="漏洞">
                 <span class="iconfont-archer">&#xe606;</span>
                 漏洞
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Java">
+                <span class="iconfont-archer">&#xe606;</span>
+                Java
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="代码审计">
+                <span class="iconfont-archer">&#xe606;</span>
+                代码审计
             </span>
         
             <span class="sidebar-tag-name" data-tags="codeql">
@@ -1582,16 +1584,6 @@
                 kerberosting
             </span>
         
-            <span class="sidebar-tag-name" data-tags="Red Teaming">
-                <span class="iconfont-archer">&#xe606;</span>
-                Red Teaming
-            </span>
-        
-            <span class="sidebar-tag-name" data-tags="Scoring System">
-                <span class="iconfont-archer">&#xe606;</span>
-                Scoring System
-            </span>
-        
             <span class="sidebar-tag-name" data-tags="ProcessGhosting">
                 <span class="iconfont-archer">&#xe606;</span>
                 ProcessGhosting
@@ -1600,6 +1592,16 @@
             <span class="sidebar-tag-name" data-tags="进程">
                 <span class="iconfont-archer">&#xe606;</span>
                 进程
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Red Teaming">
+                <span class="iconfont-archer">&#xe606;</span>
+                Red Teaming
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Scoring System">
+                <span class="iconfont-archer">&#xe606;</span>
+                Scoring System
             </span>
         
             <span class="sidebar-tag-name" data-tags="红蓝对抗">
@@ -1953,11 +1955,6 @@
             渗透工具
         </span>
     
-        <span class="sidebar-category-name" data-categories="java">
-            <span class="iconfont-archer">&#xe60a;</span>
-            java
-        </span>
-    
         <span class="sidebar-category-name" data-categories="windows">
             <span class="iconfont-archer">&#xe60a;</span>
             windows
@@ -1973,19 +1970,24 @@
             漏洞分析
         </span>
     
+        <span class="sidebar-category-name" data-categories="java">
+            <span class="iconfont-archer">&#xe60a;</span>
+            java
+        </span>
+    
         <span class="sidebar-category-name" data-categories="渗透基础">
             <span class="iconfont-archer">&#xe60a;</span>
             渗透基础
         </span>
     
-        <span class="sidebar-category-name" data-categories="Research">
-            <span class="iconfont-archer">&#xe60a;</span>
-            Research
-        </span>
-    
         <span class="sidebar-category-name" data-categories="渗透技术">
             <span class="iconfont-archer">&#xe60a;</span>
             渗透技术
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Research">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Research
         </span>
     
         <span class="sidebar-category-name" data-categories="红蓝对抗">
@@ -2013,7 +2015,7 @@
         siteMetaRoot = '/'
     }
     var siteMeta = {
-        url: "https://jd.army",
+        url: "https://blog.jd.army",
         root: siteMetaRoot,
         author: "JD.Army"
     }
