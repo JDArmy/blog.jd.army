@@ -1,14 +1,14 @@
 # ========== Profile ========== #
 # avatar
-avatar: https://avatars.githubusercontent.com/u/90537729?s=400&u=0cb77265debbab9b5c0761e88a1f3d1af331485f&v=4
+avatar: '/assets/logo.png'
 # author name
-author: JD.Army
+author: Blog.JD.Army
 # signature
 signature: Promoting Defense, Enabling Security.
 # SNS (you can custom the order)
 social:
-  email: Master@JD.Army
-  github: //github.com/JDArmy
+  email: 
+  github:
   # wechat should be a path of qr-code image path
   wechat:
   # qq should be a path of qr-code image path
@@ -34,7 +34,7 @@ friends:
   # Monyer: //Monyer.com
   # friendB: //www.google.com
 about:
-  enable: true
+  enable: false
   image: '/intro/about-bg.jpg'
 # Search for website
 search:
@@ -53,7 +53,7 @@ profile_icons:
   search: 'fas fa-search'
 # Additional profile links
 profile_links:
-  - name: JDARMY Homepage
+  - name: JDArmy Homepage
     url: //jd.army
     icon: 'fas fa-globe'
   # - name: GALLERY

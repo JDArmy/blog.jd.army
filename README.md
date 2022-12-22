@@ -14,8 +14,7 @@ cd JD.Army
 rm -rf node_modules && npm install --force
 
 #安装皮肤 && 替换静态资源
-git submodule add https://github.com/fi3ework/hexo-theme-archer.git themes/archer --depth=1 
-#  若提示'themes/archer' already exists in the index 时使用命令 git submodule update --init 代替
+git submodule update --init
 
 rm -rf themes/archer/_config.yml
 cp -r CopyToThemes/* themes/
