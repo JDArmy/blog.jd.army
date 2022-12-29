@@ -1,11 +1,6 @@
 # JD.Army
 使用hexo网页生成器
 
-## 安装hexo
-npm install hexo-cli -g
-或
-brew install hexo
-
 ## 初始化环境
 ```bash
 git clone https://github.com/JDArmy/JDArmy.github.io.git
@@ -23,7 +18,7 @@ cp -r CopyToThemes/* themes/
 ## check是否安装正确
 ```bash
 # 本地查看效果
-hexo server
+hexo s
 ```
 ## 写新文章
 > 文章名可以中文
@@ -45,7 +40,7 @@ categories: 蓝军推送
 > 注：archer模板不需要更新，更新JDArmy.github.io即可
 ```bash
 #生成网站数据到 /docs 文件夹中
-npx hexo generate
+npx hexo g
 #提交到仓库
 git push
 ```
