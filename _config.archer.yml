@@ -62,12 +62,12 @@ profile_links:
 
 # ========== Site ========== #
 # title of the site (good for SEO)
-SEO_title: Blog.JD.Army
+SEO_title: JDArmy Blog
 # keywords for site (good for SEO)
 SEO_keywords:
-  - 'Blog.JD.Army'
+  - 'JDArmy Blog'
 # main title shown in header image
-main_title: Blog.JD.Army
+main_title: JDArmy Blog
 # subtitle
 subtitle: Promoting Defense, Enabling Security.
 # site header image
